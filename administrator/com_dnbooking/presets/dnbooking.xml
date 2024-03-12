@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<menu
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="urn:joomla.org"
+	xsi:schemaLocation="urn:joomla.org menu.xsd"
+	>
+
+	<menuitem
+		title="COM_DNBOOKING"
+		type="heading"
+		icon="file-alt"
+		class="class:file-alt"
+		>
+
+		<menuitem
+			title="COM_DNBOOKING_SUBMENU_RESERVATIONS"
+			type="component"
+			element="com_dnbooking"
+			link="index.php?option=com_dnbooking"
+			quicktask="index.php?option=com_dnbooking&amp;task=reservation.add"
+			quicktask-title="COM_DNBOOKING_SUBMENU_NEW_RESERVATION"
+		/>
+
+		<menuitem
+			title="JCATEGORY"
+			type="component"
+			element="com_dnbooking"
+			link="index.php?option=com_categories&amp;extension=com_dnbooking"
+			quicktask="index.php?option=com_categories&amp;view=category&amp;layout=edit&amp;extension=com_dnbooking"
+			quicktask-title="JCATEGORY"
+		/>
+	</menuitem>
+</menu>

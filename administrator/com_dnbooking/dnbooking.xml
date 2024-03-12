@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+	<name>com_dnbooking</name>
+	<author>Mario Hewera</author>
+	<creationDate>March 2024</creationDate>
+	<copyright>Copyright (C) 2024 Mario Hewera. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>info@diginerds.de</authorEmail>
+	<authorUrl>https://www.diginerds.de</authorUrl>
+	<version>1.0.0</version>
+	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
+    <namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
+	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
+	
+	<scriptfile>script.php</scriptfile>
+	
+	<install> <!-- Runs on install -->
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file charset="utf8" driver="mysql">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	
+	<update> <!-- Runs on update -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<media destination="com_dnbooking" folder="media">
+		<filename>index.html</filename>
+        <filename>joomla.asset.json</filename>
+		<folder>css</folder>
+        <folder>images</folder>
+		<folder>js</folder>
+		<folder>scss</folder>
+	</media>
+
+	<files folder="site">
+		<folder>forms</folder>
+        <folder>helpers</folder>
+		<folder>layouts</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
+	</files>
+	
+	<languages folder="site/language">
+		
+			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
+		
+			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
+		
+	</languages>
+ 
+	<administration>
+        <menu img="class:comment">
+			COM_DNBOOKING			<params>
+				<dashboard>dnbooking</dashboard>
+			</params>
+		</menu>
+		<submenu>
+			<menu view="reservations">
+                COM_DNBOOKING_SUBMENU_RESERVATIONS
+                <params>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_RESERVATION</menu-quicktask-title>
+					<menu-quicktask>index.php?option=com_dnbooking&amp;task=reservation.add</menu-quicktask>
+				</params>
+            </menu>
+            
+			<menu link="option=com_categories&amp;view=categories&amp;extension=com_dnbooking">
+				JCATEGORY
+                <params>
+					<menu-quicktask>index.php?option=com_categories&amp;extension=com_dnbooking&amp;task=category.add</menu-quicktask>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_ADD_RESERVATIONS_CATEGORY</menu-quicktask-title>
+				</params>
+			</menu>
+		</submenu>
+        
+		<files folder="administrator">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>dnbooking.xml</filename>	
+
+			<filename>script.php</filename>
+            <folder>presets</folder>
+			<folder>sql</folder>
+            <folder>forms</folder>
+            <folder>services</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
+			<folder>misc</folder>
+		</files>
+		
+		<languages folder="administrator/language">
+			
+			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
+			<language tag="de-DE">de-DE/com_dnbooking.sys.ini</language>
+		
+			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
+			<language tag="en-GB">en-GB/com_dnbooking.sys.ini</language>
+					
+		</languages>
+	</administration>
+    <dashboards>
+		<dashboard title="COM_DNBOOKING_DASHBOARD_TITLE" icon="icon-file-alt">dnbooking</dashboard>
+	</dashboards>
+    
+	<updateservers>
+		<server type="extension" priority="1" name="dnbooking Updates">https://YOUR-UPDATE-URL.COM/com_dnbooking/extension.xml</server>
+	</updateservers>
+    
+</extension>

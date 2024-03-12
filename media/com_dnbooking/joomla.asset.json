@@ -1,0 +1,22 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_dnbooking",
+  "version": "4.0.0",
+  "description": "Joomla CMS",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+	{
+      "name": "com_dnbooking.script",
+      "type": "script",
+      "uri": "com_dnbooking/script.js"
+    },
+    {
+      "name": "com_dnbooking.admin-reservations-modal",
+      "type": "script",
+      "uri": "com_dnbooking/admin-reservations-modal.js",
+      "attributes": {
+        "type": "module"
+      }
+    }
+  ]
+}
