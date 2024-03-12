@@ -71,13 +71,29 @@
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=reservation.add</menu-quicktask>
 				</params>
             </menu>
-            
-			<menu link="option=com_categories&amp;view=categories&amp;extension=com_dnbooking">
-				JCATEGORY
+			<menu view="customers">
+                COM_DNBOOKING_SUBMENU_CUSTOMERS
                 <params>
-					<menu-quicktask>index.php?option=com_categories&amp;extension=com_dnbooking&amp;task=category.add</menu-quicktask>
-					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_ADD_RESERVATIONS_CATEGORY</menu-quicktask-title>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_CUSTOMER</menu-quicktask-title>
+					<menu-quicktask>index.php?option=com_dnbooking&amp;task=customer.add</menu-quicktask>
 				</params>
+            </menu>
+			<menu view="rooms">
+                COM_DNBOOKING_SUBMENU_ROOMS
+                <params>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_ROOM</menu-quicktask-title>
+					<menu-quicktask>index.php?option=com_dnbooking&amp;task=room.add</menu-quicktask>
+				</params>
+            </menu>
+			<menu view="extras">
+                COM_DNBOOKING_SUBMENU_EXTRAS
+                <params>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_EXTRA</menu-quicktask-title>
+					<menu-quicktask>index.php?option=com_dnbooking&amp;task=extra.add</menu-quicktask>
+				</params>
+            </menu>
+			<menu link="option=com_config&amp;view=component&amp;component=com_dnbooking">
+				COM_DNBOOKING_SUBMENU_SETTINGS
 			</menu>
 		</submenu>
         
