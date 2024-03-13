@@ -3,7 +3,7 @@
     <config>
 		<inlinehelp button="show"/>
 	</config>
-    
+
     <fieldset addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field">
         <field
 			name="id"
@@ -13,7 +13,7 @@
 			class="readonly"
 			readonly="true"
 		/>
-        
+
         <field
 			name="alias"
 			type="text"
@@ -21,7 +21,7 @@
 			description="JFIELD_ALIAS_DESC"
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 		/>
-        
+
         <field
 			name="published"
 			type="list"
@@ -36,17 +36,6 @@
 			<option value="-2">JTRASHED</option>
 		</field>
 
-		<field
-			name="featured"
-			type="radio"
-			layout="joomla.form.field.radio.switcher"
-			label="JFEATURED"
-			default="0"
-			>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		
         <field
 			name="title"
 			type="text"
@@ -56,24 +45,7 @@
 			default=""
 			required="true"
         />
-        
-        <field
-			name="note"
-			type="text"
-			label="COM_DNBOOKING_FIELD_NOTE_LABEL"
-			maxlength="255"
-		/>
-        
-		<field
-			name="catid"
-			type="categoryedit"
-			label="JCATEGORY"
-			extension="com_dnbooking"
-			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
-			required="true"
-			default=""
-		/>
-        
+
         <field
 			name="created_by"
 			type="user"
@@ -111,7 +83,7 @@
 			validate="UserId"
 		/>
     </fieldset>
-    
+
     <fieldset name="reservationfieldset">
         <field
             name="content"
@@ -123,38 +95,95 @@
         />
 
         <field
-            name="reservationfield1"
+            name="reservation_price"
             type="text"
-            label="COM_DNBOOKING_FIELD_RESERVATIONFIELD1_LABEL"
-            description="COM_DNBOOKING_FIELD_RESERVATIONFIELD1_DESC"
-            class="input-xxlarge"
+            label="COM_DNBOOKING_FIELD_RESERVATION_PRICE_LABEL"
+            description="COM_DNBOOKING_FIELD_RESERVATION_PRICE_DESC"
             default=""
             required="true"
         />
 
-        <field
-            name="reservationfield2"
-            type="radio"
-            label="COM_DNBOOKING_FIELD_RESERVATIONFIELD2_LABEL"
-            layout="joomla.form.field.radio.switcher"
-            validate="options"
-        >
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
+		<field
+			name="reservation_date"
+			type="calendar"
+			label="COM_DNBOOKING_FIELD_RESERVATION_DATE_LABEL"
+			translateformat="true"
+			showtime="true"
+			filter="user_utc"
+			required="true"
+		/>
+
+		<field
+			name="reservation_status"
+			type="list"
+			label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
+			description="COM_DNBOOKING_FIELD_RESERVATION_STATUS_DESC"
+			default="1"
+			required="true"
+			validate="options"
+			>
+				<option value="0">COM_DNBOOKING_FIELD_RESERVATION_STATUS_OPEN</option>
+				<option value="1">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PENDING</option>
+				<option value="2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_ACCEPTED</option>
+				<option value="3">COM_DNBOOKING_FIELD_RESERVATION_STATUS_CANCELLED</option>
+				<option value="4">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PAID</option>
+		</field>
+
+		<field
+				name="customer_id"
+				type="sql"
+				default="0"
+				label="COM_DNBOOKING_FIELD_CUSTOMER_LABEL"
+				description="COM_DNBOOKING_FIELD_CUSTOMER_DESC"
+				required="true"
+				query="SELECT id, CONCAT(lastname, ', ', firstname, ' (' , id , ')') AS text FROM #__dnbooking_customers"
+				key_field="id"
+				value_field="text"
+				header="COM_DNBOOKING_FIELD_SELECT_CUSTOMER"
+		/>
+
+
+		<field
+			name="room_id"
+			type="sql"
+			label="COM_DNBOOKING_FIELD_ROOM_ID_LABEL"
+			description="COM_DNBOOKING_FIELD_ROOM_ID_DESC"
+			default="0"
+			required="true"
+			query="SELECT id, title FROM #__dnbooking_rooms"
+			key_field="id"
+			value_field="title"
+			header="COM_DNBOOKING_FIELD_SELECT_ROOM"
+
+		/>
+
+		<field
+			name="persons_count"
+			type="text"
+			label="COM_DNBOOKING_FIELD_PERSONS_COUNT_LABEL"
+			description="COM_DNBOOKING_FIELD_PERSONS_COUNT_DESC"
+			default="0"
+			required="true"
+		/>
 
         <field
-            name="reservationfield3"
-            type="list"
-            label="COM_DNBOOKING_FIELD_RESERVATIONFIELD3_LABEL"
-            default="0"
-            validate="options"
-        >
-            <option value="-1">COM_DNBOOKING_FIELD_RESERVATIONFIELD3_SELECT</option>
-            <option value="1">COM_DNBOOKING_FIELD_RESERVATIONFIELD3_VALUE_1</option>
-            <option value="2">COM_DNBOOKING_FIELD_RESERVATIONFIELD3_VALUE_2</option>
-            <option value="3">COM_DNBOOKING_FIELD_RESERVATIONFIELD3_VALUE_3</option>
-            <option value="4">COM_DNBOOKING_FIELD_RESERVATIONFIELD3_VALUE_4</option>
-        </field>
+            name="extras_ids"
+            type="sql"
+            label="COM_DNBOOKING_FIELD_EXTRAS_IDS_LABEL"
+            description="COM_DNBOOKING_FIELD_EXTRAS_IDS_DESC"
+			multiple="true"
+			layout="joomla.form.field.list-fancy-select"
+			query="SELECT id, title FROM #__dnbooking_extras"
+			key_field="id"
+			value_field="title"
+        />
+
+		<field
+			name="additional_info"
+			type="textarea"
+			label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
+			description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC"
+			default=""
+		/>
     </fieldset>
 </form>

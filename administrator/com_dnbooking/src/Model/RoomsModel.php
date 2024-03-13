@@ -19,11 +19,11 @@ use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Table;
 
 /**
- * Methods supporting a list of reservations records.
+ * Methods supporting a list of rooms records.
  *
  * @since  1.0.0
  */
-class ReservationsModel extends ListModel
+class RoomsModel extends ListModel
 {	
 	/**
 	 * Constructor.
@@ -61,7 +61,7 @@ class ReservationsModel extends ListModel
 	 *
 	 * @since   1.0.0
 	 */
-	public function getTable($type = 'Reservation', $prefix = 'Administrator', $config = array())
+	public function getTable($type = 'Room', $prefix = 'Administrator', $config = array())
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
@@ -103,8 +103,8 @@ class ReservationsModel extends ListModel
 
 		// Select the required fields from the table.
 		$query->select('a.*');
-		$query->from($db->quoteName('#__dnbooking_reservations', 'a'));
-
+		$query->from($db->quoteName('#__dnbooking_rooms', 'a'));
+		
         // Filter by published state
 		$published = (string) $this->getState('filter.published');
 
@@ -135,12 +135,12 @@ class ReservationsModel extends ListModel
 				$query->where('(' .
                         '(' . $db->quoteName('a.title') . ' LIKE :title)' . ' OR ' .
                         '(' . $db->quoteName('a.alias') . ' LIKE :alias)' . ' OR ' .
-                        '(' . $db->quoteName('a.content') . ' LIKE :content)' .
+                        '(' . $db->quoteName('a.description') . ' LIKE :description)' .
                     ')'
                 );
                 $query->bind(':title', $search);
 				$query->bind(':alias', $search);
-                $query->bind(':content', $search);
+                $query->bind(':description', $search);
 			}
 		}
 
@@ -163,14 +163,10 @@ class ReservationsModel extends ListModel
 
         $params = ComponentHelper::getParams('com_dnbooking');
 
-        if (!$params->get('workflow_enabled')) {
-            $form->removeField('stage', 'filter');
-        } else {
-            $ordering = $form->getField('fullordering', 'list');
+            //$ordering = $form->getField('fullordering', 'list');
 
-            $ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
-            $ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
-        }
+           // $ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
+            //$ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
 
         return $form;
     }

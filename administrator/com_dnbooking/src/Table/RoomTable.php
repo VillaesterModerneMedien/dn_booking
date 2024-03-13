@@ -22,11 +22,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 /**
- * Reservation Table class.
+ * Room Table class.
  *
  * @since  1.0.0
  */
-class ReservationTable extends Table implements VersionableTableInterface, TaggableTableInterface
+class RoomTable extends Table implements VersionableTableInterface, TaggableTableInterface
 {   
     use TaggableTableTrait;
     
@@ -56,9 +56,9 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 */
 	public function __construct(DatabaseDriver $db)
 	{
-		$this->typeAlias = 'com_dnbooking.reservation';
+		$this->typeAlias = 'com_dnbooking.room';
 
-		parent::__construct('#__dnbooking_reservations', 'id', $db);
+		parent::__construct('#__dnbooking_rooms', 'id', $db);
 	}
 
 	/**
@@ -88,6 +88,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
         // Generate a valid alias
 		$this->generateAlias();
 
+
         if (!$this->modified)
 		{
 			$this->modified = $this->created;
@@ -115,13 +116,13 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
         
         $db     = $this->getDbo();
 
+		$this->images = json_encode($this->images);
+
 		// Set created date if not set.
 		if (!(int) $this->created)
 		{
 			$this->created = $date;
 		}
-
-		$this->extras_ids = json_encode($this->extras_ids);
 
 		if ($this->id)
 		{
@@ -149,8 +150,14 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		}
         
         // Verify that the alias is unique
-		$table = Table::getInstance('ReservationTable', __NAMESPACE__ . '\\', array('dbo' => $db));
+		$table = Table::getInstance('RoomTable', __NAMESPACE__ . '\\', array('dbo' => $db));
+		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
 
+		{
+			$this->setError(Text::_('COM_DNBOOKING_ERROR_UNIQUE_ALIAS'));
+
+			return false;
+		}
         return parent::store($updateNulls);
 	}
     

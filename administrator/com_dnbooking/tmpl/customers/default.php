@@ -25,14 +25,11 @@ $userId    = $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo Route::_('index.php?option=com_dnbooking&view=reservations'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_dnbooking&view=customers'); ?>" method="post" name="adminForm" id="adminForm">
     <div class="row">
         <div class="col-md-12">
             <div id="j-main-container" class="j-main-container">
-                <?php
-                // Search tools bar
-                echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
-                ?>
+
                 <?php if (empty($this->items)) : ?>
                     <div class="alert alert-info">
 						<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
@@ -40,7 +37,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 					</div>
                 <?php else : ?>
 
-                    <table class="table" id="reservationsList">
+                    <table class="table" id="customersList">
                         <caption class="visually-hidden">
                             <?php echo Text::_('COM_DNBOOKING_TABLE_CAPTION'); ?>,
                             <span id="orderedBy"><?php echo Text::_('JGLOBAL_SORTED_BY'); ?> </span>,
@@ -52,7 +49,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                     <?php echo HTMLHelper::_('grid.checkall'); ?>
                                 </td>
                                 <th scope="col">
-                                    <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'), 'a.title', $listDirn, $listOrder); ?>
+                                    <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_CUSTOMER_TITLE'), 'a.title', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="w-1 text-center">
                                     <?php echo HTMLHelper::_('searchtools.sort', Text::_('JSTATUS'), 'a.published', $listDirn, $listOrder); ?>
@@ -64,11 +61,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </thead>
                         <tbody>
                         <?php foreach ($this->items as $i => $item) :
-                            $canCreate  = $user->authorise('core.create',     'com_dnbooking.reservation.' . $item->id);
-							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.reservation.' . $item->id);
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.reservation.' . $item->id) && $item->created_by == $userId;
-							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.reservation.' . $item->id);
- 
+                            $canCreate  = $user->authorise('core.create',     'com_dnbooking.customer.' . $item->id);
+							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.customer.' . $item->id);
+                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.customer.' . $item->id) && $item->created_by == $userId;
+							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.customer.' . $item->id);
+
+
                         ?>
                             <tr class="row<?php echo $i % 2; ?>">
                                 <td class="center">
@@ -77,7 +75,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                 <th scope="row" class="has-context">
                                     <div>
                                         <?php if ($canEdit) : ?>
-                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&view=reservation&layout=details&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
+                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&task=customer.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
                                             <?php echo $item->title; ?>
                                         </a>
                                         <?php else : ?>
@@ -93,10 +91,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                         <div class="small">
                                             <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                         </div>
+
                                     </div>
                                 </th>
                                 <td>
-                                    <?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'reservations.', $canChange, 'cb'); ?>
+                                    <?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'customers.', $canChange, 'cb'); ?>
                                 </td>
                                 <td class="d-none d-md-table-cell">
                                     <?php echo $item->id; ?>

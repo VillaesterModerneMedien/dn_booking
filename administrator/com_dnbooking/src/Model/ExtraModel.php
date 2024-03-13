@@ -28,11 +28,11 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 /**
- * Item Model for a Reservation.
+ * Item Model for a Extra.
  *
  * @since  1.0.0
  */
-class ReservationModel extends AdminModel
+class ExtraModel extends AdminModel
 {
 	use VersionableModelTrait;
     
@@ -42,7 +42,7 @@ class ReservationModel extends AdminModel
 	 * @var      string
 	 * @since    1.0.0
 	 */
-	public $typeAlias = 'com_dnbooking.reservation';
+	public $typeAlias = 'com_dnbooking.extra';
 
 	/**
 	 * @var    string  The prefix to use with controller messages.
@@ -56,7 +56,7 @@ class ReservationModel extends AdminModel
 	 * @var string
 	 * @since  4.0.0
 	 */
-	protected $formName = 'reservation';
+	protected $formName = 'extra';
 
 	/**
 	 * @var    string  The help screen base URL for the component.
@@ -91,7 +91,7 @@ class ReservationModel extends AdminModel
 	 * @since   1.0.0
 	 * @throws  \Exception
 	 */
-	public function getTable($type = 'Reservation', $prefix = 'Administrator', $config = array())
+	public function getTable($type = 'Extra', $prefix = 'Administrator', $config = array())
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
@@ -168,17 +168,18 @@ class ReservationModel extends AdminModel
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = Factory::getApplication()->getUserState('com_dnbooking.edit.reservation.data', array());
+		$data = Factory::getApplication()->getUserState('com_dnbooking.edit.extra.data', array());
 
 		if (empty($data))
 		{
 			$data = $this->getItem();
 		}
-		$this->preprocessData($this->typeAlias, $data, 'reservation');
+		$this->preprocessData($this->typeAlias, $data, 'extra');
 
 		return $data;
 	}
     
+
     /**
 	 * Prepare and sanitise the table prior to saving.
 	 *
@@ -206,15 +207,45 @@ class ReservationModel extends AdminModel
 			$table->modified_by = Factory::getApplication()->getIdentity()->id;
 		}
 	}
+    
     /**
-	 * Is the user allowed to create an on the fly category?
+	 * Method to test whether a record can be deleted.
 	 *
-	 * @return  boolean
+	 * @param   object  $record  A record object.
 	 *
-	 * @since   1.0.0
+	 * @return  boolean  True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
+	 * @since   1.6
 	 */
-	private function canCreateCategory()
+	protected function canDelete($record)
 	{
-		return Factory::getApplication()->getIdentity()->authorise('core.create', 'com_dnbooking');
+		if (empty($record->id) || $record->published != -2)
+		{
+			return false;
+		}
+        return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_dnbooking.extra.' . (int) $record->id);
+ 
 	}
+
+	/**
+	 * Method to test whether a record can have its state edited.
+	 *
+	 * @param   object  $record  A record object.
+	 *
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.
+	 *
+	 * @since   1.6
+	 */
+	protected function canEditState($record)
+	{
+		// Check against the category.
+		if (!empty($record->id))
+		{
+            return Factory::getApplication()->getIdentity()->authorise('core.edit.state', 'com_dnbooking.extra.' . (int) $record->id);
+		}
+
+		// Default to component settings if category not known.
+		return parent::canEditState($record);
+	}
+
 }
