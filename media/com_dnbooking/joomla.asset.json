@@ -17,6 +17,11 @@
       "attributes": {
         "type": "module"
       }
+    },
+    {
+      "name": "com_dnbooking.booking",
+      "type": "style",
+      "uri": "com_dnbooking/booking.css"
     }
   ]
 }

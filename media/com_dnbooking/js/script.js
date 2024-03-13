@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let xhr = new XMLHttpRequest();
 
         // Define the URL to the BookingController's getAvailableRooms method
-        // Replace 'your_url_here' with the actual URL
         let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.showRooms';
 
         // Open the request
@@ -28,18 +27,74 @@ document.addEventListener('DOMContentLoaded', function () {
         // Define what happens on successful data submission
         xhr.onload = function() {
             if (this.status === 200) {
-                // Output the result
-
                 document.getElementById('rooms').innerHTML = this.responseText;
+
+                // Create and dispatch the dnbookingLoadedRooms event
+                let event = new CustomEvent('dnbookingLoadedRooms');
+                document.dispatchEvent(event);
             }
         };
 
-        // Define what happens in case of error
+
         xhr.onerror = function() {
             console.log('Request failed');
         };
 
-        // Send the request with the date data
         xhr.send('date=' + encodeURIComponent(selectedDate));
     });
+
+
+
+    // Add event listener for custom event
+    document.addEventListener('dnbookingLoadedRooms', attachRoomListItemHandler);
+
+    // Callback function that is executed after loading the LI elements
+    function attachRoomListItemHandler() {
+        const roomListItems = document.querySelectorAll('li.roomlistRoom');
+        roomListItems.forEach(item => {
+            console.log('item', item);
+            item.addEventListener('click', handleRoomListItemClick);
+        });
+    }
+
+    // Callback function for the event listener
+    // Callback function for the event listener
+    function handleRoomListItemClick(e) {
+
+        const roomListItems = document.querySelectorAll('li.roomlistRoom');
+
+        roomListItems.forEach(item => {
+            item.classList.remove('activeRoom');
+        });
+
+        const liElement = e.target.closest('li.roomlistRoom');
+
+        if (liElement) {
+            liElement.classList.add('activeRoom');
+
+            // Create an AJAX request
+            let xhr = new XMLHttpRequest();
+
+            // Define the URL to the BookingController's setCustomerForm method
+            let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.setCustomerForm';
+
+            // Open the request
+            xhr.open('GET', url, true);
+
+            // Define what happens on successful data submission
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    // Output the result into the 'customer' div
+                    document.getElementById('customer').innerHTML = this.responseText;
+                }
+            };
+
+            xhr.onerror = function() {
+                console.log('Request failed');
+            };
+
+            // Send the request
+            xhr.send();
+        }
+    }
 });

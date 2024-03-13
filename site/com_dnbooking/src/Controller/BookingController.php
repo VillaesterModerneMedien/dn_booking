@@ -6,7 +6,7 @@
  * @copyright   Copyright (C) 2024 Mario Hewera. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
- 
+
 namespace DnbookingNamespace\Component\Dnbooking\Site\Controller;
 
 \defined('_JEXEC') or die;
@@ -74,6 +74,15 @@ class BookingController extends FormController
 		return parent::getModel($name, $prefix, ['ignore_request' => false]);
 	}
 
+
+    /**
+     * Method to get available rooms.
+     *
+     * @return  string  JSON encoded array of available rooms.
+     *
+     * @since   1.0.0
+     */
+
 	protected function _getAvailableRooms()
 	{
 		$date = $this->input->get('date', null, 'string');
@@ -102,6 +111,14 @@ class BookingController extends FormController
 		return json_encode($availableRooms);
 	}
 
+    /**
+     * Method to show rooms.
+     *
+     * @return  void
+     *
+     * @since   1.0.0
+     */
+
 	public function showRooms()
 	{
 		header('Content-Type: text/html');
@@ -114,6 +131,32 @@ class BookingController extends FormController
 
 		$app->close();
 	}
+
+    /**
+     * Method to set the customer form.
+     *
+     * This method sets the content type header to 'text/html', gets the available rooms,
+     * creates a new layout for the room list, renders the layout with the available rooms,
+     * and outputs the resulting HTML. Finally, it closes the application.
+     *
+     * @return  void
+     *
+     * @since   1.0.0
+     */
+
+    public function setCustomerForm()
+    {
+        header('Content-Type: text/html');
+        $rooms = $this->_getAvailableRooms();
+
+        $app = Factory::getApplication();
+        $layout = new FileLayout('booking.customer', JPATH_ROOT .'/components/com_dnbooking/layouts');
+        $html = $layout->render();
+        echo $html;
+
+        $app->close();
+    }
+
 	/**
 	 * Get the return URL.
 	 *

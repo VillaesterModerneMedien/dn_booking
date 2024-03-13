@@ -24,13 +24,13 @@ $counter=0;
 		<div class="uk-grid tm-grid-expand uk-child-width-1-1 uk-grid-margin">
 			<div class="uk-width-1-1" >
 				<div class="uk-margin">
-					<div class="uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
+					<ul class="uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
 
 					<?php
 					foreach ($rooms as $room):
 						$counter++;?>
-						<div class="<?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
-							<div class="el-item uk-panel uk-margin-remove-first-child" data-id="page#0-0-0-0-0">
+						<li data-id="<?= $room->id ?>" class="room roomlistRoom room-<?= $room->id ?> <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
+							<div class="el-item uk-panel uk-margin-remove-first-child">
 								<?php
 								$images = json_decode($room->images, true);
 								if(!empty($images))
@@ -57,12 +57,12 @@ $counter=0;
 								<div class="el-meta uk-text-meta uk-margin-top">meta</div>
 								<div class="el-content uk-panel uk-margin-top"><p><?= $room->description ?></p></div>
 							</div>
-						</div>
+						</li>
 					<?php
 					endforeach;
 					?>
 
-					</div>
+					</ul>
 				</div>
 
 
