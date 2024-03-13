@@ -118,6 +118,8 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 
 		$this->images = json_encode($this->images);
 
+		$this->title = $this->lastname . ', ' . $this->firstname;
+
 		// Set created date if not set.
 		if (!(int) $this->created)
 		{
@@ -152,7 +154,6 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
         // Verify that the alias is unique
 		$table = Table::getInstance('CustomerTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
-
 		{
 			$this->setError(Text::_('COM_DNBOOKING_ERROR_UNIQUE_ALIAS'));
 
@@ -169,10 +170,8 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 	 */
 	public function generateAlias()
 	{
-		if (empty($this->alias))
-		{
-			$this->alias = $this->title;
-		}
+
+		$this->alias = $this->lastname . '-' . $this->firstname . '-'. Factory::getDate()->format('Y-m-d-H-i-s');
 
 		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
 

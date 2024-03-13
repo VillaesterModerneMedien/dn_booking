@@ -18,18 +18,16 @@ use Joomla\CMS\Language\Text;
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.script');
 // $wa->useAsset('script', 'jquery');
-?>
-<div class="com-dnbooking-reservation view-reservation<?php echo $this->pageclass_sfx; ?>">
-<?php if ($this->params->get('show_page_heading') != 0) : ?>
-	<h1>
-		<?php echo $this->escape($this->params->get('page_heading')); ?>
-	</h1>
-<?php else: ?>
-    <h1>
-		<?php echo $this->escape($this->item->title); ?>
-	</h1>
-<?php endif; ?>
 
-<div class="reservation-content">
-    <?php echo $this->item->content; ?>
-</div>
+?>
+
+<form>
+	<div class="form-group">
+		<label for="date"><?php echo Text::_('COM_DNBOOKING_DATE'); ?></label>
+		<input type="date" class="form-control" id="date" name="date">
+	</div>
+    <div id="rooms">
+        leer
+    </div>
+	<button type="submit" class="btn btn-primary"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+</form>
