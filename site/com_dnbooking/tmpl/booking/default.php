@@ -9,16 +9,23 @@
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.script');
 $wa->useStyle('com_dnbooking.booking');
 // $wa->useAsset('script', 'jquery');
+
+$dateformat = 'Y-m-d';
+$params = ComponentHelper::getParams('com_dnbooking');
+$priceRegular = $params->get('packagepriceregular');
+$priceCustom = $params->get('packagepricecustom');
 
 ?>
 
@@ -28,14 +35,25 @@ $wa->useStyle('com_dnbooking.booking');
             <label for="date"><?php echo Text::_('COM_DNBOOKING_DATE_LABEL'); ?></label>
             <input type="date" class="form-control" id="date" name="date">
         </div>
+        <div class="form-group">
+            <label for="visitors"><?php echo Text::_('COM_DNBOOKING_VISITORS_LABEL'); ?></label>
+            <input type="number" class="form-control" id="visitors" name="visitors" value="0">
+        </div>
+        <div class="form-group">
+            <label for="birthdaychildren"><?php echo Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></label>
+            <input type="number" class="form-control" id="birthdaychildren" name="birthdaychildren" value="0">
+        </div>
     </section>
 
     <section id="rooms" class="rooms uk-section uk-section-default">
-        leer
+		<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
     </section>
 
     <section id="customer" class="customer uk-section  uk-section-default">
-        leer
+	    <?php echo LayoutHelper::render('booking.customer'); ?>
     </section>
+
+
+
 	<button type="submit" class="btn btn-primary"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
 </form>

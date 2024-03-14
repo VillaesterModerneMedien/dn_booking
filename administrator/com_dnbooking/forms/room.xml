@@ -119,7 +119,7 @@
                 type="number"
                 label="COM_DNBOOKING_FIELD_ROOM_PERSONSMIN_LABEL"
                 description="COM_DNBOOKING_FIELD_ROOM_PERSONSMIN_DESC"
-                default="0"
+                default="5"
 
             />
 
@@ -128,7 +128,7 @@
                 type="number"
                 label="COM_DNBOOKING_FIELD_ROOM_PERSONSMAX_LABEL"
                 description="COM_DNBOOKING_FIELD_ROOM_PERSONSMAX_DESC"
-                default="0"
+                default="5"
 
             />
 

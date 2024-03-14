@@ -47,8 +47,20 @@ class BookingModel extends BaseDatabaseModel
 
         $this->db->setQuery($query);
 
-        return $this->db->loadAssocList();
+        return $this->db->loadObjectList();
     }
+
+	public function updateRooms(): array
+	{
+		$query = $this->db->getQuery(true);
+
+		$query->select('id')
+			->from($this->db->quoteName('#__dnbooking_rooms'));
+
+		$this->db->setQuery($query);
+
+		return $this->db->loadAssocList();
+	}
 
 	/**
 	 * Method to get all reservations from the database.

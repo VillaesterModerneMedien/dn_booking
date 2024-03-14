@@ -17,6 +17,7 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Service\Provider\Console;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Utilities\ArrayHelper;
 
@@ -83,56 +84,42 @@ class BookingController extends FormController
      * @since   1.0.0
      */
 
-	protected function _getAvailableRooms()
+	public function getBlockedRooms()
 	{
+		$app = Factory::getApplication();
+
+		header('Content-Type: application/json; charset=utf-8');
+		header('Access-Control-Allow-Origin: *'); //Erlaube CORS nur für diese Domain
+		header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Erlaubte Methoden
+		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
+
 		$date = $this->input->get('date', null, 'string');
 		$model = $this->getModel();
-		$rooms = $model->getRooms();
+		$rooms = $model->updateRooms();
 		$reservations = $model->getReservations();
 
-		$availableRooms = [];
+		$blockedRooms = [];
 
 		foreach ($rooms as $room)
 		{
 			$room['available'] = true;
-
 			foreach ($reservations as $reservation)
 			{
 				$reservation['reservation_date'] = date('Y-m-d', strtotime($reservation['reservation_date']));
 				if ($reservation['room_id'] == $room['id'] && $reservation['reservation_date'] == $date)
 				{
-					$room['available'] = false;
+					$blockedRooms[] = $room['id'];
 					break;
 				}
 			}
-
-			$availableRooms[] = $room;
 		}
-		return json_encode($availableRooms);
-	}
-
-    /**
-     * Method to show rooms.
-     *
-     * @return  void
-     *
-     * @since   1.0.0
-     */
-
-	public function showRooms()
-	{
-		header('Content-Type: text/html');
-		$rooms = $this->_getAvailableRooms();
-
-		$app = Factory::getApplication();
-		$layout = new FileLayout('booking.roomlist', JPATH_ROOT .'/components/com_dnbooking/layouts');
-		$html = $layout->render(json_decode($rooms));
-		echo $html;
+		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
 		$app->close();
+
 	}
 
-    /**
+/**
      * Method to set the customer form.
      *
      * This method sets the content type header to 'text/html', gets the available rooms,

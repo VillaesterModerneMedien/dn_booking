@@ -7,6 +7,7 @@
  * @license     A "Slug" license name e.g. GPL2
  */
 
+use Joomla\CMS\Language\Text;
 use function YOOtheme\app;
 use YOOtheme\Config;
 use YOOtheme\View;
@@ -24,12 +25,12 @@ $counter=0;
 		<div class="uk-grid tm-grid-expand uk-child-width-1-1 uk-grid-margin">
 			<div class="uk-width-1-1" >
 				<div class="uk-margin">
-					<ul class="uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
+					<ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
 
 					<?php
 					foreach ($rooms as $room):
 						$counter++;?>
-						<li data-id="<?= $room->id ?>" class="room roomlistRoom room-<?= $room->id ?> <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
+						<li data-room-id="<?= $room->id ?>" data-room-available="1" class="room <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
 							<div class="el-item uk-panel uk-margin-remove-first-child">
 								<?php
 								$images = json_decode($room->images, true);
@@ -53,9 +54,16 @@ $counter=0;
 									echo $image();
 								}
 								?>
-								<h3 class="el-title uk-margin-top uk-margin-remove-bottom"> <?= $room->title ?> </h3>
-								<div class="el-meta uk-text-meta uk-margin-top">meta</div>
-								<div class="el-content uk-panel uk-margin-top"><p><?= $room->description ?></p></div>
+								<h3 class="el-title uk-margin-top uk-margin-remove-bottom">
+                                    <?= $room->title ?>
+                                </h3>
+								<div class="el-meta uk-text-meta uk-margin-top">
+                                    <?= sprintf(Text::_('COM_DNBOOKING_ROOMSGRID_PERSONS'), $room->personsmin, $room->personsmax);?>
+                                </div>
+								<div class="el-content uk-panel uk-margin-top">
+                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICEREGULAR') . $room->priceregular ?></p>
+                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICECUSTOM') . $room->pricecustom ?></p>
+                                </div>
 							</div>
 						</li>
 					<?php
