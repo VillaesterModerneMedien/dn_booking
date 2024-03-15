@@ -9,6 +9,12 @@
                type="note"
                label="COM_DNBOOKING_CONFIG_SETTINGS_NOTE"
         />
+        <field
+                name="returnurl"
+                type="menuitem"
+                label="COM_DNBOOKING_CONFIG_RETURNURL_LABEL"
+                description="COM_DNBOOKING_CONFIG_RETURNURL_DESC"
+        />
     </fieldset>
     <fieldset
             name="pricesettings"

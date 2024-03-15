@@ -30,7 +30,8 @@ $counter=0;
 					<?php
 					foreach ($rooms as $room):
 						$counter++;?>
-						<li data-room-id="<?= $room->id ?>" data-room-available="1" class="room <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
+						<li data-room-id="<?= $room->id ?>" class="room <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
+                            <input type="radio" name="room" value="<?= $room->id ?>" id="room<?= $room->id ?>" hidden/>
 							<div class="el-item uk-panel uk-margin-remove-first-child">
 								<?php
 								$images = json_decode($room->images, true);

@@ -1,4 +1,5 @@
-.roomlistRoom{
+.room{
+    transition: .5s opacity ease-in-out;
     .el-item{
         border: 1px solid rgba(0,0,0,0.1);
         border-radius: 5px;
@@ -7,7 +8,7 @@
         transition: all 0.3s ease-in-out;
         padding: 10px;
 
-        &:hover{
+        &:not(.room.disabled .el-item):hover{
             box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0, 0.24);
         }
 
@@ -21,6 +22,9 @@
             font-size: 14px;
             margin-bottom: 10px;
         }
+    }
+    &.disabled{
+        opacity:0.3;
     }
 }
 

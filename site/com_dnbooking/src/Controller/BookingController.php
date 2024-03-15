@@ -12,6 +12,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Controller;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -19,6 +20,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Service\Provider\Console;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Plugin\Fields\Text\Extension\Text;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -44,8 +46,8 @@ class BookingController extends FormController
 	 * Constructor.
 	 *
 	 * @param   array                $config   An optional associative array of configuration settings.
-	 * Recognized key values include 'name', 'default_task', 'model_path', and
-	 * 'view_path' (this list is not meant to be comprehensive).
+	 *                                         Recognized key values include 'name', 'default_task', 'model_path', and
+	 *                                         'view_path' (this list is not meant to be comprehensive).
 	 * @param   MVCFactoryInterface  $factory  The factory.
 	 * @param   CMSApplication       $app      The JApplication for the dispatcher
 	 * @param   \JInput              $input    Input
@@ -76,13 +78,13 @@ class BookingController extends FormController
 	}
 
 
-    /**
-     * Method to get available rooms.
-     *
-     * @return  string  JSON encoded array of available rooms.
-     *
-     * @since   1.0.0
-     */
+	/**
+	 * Method to get available rooms.
+	 *
+	 * @return  string  JSON encoded array of available rooms.
+	 *
+	 * @since   1.0.0
+	 */
 
 	public function getBlockedRooms()
 	{
@@ -93,16 +95,15 @@ class BookingController extends FormController
 		header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Erlaubte Methoden
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
-		$date = $this->input->get('date', null, 'string');
-		$model = $this->getModel();
-		$rooms = $model->updateRooms();
+		$date         = $this->input->get('date', null, 'string');
+		$personscount = $this->input->get('visitors', null, 'int');
+		$model        = $this->getModel();
+		$rooms        = $model->updateRooms();
 		$reservations = $model->getReservations();
 
 		$blockedRooms = [];
-
 		foreach ($rooms as $room)
 		{
-			$room['available'] = true;
 			foreach ($reservations as $reservation)
 			{
 				$reservation['reservation_date'] = date('Y-m-d', strtotime($reservation['reservation_date']));
@@ -112,6 +113,10 @@ class BookingController extends FormController
 					break;
 				}
 			}
+			if ($room['personsmax'] < $personscount)
+			{
+				$blockedRooms[] = $room['id'];
+			}
 		}
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
@@ -119,49 +124,56 @@ class BookingController extends FormController
 
 	}
 
-/**
-     * Method to set the customer form.
-     *
-     * This method sets the content type header to 'text/html', gets the available rooms,
-     * creates a new layout for the room list, renders the layout with the available rooms,
-     * and outputs the resulting HTML. Finally, it closes the application.
-     *
-     * @return  void
-     *
-     * @since   1.0.0
-     */
+	public function getOrderHTML(){
+		header('Content-Type: text/html');
 
-    public function setCustomerForm()
-    {
-        header('Content-Type: text/html');
-        $rooms = $this->_getAvailableRooms();
+		$formFields = $this->input->post->getArray();
+		$orderData = [];
 
-        $app = Factory::getApplication();
-        $layout = new FileLayout('booking.customer', JPATH_ROOT .'/components/com_dnbooking/layouts');
-        $html = $layout->render();
-        echo $html;
+		$app = Factory::getApplication();
+		$input = $app->input;
+		$model = $this->getModel();
+		$layout = new FileLayout('booking.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
 
-        $app->close();
-    }
-
-	/**
-	 * Get the return URL.
-	 *
-	 * If a "return" variable has been passed in the request
-	 *
-	 * @return  string    The return URL.
-	 *
-	 * @since   1.0.0
-	 */
-	protected function getReturnPage()
-	{
-		$return = $this->input->get('return', null, 'base64');
-
-		if (empty($return) || !Uri::isInternal(base64_decode($return)))
-		{
-			return Uri::base();
+		foreach ($formFields as $key => $value){
+			if($key == "room"){
+				$orderData[$key] = $model->getRoom($value);
+			}
+			else {
+				$orderData[$key] = $value;
+			}
 		}
 
-		return base64_decode($return);
+		$html = $layout->render($orderData);
+
+		echo $html;
+
+		$app->close();
+	}
+
+
+	public function sendForm()
+	{
+		$model = $this->getModel();
+		$data  = $this->input->post->getArray();
+
+		if ($model->saveReservation($data))
+		{
+			$params = ComponentHelper::getParams('com_dnbooking');
+			$menuItem    = $params->get('returnurl');
+			if(!isset($menuItem)){
+				$this->setRedirect("/");
+			}
+			else{
+				$this->setRedirect(Route::_("index.php?Itemid=".$menuItem, false));
+			}
+		}
+		else
+		{
+			Factory::getApplication()->enqueueMessage(
+				Text::_('COM_DNBOOKING_FORMSUBMIT_ERROR'),
+				'error'
+			);
+		}
 	}
 }
