@@ -48,6 +48,10 @@ $priceCustom = $params->get('packagepricecustom');
 		<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
     </section>
 
+    <section id="rooms" class="rooms uk-section uk-section-default">
+		<?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+    </section>
+
     <section id="customer" class="customer uk-section  uk-section-default">
 	    <?php echo LayoutHelper::render('booking.customer'); ?>
     </section>
