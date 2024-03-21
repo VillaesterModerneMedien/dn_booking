@@ -1,9 +1,7 @@
-body {
-  margin: 50px;
-}
-
 .jumbotron {
-  background: #fff;
+  background: #333;
+  color: white;
+  padding: 15px;
 }
 
 .fa {
@@ -19,10 +17,10 @@ th {
 }
 
 td {
-  width: 120px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   text-align: center;
-  line-height: 100px !important;
+  line-height: 60px !important;
   font-size: 1.5em;
 }
 
@@ -35,14 +33,32 @@ td,
   background: #eee;
 }
 
+.tableCalendar {
+  width: 100% !important;
+}
+
+.day {
+  cursor: pointer;
+}
 .day.closed {
   background: red;
 }
 .day .icons {
   display: none;
 }
+.day.hover {
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 0.2rem 0.2rem #000;
+}
 .day.hover .icons {
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.day .dayInner {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 95% 5%;
 }
 
 /*# sourceMappingURL=admin-calendar.css.map */

@@ -31,8 +31,8 @@ $userId    = $user->get('id');
                     <h1 class="text-center"><a id="left" href="#"><i class="fa fa-chevron-left"> </i></a><span>&nbsp;</span><span id="month"> </span><span>&nbsp;</span><span id="year"> </span><span>&nbsp;</span><a id="right" href="#"><i class="fa fa-chevron-right"> </i></a></h1>
                 </div>
                 <div class="row">
-                    <div class="col-sm-10 col-sm-offset-1">
-                        <table class="table"></table>
+                    <div class="col-12">
+                        <table class="table tableCalendar"></table>
                     </div>
                 </div>
             </div>
