@@ -1,0 +1,42 @@
+body {
+    margin: 50px;
+}
+.jumbotron {
+    background: #fff;
+}
+.fa {
+    font-size: 0.5em;
+}
+table {
+    width: 100%;
+}
+th {
+    text-align: center;
+}
+td {
+    width: 120px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px !important;
+    font-size: 1.5em;
+}
+td,
+#year {
+    font-family: monospace;
+}
+.hover {
+    background: #eee;
+}
+.day{
+    &.closed{
+        background: red;
+    }
+    .icons{
+        display: none;
+    }
+    &.hover{
+        .icons{
+            display: flex;
+        }
+    }
+}

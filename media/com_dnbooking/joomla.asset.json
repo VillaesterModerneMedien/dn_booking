@@ -27,6 +27,11 @@
       "name": "com_dnbooking.booking",
       "type": "style",
       "uri": "com_dnbooking/booking.css"
+    },
+    {
+      "name": "com_dnbooking.admin-calendar",
+      "type": "style",
+      "uri": "com_dnbooking/admin-calendar.css"
     }
   ]
 }
