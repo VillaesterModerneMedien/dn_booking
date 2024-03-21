@@ -5,20 +5,12 @@ document.addEventListener('DOMContentLoaded', function () {
         '2024-03-01': 1,
         '2024-03-15': 2,
         '2024-03-20': 3,
-        // Weitere Daten
     };
-
-    function formatDate(d) {
-        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-    }
-
-    function monthDays(d) {
-        return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
-    }
 
     function sendTaskRequest(task, dayId, date) {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/path/to/joomla/task/' + task); // Ändern Sie dies in Ihre Joomla-Task-URL
+        xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.' + task); // Ändern Sie dies in Ihre Joomla-Task-URL
+
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -29,6 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         };
         xhr.send('id=' + dayId + '&date=' + date); // Senden Sie die notwendigen Daten
+    }
+
+    //TODO JOOMLA PARAMS, siehe Slack
+
+    function formatDate(d) {
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    function monthDays(d) {
+        return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
     }
 
     function generateCalendar(d) {
@@ -54,45 +56,56 @@ document.addEventListener('DOMContentLoaded', function () {
         var start = new Date(d.getFullYear(), d.getMonth()).getDay();
         var cal = [];
         var day = 1;
-        for (var i = 0; i <= 6; i++) {
+
+        // Fügen Sie eine Zeile für die Wochentage hinzu
+        cal.push('<tr>');
+        for (var j = 0; j < 7; j++) {
+            cal[0] += '<td><div class="dayInner">' + details.weekDays[j] + '</div></td>';
+        }
+        cal[0] += '</tr>';
+
+        // Tage des Monats
+        for (var i = 1; i <= 6; i++) { // Beginnen mit der zweiten Reihe
             cal.push(['<tr>']);
             for (var j = 0; j < 7; j++) {
-                var date = new Date(d.getFullYear(), d.getMonth(), day - start + 1);
-                var dateString = formatDate(date);
-                var dayId = dayIds[dateString]; // Nehmen Sie an, dass dayIds ein externes Objekt ist
-                var classes = 'day' + (dayId ? ' closed' : '');
-                var icons = dayId ? '<div class="icons"><span class="icon-edit editCalendar" data-id="' + dayId + '" aria-hidden="true"></span><span class="icon-trash trashCalendar" data-id="' + dayId + '" aria-hidden="true"><div></div>' : '<div class="icons"><i class="add-icon addCalendar">➕</i></div>';
-                if (i === 0) {
-                    cal[i].push('<td><div class="dayInner">' + details.weekDays[j] + '</div></td>');
-                } else if (day > details.totalDays || j < start && i === 1) {
+                if ((i === 1 && j < start) || day > details.totalDays) {
                     cal[i].push('<td><div class="dayInner">&nbsp;</div></td>');
                 } else {
-                    cal[i].push(`<td class="${classes}" data-date="${dateString}" ${dayId ? 'data-id="' + dayId + '"' : ''}><div class="dayInner">${day++}${icons}</div></td>`);
+                    var date = new Date(d.getFullYear(), d.getMonth(), day);
+                    var dateString = formatDate(date);
+                    var dayId = dayIds[dateString];
+
+                    var classes = 'day' + (dayId ? ' closed' : '');
+                    var icons = dayId ? '<div class="icons"><span class="icon-edit editOpeningHour" data-id="' + dayId + '" aria-hidden="true"></span><span class="icon-trash trashOpeningHour" data-id="' + dayId + '" data-day="' + details.weekDays[j] + '" aria-hidden="true"></span></div>' : '<div class="icons"><span class="icon-add addOpeningHour" aria-hidden="true"></span></div>';
+
+                    cal[i].push(`<td class="${classes}" data-date="${dateString}" data-day="${details.weekDays[j]}" ${dayId ? 'data-id="' + dayId + '"' : ''}><div
+class="dayInner">${day++}${icons}</div></td>`);
                 }
             }
             cal[i].push('</tr>');
         }
         cal = cal.reduce(function (a, b) { return a.concat(b); }, []).join('');
-        document.querySelector('table').innerHTML += cal;
+        document.querySelector('table').innerHTML = cal;
         document.getElementById('month').textContent = details.months[d.getMonth()];
         document.getElementById('year').textContent = d.getFullYear();
 
-        document.querySelectorAll('.day').forEach(function(day) {
-            day.addEventListener('mouseover', function() {
+        // Ereignishandler für Tage im Kalender
+        document.querySelectorAll('.day').forEach(function(dayElement) {
+            dayElement.addEventListener('mouseover', function() {
                 this.classList.add('hover');
             });
-            day.addEventListener('mouseout', function() {
+            dayElement.addEventListener('mouseout', function() {
                 this.classList.remove('hover');
             });
-            day.addEventListener('click', function(event) {
+            dayElement.addEventListener('click', function(event) {
                 var targetClass = event.target.className;
                 var date = this.getAttribute('data-date');
                 var dayId = this.getAttribute('data-id');
-                if (targetClass.includes('edit-icon')) {
+                if (targetClass.includes('editOpeningHour')) {
                     sendTaskRequest('edit', dayId, date);
-                } else if (targetClass.includes('delete-icon')) {
+                } else if (targetClass.includes('trashOpeningHour')) {
                     sendTaskRequest('delete', dayId, date);
-                } else if (targetClass.includes('add-icon')) {
+                } else if (targetClass.includes('addOpeningHour')) {
                     sendTaskRequest('add', null, date);
                 }
             });
