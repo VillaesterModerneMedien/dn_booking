@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function () {
         '2024-03-20': 3,
     };
 
+    console.log('testParams', testParams);
+
     function sendTaskRequest(task, dayId, date) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.' + task); // Ändern Sie dies in Ihre Joomla-Task-URL

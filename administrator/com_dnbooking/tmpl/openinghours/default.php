@@ -16,8 +16,25 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+
+//TODO Parameter aus Komponente -> Tage geschlossen usw
+$testParams = [
+    'test1' => 'test1',
+    'test2' => 'test2',
+    'test3' => 'test3'
+];
+
+//TODO Translations auch hier übergeben
+$translations = [
+    'test1' => 'test1',
+    'test2' => 'test2',
+    'test3' => 'test3'
+];
+
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.calendar');
+$wa->addInlineScript('const testParams = ' .  json_encode($testParams), ['position' => 'before'], [], ['com_dnbooking.calendar']);
+$wa->addInlineScript('const calendarTranslations = ' .  json_encode($translations), ['position' => 'before'], [], ['com_dnbooking.calendar']);
 $wa->useStyle('com_dnbooking.admin-calendar');
 
 $user      = Factory::getApplication()->getIdentity();
