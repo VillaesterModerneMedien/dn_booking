@@ -34,7 +34,7 @@ Factory::getApplication()
                     <p class="uk-text-meta uk-margin-remove-top">
                         <?= $extra["description"] ?>
                     </p>
-                    <p><?= Text::_('COM_DNBOOKING_NUTTENKIND'); ?>: <?= $extra["price"] ?></p>
+                    <p><?= Text::_('COM_DNBOOKING_EXTRAS_PRICE'); ?>: <?= $extra["price"] ?></p>
                 </div>
                 <div class="uk-width-auto">
                     <input class="uk-checkbox" type="checkbox" id="extra-<?= $extra["id"] ?>" style="display: none;">

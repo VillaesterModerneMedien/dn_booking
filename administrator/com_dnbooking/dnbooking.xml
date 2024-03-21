@@ -92,6 +92,9 @@
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=extra.add</menu-quicktask>
 				</params>
             </menu>
+			<menu view="openinghours">
+				COM_DNBOOKING_SUBMENU_OPENING_HOURS
+			</menu>
 			<menu link="option=com_config&amp;view=component&amp;component=com_dnbooking">
 				COM_DNBOOKING_SUBMENU_SETTINGS
 			</menu>
