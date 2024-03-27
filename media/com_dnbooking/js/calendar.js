@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     var currentDate = new Date();
 
+
+
     var dayIds = {
         '2024-03-01': 1,
         '2024-03-15': 2,
@@ -12,8 +14,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function sendTaskRequest(task, dayId, date) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.' + task); // Ändern Sie dies in Ihre Joomla-Task-URL
+        var token = Joomla.getOptions('csrf.token', '');
+
+        console.log('token', token);
 
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        if (token) {
+            xhr.setRequestHeader('X-CSRF-Token', token);
+        }
+
         xhr.onload = function() {
             if (xhr.status === 200) {
                 alert('Task erfolgreich: ' + task + ' für ' + date);
@@ -22,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Fehler beim Ausführen des Tasks: ' + task);
             }
         };
-        xhr.send('id=' + dayId + '&date=' + date); // Senden Sie die notwendigen Daten
+        xhr.send('dayID=' + dayId + '&date=' + date  + '&token=' + token); // Senden Sie die notwendigen Daten
     }
 
     //TODO JOOMLA PARAMS, siehe Slack

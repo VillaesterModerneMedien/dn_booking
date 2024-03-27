@@ -15,27 +15,70 @@
                 label="COM_DNBOOKING_CONFIG_RETURNURL_LABEL"
                 description="COM_DNBOOKING_CONFIG_RETURNURL_DESC"
         />
+
+        <field name="com_dnbooking_headline2"
+               type="note"
+               label="COM_DNBOOKING_CONFIG_SETTINGS_OPENING_TIMES_LABEL"
+        />
+
+
+        <field name="closed_days" type="subform"
+               label="COM_DNBOOKING_CONFIG_CLOSED_DAYS_LABEL"
+               description="COM_DNBOOKING_CONFIG_CLOSED_DAYS_DESC"
+               multiple="true"
+               layout="joomla.form.field.subform.repeatable-table">
+            <form>
+                <field name="tag" type="list" default="" label="COM_DNBOOKING_CONFIG_CLOSED_DAY_LABEL" description="">
+                    <option value="montag">COM_DNBOOKING_CONFIG_DAY_MONDAY</option>
+                    <option value="dienstag">COM_DNBOOKING_CONFIG_DAY_TUESDAY</option>
+                    <option value="mittwoch">COM_DNBOOKING_CONFIG_DAY_WEDNESDAY</option>
+                    <option value="donnerstag">COM_DNBOOKING_CONFIG_DAY_THURSDAY</option>
+                    <option value="freitag">COM_DNBOOKING_CONFIG_DAY_FRIDAY</option>
+                    <option value="samstag">COM_DNBOOKING_CONFIG_DAY_SATURDAY</option>
+                    <option value="sonntag">COM_DNBOOKING_CONFIG_DAY_SUNDAY</option>
+                </field>
+            </form>
+        </field>
+
+        <field name="closed_times" type="subform"
+               label="COM_DNBOOKING_CONFIG_CLOSED_TIMES_LABEL"
+               description="COM_DNBOOKING_CONFIG_CLOSED_TIMES_DESC"
+               multiple="true"
+               layout="joomla.form.field.subform.repeatable-table">
+            <form>
+                <field name="uhrzeit" type="time"
+                       label="COM_DNBOOKING_CONFIG_DAYTIME_LABEL"
+                       description="COM_DNBOOKING_CONFIG_DAYTIME_DESC"
+                       format="%H:%M"
+                       showtime="true"
+                       filter="server_utc" />
+
+                <field name="farbe" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
+
+            </form>
+        </field>
+
     </fieldset>
     <fieldset
             name="pricesettings"
             label="COM_DNBOOKING_CONFIG_PRICESETTINGS_LABEL"
     >
         <field
-				name="packagepriceregular"
-				type="text"
-				label="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICEREGULAR_LABEL"
-				description="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICEREGULAR_DESC"
-				size="10"
-				default="0"
-		/>
+                name="packagepriceregular"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICEREGULAR_LABEL"
+                description="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICEREGULAR_DESC"
+                size="10"
+                default="0"
+        />
         <field
-				name="packagepricecustom"
-				type="text"
-				label="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICECUSTOM_LABEL"
-				description="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICECUSTOM_DESC"
-				size="10"
-				default="0"
-		/>
+                name="packagepricecustom"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICECUSTOM_LABEL"
+                description="COM_DNBOOKING_CONFIG_PRICESETTINGS_PACKAGEPRICECUSTOM_DESC"
+                size="10"
+                default="0"
+        />
     </fieldset>
     <fieldset
             name="permissions"

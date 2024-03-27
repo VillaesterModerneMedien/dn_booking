@@ -24,7 +24,7 @@ use Joomla\CMS\Table\Table;
  * @since  1.0.0
  */
 class OpeninghoursModel extends ListModel
-{	
+{
 	/**
 	 * Constructor.
 	 *
@@ -37,7 +37,50 @@ class OpeninghoursModel extends ListModel
 	{
 		parent::__construct($config);
 	}
-	
+
+
+
+    public function updateDay($data)
+    {
+
+        $data['dayID'] = $data['dayID'];
+
+
+        echo '<pre>';
+        var_dump($data);die;
+        echo '</pre>';
+        $table = $this->getTable();
+        $table->load($data['dayID']);
+        $table->bind($data);
+        return $table->store();
+    }
+
+
+    public function addDay($data)
+    {
+        $table = $this->getTable();
+
+        $dayToAdd = [
+            'day' => $data['date'],
+            'opening_time' => '09:00:00',
+            'closing_time' => '18:00:00',
+        ];
+
+        if (!$table->bind($dayToAdd)) {
+            // Fehlerbehandlung
+            JError::raiseWarning(500, $table->getError());
+            return false;
+        }
+
+        if (!$table->store()) {
+            // Fehlerbehandlung
+            JError::raiseWarning(500, $table->getError());
+            return false;
+        }
+
+        return true;
+    }
+
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.

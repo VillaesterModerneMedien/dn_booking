@@ -10,6 +10,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Application\CMSApplication;
@@ -25,7 +26,7 @@ use Joomla\CMS\Router\Route;
  * @since  1.0.0
  */
 class OpeninghoursController extends AdminController
-{	
+{
 	/**
 	 * The prefix to use with controller messages.
 	 *
@@ -33,7 +34,7 @@ class OpeninghoursController extends AdminController
 	 * @since  1.6
 	 */
 	protected $text_prefix = 'COM_DNBOOKING_OPENINGHOURS';
-	
+
 	/**
 	 * Proxy for getModel.
 	 *
@@ -45,11 +46,53 @@ class OpeninghoursController extends AdminController
 	 *
 	 * @since   1.0.0
 	 */
-	public function getModel($name = 'Openinghour', $prefix = 'Administrator', $config = array('ignore_request' => true))
+	public function getModel($name = 'Openinghours', $prefix = 'Administrator', $config = array('ignore_request' => true))
 	{
 		return parent::getModel($name, $prefix, $config);
 	}
-    
+
+	public function edit()
+	{
+
+        $app = Factory::getApplication();
+        $input = $app->input;
+
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+        $dayID =  $input->get('dayID', 0, 'INT');
+
+		if (empty($dayID))
+		{
+			JError::raiseWarning(500, Text::_('COM_DNBOOKING_NO_DAY_SELECTED'));
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+            $model->updateDay($input->post->getArray());
+		}
+
+		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
+	}
+
+
+	public function add()
+	{
+
+        $app = Factory::getApplication();
+        $input = $app->input;
+
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+        // Get the model.
+        $model = $this->getModel();
+        $model->addDay($input->post->getArray());
+
+
+		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
+	}
+
+
 	/**
 	 * Method to delete a record.
 	 *
@@ -61,7 +104,7 @@ class OpeninghoursController extends AdminController
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 
 		$ids    = $this->input->get('cid', array(), 'array');
-		
+
 		if (empty($ids))
 		{
 			JError::raiseWarning(500, Text::_('COM_DNBOOKING_NO_ITEM_SELECTED'));
@@ -70,7 +113,7 @@ class OpeninghoursController extends AdminController
 		{
 			// Get the model.
 			$model = $this->getModel();
-			
+
 			foreach ($ids as $id)
 			{
 				$model->delete($id);
