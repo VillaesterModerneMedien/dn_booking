@@ -53,7 +53,6 @@ class OpeninghoursModel extends ListModel
 	}
     public function updateDay($data)
     {
-
         $data['dayID'] = $data['dayID'];
 		$table = $this->getTable();
         $table->load($data['dayID']);
