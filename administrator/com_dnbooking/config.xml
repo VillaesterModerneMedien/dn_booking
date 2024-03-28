@@ -4,6 +4,7 @@
     <fieldset
             name="component"
             label="COM_DNBOOKING_CONFIG_SETTINGS_LABEL"
+
     >
         <field name="com_dnbooking_note"
                type="note"
@@ -16,45 +17,79 @@
                 description="COM_DNBOOKING_CONFIG_RETURNURL_DESC"
         />
 
-        <field name="com_dnbooking_headline2"
-               type="note"
-               label="COM_DNBOOKING_CONFIG_SETTINGS_OPENING_TIMES_LABEL"
-        />
 
 
-        <field name="closed_days" type="subform"
-               label="COM_DNBOOKING_CONFIG_CLOSED_DAYS_LABEL"
-               description="COM_DNBOOKING_CONFIG_CLOSED_DAYS_DESC"
+    </fieldset>
+    <fieldset
+        name="openighourssetting"
+        label="COM_DNBOOKING_CONFIG_OPENINGHOURSSETTINGS_LABEL"
+        addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\OpeningHours"
+        >
+        <field name="closed_color" type="color" default="" label="COM_DNBOOKING_CONFIG_CLOSED_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_CLOSEDCOLOR_DESC"/>
+
+        <field name="regular_opening_hours" type="subform"
+               label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOURS_LABEL"
+               description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGTHOURS_DESC"
                multiple="true"
                layout="joomla.form.field.subform.repeatable-table">
             <form>
-                <field name="tag" type="list" default="" label="COM_DNBOOKING_CONFIG_CLOSED_DAY_LABEL" description="">
-                    <option value="montag">COM_DNBOOKING_CONFIG_DAY_MONDAY</option>
-                    <option value="dienstag">COM_DNBOOKING_CONFIG_DAY_TUESDAY</option>
-                    <option value="mittwoch">COM_DNBOOKING_CONFIG_DAY_WEDNESDAY</option>
-                    <option value="donnerstag">COM_DNBOOKING_CONFIG_DAY_THURSDAY</option>
-                    <option value="freitag">COM_DNBOOKING_CONFIG_DAY_FRIDAY</option>
-                    <option value="samstag">COM_DNBOOKING_CONFIG_DAY_SATURDAY</option>
-                    <option value="sonntag">COM_DNBOOKING_CONFIG_DAY_SUNDAY</option>
-                </field>
-            </form>
-        </field>
-
-        <field name="closed_times" type="subform"
-               label="COM_DNBOOKING_CONFIG_CLOSED_TIMES_LABEL"
-               description="COM_DNBOOKING_CONFIG_CLOSED_TIMES_DESC"
-               multiple="true"
-               layout="joomla.form.field.subform.repeatable-table">
-            <form>
-                <field name="uhrzeit" type="time"
-                       label="COM_DNBOOKING_CONFIG_DAYTIME_LABEL"
-                       description="COM_DNBOOKING_CONFIG_DAYTIME_DESC"
+                <field name="starttime" type="time"
+                       label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_START_LABEL"
+                       description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_START_DESC"
                        format="%H:%M"
                        showtime="true"
                        filter="server_utc" />
-
-                <field name="farbe" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
-
+                <field name="endtime" type="time"
+                       label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_LABEL"
+                       description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_DESC"
+                       format="%H:%M"
+                       showtime="true"
+                       filter="server_utc" />
+                <field name="openinghour_color" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
+            </form>
+        </field>
+        <field name="weekly_opening_hours" type="subform"
+               label="COM_DNBOOKING_CONFIG_WEEKLY_OPENINGHOURS_LABEL"
+               description="COM_DNBOOKING_CONFIG_WEEKLY_OPENINGHOURS_DESC"
+               >
+            <form>
+                <field
+                        name="opening_hours_monday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_MONDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_MONDAY_DESC"
+                />
+                <field
+                        name="opening_hours_tuesday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_TUESDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_TUESDAY_DESC"
+                />
+                <field
+                        name="opening_hours_wednesday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY_DESC" />
+                <field
+                        name="opening_hours_thursday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_THURSDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_THURSDAY_DESC" />
+                <field
+                        name="opening_hours_friday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_FRIDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_FRIDAY_DESC" />
+                <field
+                        name="opening_hours_saturday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_SATURDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_SATURDAY_DESC" />
+                <field
+                        name="opening_hours_sunday"
+                        type="OpeningHours"
+                        label="COM_DNBOOKING_CONFIG_DAY_SUNDAY"
+                        description="COM_DNBOOKING_CONFIG_DAY_SUNDAY_DESC" />
             </form>
         </field>
 

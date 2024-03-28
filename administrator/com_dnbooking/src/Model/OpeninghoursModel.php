@@ -38,18 +38,24 @@ class OpeninghoursModel extends ListModel
 		parent::__construct($config);
 	}
 
+	public function checkMonth($date)
+	{
 
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true);
 
+		$query->select('*')
+			->from($db->quoteName($this->getTable()->getTableName()))
+			->where($db->quoteName('day') . ' LIKE ' . $db->quote('%' . $date . '%'));
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
     public function updateDay($data)
     {
 
         $data['dayID'] = $data['dayID'];
-
-
-        echo '<pre>';
-        var_dump($data);die;
-        echo '</pre>';
-        $table = $this->getTable();
+		$table = $this->getTable();
         $table->load($data['dayID']);
         $table->bind($data);
         return $table->store();

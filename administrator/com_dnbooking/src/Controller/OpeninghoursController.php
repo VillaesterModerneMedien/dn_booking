@@ -27,6 +27,7 @@ use Joomla\CMS\Router\Route;
  */
 class OpeninghoursController extends AdminController
 {
+
 	/**
 	 * The prefix to use with controller messages.
 	 *
@@ -34,6 +35,11 @@ class OpeninghoursController extends AdminController
 	 * @since  1.6
 	 */
 	protected $text_prefix = 'COM_DNBOOKING_OPENINGHOURS';
+
+	protected $app;
+
+	protected $input;
+
 
 	/**
 	 * Proxy for getModel.
@@ -51,13 +57,26 @@ class OpeninghoursController extends AdminController
 		return parent::getModel($name, $prefix, $config);
 	}
 
+	public function checkMonth(){
+		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+
+		$app = Factory::getApplication();
+		$input = $app->input;
+		$date = $input->get('date', '', 'INT');
+		if($date < 10)
+		{
+			$date = '0'.$date;
+		}
+		$model = $this->getModel();
+		return $model->checkMonth($date);
+
+	}
+
 	public function edit()
 	{
-
-        $app = Factory::getApplication();
-        $input = $app->input;
-
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+		$app = Factory::getApplication();
+		$input = $app->input;
 
         $dayID =  $input->get('dayID', 0, 'INT');
 
@@ -78,16 +97,11 @@ class OpeninghoursController extends AdminController
 
 	public function add()
 	{
-
-        $app = Factory::getApplication();
-        $input = $app->input;
-
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
-        // Get the model.
+		$app = Factory::getApplication();
+		$input = $app->input;
         $model = $this->getModel();
         $model->addDay($input->post->getArray());
-
 
 		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
 	}
@@ -102,8 +116,9 @@ class OpeninghoursController extends AdminController
 	{
 		// Check for request forgeries.
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-
-		$ids    = $this->input->get('cid', array(), 'array');
+		$app = Factory::getApplication();
+		$input = $app->input;
+		$ids    = $input->get('cid', array(), 'array');
 
 		if (empty($ids))
 		{
