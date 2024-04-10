@@ -96,10 +96,12 @@ class BookingController extends FormController
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
 		$date         = $this->input->get('date', null, 'string');
+		$time         = $this->input->get('time', null, 'string');
 		$personscount = $this->input->get('visitors', null, 'int');
 		$model        = $this->getModel();
 		$rooms        = $model->updateRooms();
 		$reservations = $model->getReservations();
+		$openingHours = $model->getOpeningHours($date, $time);
 
 		$blockedRooms = [];
 		foreach ($rooms as $room)

@@ -27,11 +27,11 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 class HtmlView extends BaseHtmlView
 {
 	/**
-	 * An array of items
+	 * An array of openinghours
 	 *
-	 * @var  array
+	 * @var  object
 	 */
-	protected $items;
+	protected $openinghours;
 
 	/**
 	 * The pagination object
@@ -81,7 +81,7 @@ class HtmlView extends BaseHtmlView
 	 */
     public function display($tpl = null): void
     {
-        //$this->items         = $this->get('Items');
+	    $this->openinghours = $this->get('OpeningHours');
 		parent::display($tpl);
 	}
 

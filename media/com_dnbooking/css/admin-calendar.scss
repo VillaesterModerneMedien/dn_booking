@@ -18,6 +18,9 @@ td {
     text-align: center;
     line-height: 60px !important;
     font-size: 1.5em;
+    &.day, &.daySpacer{
+        padding:0!important;
+    }
 }
 td,
 #year {
@@ -26,28 +29,48 @@ td,
 .hover {
     background: #eee;
 }
-.tableCalendar{
-    width: 100% !important;
-}
 .day{
     cursor: pointer;
-    &.closed{
+    &.customTime{
         background: red;
     }
     .icons{
         display: none;
     }
-    &.hover{
-        background: rgba(0,0,0,0.4);
-        box-shadow: inset 0 0 0.2rem 0.2rem #000;
+    &:hover{
         .icons{
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;        }
+            position:absolute;
+            top:0;
+            right:0;
+        }
+        .dayInner{
+            background: #9D9D9D33;
+            box-shadow: inset 0 0 0.5rem 0.1rem #000000;
+        }
     }
     .dayInner{
-        display: grid;
         width: 100%;
-        grid-template-columns: 95% 5%;
+        position: relative;
     }
 }
+//*****MODAL****//
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+    &-content{
+        > div{
+            padding:10px!important;
+        }
+    }
+}
+
+

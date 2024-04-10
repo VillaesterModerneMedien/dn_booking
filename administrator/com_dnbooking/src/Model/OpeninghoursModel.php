@@ -38,6 +38,13 @@ class OpeninghoursModel extends ListModel
 		parent::__construct($config);
 	}
 
+	/**
+	 * @param $date
+	 *
+	 * @return mixed
+	 *
+	 * @since version
+	 */
 	public function checkMonth($date)
 	{
 
@@ -46,10 +53,26 @@ class OpeninghoursModel extends ListModel
 
 		$query->select('*')
 			->from($db->quoteName($this->getTable()->getTableName()))
-			->where($db->quoteName('day') . ' LIKE ' . $db->quote('%' . $date . '%'));
+			->where($db->quoteName('day') . ' LIKE ' . $db->quote('%-' . $date . '-%'));
 
 		$db->setQuery($query);
-		return $db->loadObjectList();
+		$result = $db->loadObjectList();
+		return $result;
+	}
+	public function getOpeningHours()
+	{
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true);
+
+		$query->select('params')
+			->from($db->quoteName('#__extensions'))
+			->where($db->quoteName('name') . ' = ' . $db->quote('com_dnbooking'));
+
+		$db->setQuery($query);
+		$params = $db->loadObject();
+		$result = json_decode($params->params, true);
+
+		return $result;
 	}
     public function updateDay($data)
     {
@@ -60,26 +83,23 @@ class OpeninghoursModel extends ListModel
         return $table->store();
     }
 
-
     public function addDay($data)
     {
         $table = $this->getTable();
-
         $dayToAdd = [
-            'day' => $data['date'],
-            'opening_time' => '09:00:00',
-            'closing_time' => '18:00:00',
+            'day' => $data['dayID'],
+            'opening_time' => $data['opening_time'],
         ];
 
         if (!$table->bind($dayToAdd)) {
             // Fehlerbehandlung
-            JError::raiseWarning(500, $table->getError());
+	        Factory::getApplication()->enqueueMessage($table->getError(), 'warning');
             return false;
         }
 
         if (!$table->store()) {
             // Fehlerbehandlung
-            JError::raiseWarning(500, $table->getError());
+	        Factory::getApplication()->enqueueMessage($table->getError(), 'warning');
             return false;
         }
 

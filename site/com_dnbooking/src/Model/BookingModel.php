@@ -104,6 +104,43 @@ class BookingModel extends BaseDatabaseModel
 
 		return $this->db->loadAssocList();
 	}
+	public function getOpeningHours($date, $time): array
+	{
+
+		$query = $this->db->getQuery(true);
+
+		// Abfrage für die Tabelle #__dnbooking_openinghours
+		$query->select('*')
+			->from($this->db->quoteName('#__dnbooking_openinghours'))
+			->where($this->db->quoteName('day') . ' = ' . $this->db->quote($date));
+
+		// Führe die Abfrage für die Tabelle #__dnbooking_openinghours aus
+		$this->db->setQuery($query);
+		$openingHours = $this->db->loadAssocList();
+		// Abfrage für das Feld params des Eintrags mit dem Namen com_dnbooking in der Tabelle #__dnbooking_extensions
+		$query->clear();
+		$query->select('params')
+			->from($this->db->quoteName('#__extensions'))
+			->where($this->db->quoteName('name') . ' = ' . $this->db->quote('com_dnbooking'));
+
+		// Führe die Abfrage für das Feld params aus
+		$this->db->setQuery($query);
+		$params = $this->db->loadResult();
+
+		//$regularOpeningHours = $params->regular_opening_hours;
+		//$weeklyOpeningHours = json_decode($params['weekly_opening_hours']);
+
+		$paramsArray = json_decode($params, true);
+		$regularOpeningHours = $paramsArray['regular_opening_hours'];
+		$weeklyOpeningHours = $paramsArray['weekly_opening_hours'];
+		// Rückgabe der Ergebnisse
+		return array(
+			'opening_hours' => $openingHours,
+			'params' => $paramsArray,
+			'regular_opening_hours' => $regularOpeningHours,
+			'weekly_opening_hours' => $weeklyOpeningHours
+		);
+	}
 
 	/**
 	 * Method to get all extras from the database.

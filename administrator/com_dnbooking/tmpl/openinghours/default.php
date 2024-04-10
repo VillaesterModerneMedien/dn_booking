@@ -29,6 +29,16 @@ $userId    = $user->get('id');
 
 $zeiten = [
 ];
+$colors = [
+];
+
+$regularOpeningHours = $this->openinghours['regular_opening_hours'];
+
+$regularOpeningHoursHTML = '';
+
+foreach ($regularOpeningHours as $day => $value) {
+    $regularOpeningHoursHTML .= "<option value='" . $day . "'>" . $value['starttime'] . " - " . $value['endtime'] . "</option>";
+}
 
 $translations = [
     'monday' => Text::_('COM_DNBOOKING_CALENDAR_MONDAY'),
@@ -56,13 +66,17 @@ $translations = [
     'success' => Text::_('COM_DNBOOKING_CALENDAR_TASK_SUCCESS'),
     'failed' => Text::_('COM_DNBOOKING_CALENDAR_TASK_FAILED')
 ];
-
 foreach ($params['weekly_opening_hours'] as $day => $value) {
     $zeiten[$day] = $value;
 }
 
+foreach ($params['regular_opening_hours'] as $name => $value) {
+    $colors[$name] = $value;
+}
+
 $settings = [
    'zeiten' => $zeiten,
+   'farben' => $colors,
    'texte'  => $translations
 ];
 
@@ -79,6 +93,23 @@ Factory::getDocument()->addScriptOptions('com_dnbooking', $settings);
                         <table class="table tableCalendar"></table>
                     </div>
                 </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="legend">
+                        <tr>
+	                        <?php
+	                        foreach ($params['regular_opening_hours'] as $name => $value) {
+		                        echo "<td style='font-size:12px; background-color: " . $value->openinghour_color . "'>" . $value->starttime . " - " . $value->endtime . "</td>";
+	                        }
+		                        echo "<td style='font-size:12px; background-color: " . $params['closed_color'] . "'>Geschlossen</td>";
+
+	                        ?>
+
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -86,3 +117,25 @@ Factory::getDocument()->addScriptOptions('com_dnbooking', $settings);
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
 </form>
+<div>
+
+</div>
+<div class="modal fade" id="openingHoursModal" tabindex="-1"  aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <select name="openingTime" id="timeSelect">
+                    <?= $regularOpeningHoursHTML ?>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

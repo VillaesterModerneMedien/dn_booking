@@ -3,7 +3,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-function updateRoomStatus(date, visitors){
+function updateRoomStatus(date, visitors, time){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
 
@@ -40,7 +40,7 @@ function updateRoomStatus(date, visitors){
         console.log('Request failed');
     };
 
-    xhr.send('date=' + encodeURIComponent(date) + '&visitors=' + encodeURIComponent(visitors));
+    xhr.send('date=' + encodeURIComponent(date) + '&visitors=' + encodeURIComponent(visitors) + '&time=' + encodeURIComponent(time));
 }
 
 function handleRoomClick() {
@@ -88,6 +88,7 @@ function renderOrderHTML() {
 
 document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
+    const timeInput = document.getElementById('time');
     const personsInput = document.getElementById('visitors');
     const inputs = document.querySelectorAll('.checkrooms');
     const checkBooking = document.getElementById('checkBooking');
@@ -102,11 +103,11 @@ document.addEventListener('DOMContentLoaded', function () {
     inputs.forEach(function(input) {
         input.addEventListener('change', function() {
             //resetRoomClasses();
-            updateRoomStatus(dateInput.value, personsInput.value);
+            updateRoomStatus(dateInput.value, personsInput.value, timeInput.value);
         });
         input.addEventListener('input', function() {
             //resetRoomClasses();
-            updateRoomStatus(dateInput.value, personsInput.value);
+            updateRoomStatus(dateInput.value, personsInput.value, timeInput.value);
         });
     });
 

@@ -10,6 +10,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use JFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -68,7 +69,10 @@ class OpeninghoursController extends AdminController
 			$date = '0'.$date;
 		}
 		$model = $this->getModel();
-		return $model->checkMonth($date);
+//		$a = $model->checkMonth($date);
+		echo json_encode($model->checkMonth($date));
+		JFactory::getApplication()->close();
+
 
 	}
 
@@ -94,47 +98,15 @@ class OpeninghoursController extends AdminController
 		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
 	}
 
-
 	public function add()
 	{
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$app = Factory::getApplication();
 		$input = $app->input;
-        $model = $this->getModel();
-        $model->addDay($input->post->getArray());
+		$model = $this->getModel();
+		$model->addDay($input->post->getArray());
 
 		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
 	}
 
-
-	/**
-	 * Method to delete a record.
-	 *
-	 * @return  void
-	 */
-	public function delete()
-	{
-		// Check for request forgeries.
-		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-		$app = Factory::getApplication();
-		$input = $app->input;
-		$ids    = $input->get('cid', array(), 'array');
-
-		if (empty($ids))
-		{
-			JError::raiseWarning(500, Text::_('COM_DNBOOKING_NO_ITEM_SELECTED'));
-		}
-		else
-		{
-			// Get the model.
-			$model = $this->getModel();
-
-			foreach ($ids as $id)
-			{
-				$model->delete($id);
-			}
-		}
-
-		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
-	}
 }

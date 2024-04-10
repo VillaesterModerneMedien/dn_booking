@@ -16,14 +16,6 @@
       "uri": "com_dnbooking/calendar.js"
     },
     {
-      "name": "com_dnbooking.admin-reservations-modal",
-      "type": "script",
-      "uri": "com_dnbooking/admin-reservations-modal.js",
-      "attributes": {
-        "type": "module"
-      }
-    },
-    {
       "name": "com_dnbooking.booking",
       "type": "style",
       "uri": "com_dnbooking/booking.css"

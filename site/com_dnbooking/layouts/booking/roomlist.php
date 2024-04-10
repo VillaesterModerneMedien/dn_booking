@@ -29,6 +29,7 @@ $counter=0;
 
 					<?php
 					foreach ($rooms as $room):
+                        if ($room->published == -2) continue;
 						$counter++;?>
 						<li data-room-id="<?= $room->id ?>" class="room <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
                             <input type="radio" name="room" value="<?= $room->id ?>" id="room<?= $room->id ?>" hidden/>
@@ -62,8 +63,8 @@ $counter=0;
                                     <?= sprintf(Text::_('COM_DNBOOKING_ROOMSGRID_PERSONS'), $room->personsmin, $room->personsmax);?>
                                 </div>
 								<div class="el-content uk-panel uk-margin-top">
-                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICEREGULAR') . $room->priceregular ?></p>
-                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICECUSTOM') . $room->pricecustom ?></p>
+                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICEREGULAR') . $room->priceregular . ' €'?></p>
+                                    <p><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICECUSTOM') . $room->pricecustom . ' €'?></p>
                                 </div>
 							</div>
 						</li>
