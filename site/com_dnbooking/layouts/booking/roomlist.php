@@ -25,7 +25,7 @@ $counter=0;
 		<div class="uk-grid tm-grid-expand uk-child-width-1-1 uk-grid-margin">
 			<div class="uk-width-1-1" >
 				<div class="uk-margin">
-					<ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
+					<ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@s uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
 
 					<?php
 					foreach ($rooms as $room):

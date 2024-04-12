@@ -78,8 +78,8 @@ class OpeningHoursField extends ListField
 			}
 		}
 
-		$closedParams['openingtimes_color'] = $params['closed_color'];
 		$closedParams['opening_times'] = "regular_opening_hoursclosed";
+		$closedParams['openingtimes_color'] = $params['closed_color'];
 		$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', json_encode($closedParams), Text::_('COM_DNBOOKING_CONFIG_OPENINGHOURS_CLOSED_LABEL'));
 		return $options;
 	}

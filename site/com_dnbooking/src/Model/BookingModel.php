@@ -136,7 +136,6 @@ class BookingModel extends BaseDatabaseModel
 		// Rückgabe der Ergebnisse
 		return array(
 			'opening_hours' => $openingHours,
-			'params' => $paramsArray,
 			'regular_opening_hours' => $regularOpeningHours,
 			'weekly_opening_hours' => $weeklyOpeningHours
 		);

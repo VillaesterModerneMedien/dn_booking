@@ -138,8 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     let date = new Date(d.getFullYear(), d.getMonth(), day);
                     let dateString = formatDate(date);
                     let customDate = isDateCustom(dateString);
-                    //console.log('dateString: ',dateString);
-                    //console.log('customDate: ',customDate);
+
                     let dayId = customTimes[day] ? customTimes[day].id : false;
                     let dayName = details.weekDays[j];
                     let classes ="day";
