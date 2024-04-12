@@ -90,7 +90,7 @@
                                             <?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_HEADLINE'); ?>
                                         </h3>
 
-                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "width":"80vw", "height": "80vh", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&id=' . (int) $customer->id ?>"}'>
+                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "width":"80vw", "height": "80vh", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
                                             <span class="icon-edit" aria-hidden="true"></span>
                                             <?= Text::_('COM_DNBOOKING_LABEL_EDIT'); ?>
                                         </button>

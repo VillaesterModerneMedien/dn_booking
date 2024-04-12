@@ -208,14 +208,14 @@ class HtmlView extends BaseHtmlView
 		    'pencil-alt article-add'
 	    );
 
-	    $canCreate = $isNew && (\count($user->getAuthorisedCategories('com_dnbooking', 'reservation.create')) > 0);
-	    $canEdit   = $canDo->get('reservation.edit') || $this->item->created_by == $userId;
+	    $canCreate = $isNew && (\count($user->getAuthorisedCategories('com_dnbooking', 'customer.create')) > 0);
+	    $canEdit   = $canDo->get('customer.edit') || $this->item->created_by == $userId;
 
 	    // For new records, check the create permission.
 	    if ($canCreate || $canEdit) {
-		    $toolbar->save('reservation.save');
+		    $toolbar->save('customer.save');
 	    }
 
-	    $toolbar->cancel('reservation.cancel');
+	    $toolbar->cancel('customer.cancel');
     }
 }

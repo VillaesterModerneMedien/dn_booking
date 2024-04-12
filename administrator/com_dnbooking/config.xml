@@ -129,6 +129,7 @@
                 component="com_dnbooking"
                 section="component"
         />
+
     </fieldset>
 
 </config>
