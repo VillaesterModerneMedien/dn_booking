@@ -197,7 +197,7 @@ class HtmlView extends BaseHtmlView
         $customer = $this->item;
         $isNew = ($this->item->id == 0);
         $canDo = $this->canDo;
-        $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $userId);
+
         $toolbar = Toolbar::getInstance();
         //$toolbar    = Factory::getContainer()->get(ToolbarFactoryInterface::class)->createToolbar('toolbar');
 

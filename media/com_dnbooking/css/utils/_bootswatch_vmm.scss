@@ -1,0 +1,566 @@
+// Slate 5.3.3
+// Bootswatch
+
+
+// Variables
+
+$theme: "slate" !default;
+
+//
+// Color system
+//
+
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #999 !default;
+$gray-600: #7a8288 !default;
+$gray-700: #52575c !default;
+$gray-800: #3a3f44 !default;
+$gray-900: #272b30 !default;
+$black:    #000 !default;
+
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #ee5f5b !default;
+$orange:  #fd7e14 !default;
+$yellow:  #f89406 !default;
+$green:   #62c462 !default;
+$teal:    #20c997 !default;
+$cyan:    #5bc0de !default;
+
+$primary:       $gray-800 !default;
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-200 !default;
+$dark:          $gray-900 !default;
+
+$primary-bg-subtle:       lighten($gray-800, 10%) !default;
+
+$min-contrast-ratio:   1.95 !default;
+
+// Gradients
+
+// scss-docs-start gradient-mixins
+// Horizontal gradient, from left to right
+//
+// Creates two color stops, start and end, by specifying a color and position for each color stop.
+@mixin gradient-x($start-color: $gray-700, $end-color: $gray-800, $start-percent: 0%, $end-percent: 100%) {
+    background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+}
+
+// Vertical gradient, from top to bottom
+//
+// Creates two color stops, start and end, by specifying a color and position for each color stop.
+@mixin gradient-y($start-color: $gray-700, $end-color: $gray-800, $start-percent: null, $end-percent: null) {
+    background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent);
+}
+
+@mixin gradient-directional($start-color: $gray-700, $end-color: $gray-800, $deg: 45deg) {
+    background-image: linear-gradient($deg, $start-color, $end-color);
+}
+
+@mixin gradient-x-three-colors($start-color: $blue, $mid-color: $purple, $color-stop: 50%, $end-color: $red) {
+    background-image: linear-gradient(to right, $start-color, $mid-color $color-stop, $end-color);
+}
+
+@mixin gradient-y-three-colors($start-color: $blue, $mid-color: $purple, $color-stop: 50%, $end-color: $red) {
+    background-image: linear-gradient($start-color, $mid-color $color-stop, $end-color);
+}
+
+@mixin gradient-radial($inner-color: $gray-700, $outer-color: $gray-800) {
+    background-image: radial-gradient(circle, $inner-color, $outer-color);
+}
+
+@mixin gradient-striped($color: rgba($white, .15), $angle: 45deg) {
+    background-image: linear-gradient($angle, $color 25%, transparent 25%, transparent 50%, $color 50%, $color 75%, transparent 75%, transparent);
+}
+
+// scss-docs-start color-functions
+// Tint a color: mix a color with white
+@function tint-color($color, $weight) {
+    @return mix(white, $color, $weight);
+}
+
+// Body
+
+$body-bg:                   $gray-900 !default;
+$body-color:                #aaa !default;
+
+// Links
+
+$link-color:                $white !default;
+
+// Fonts
+
+// Tables
+
+$table-color:                 $white !default;
+$table-accent-bg:             rgba($white, .05) !default;
+$table-hover-bg:              rgba($white, .075) !default;
+$table-border-color:          rgba($black, .6) !default;
+$table-dark-border-color:     $table-border-color !default;
+$table-dark-color:            $white !default;
+
+$table-bg-scale:              0% !default;
+
+// Buttons
+
+$input-btn-padding-y:         .75rem !default;
+$input-btn-padding-x:         1rem !default;
+
+// Forms
+
+$input-bg:                          $white !default;
+$input-color:                       $gray-900 !default;
+$input-border-color:                rgba($black, .6) !default;
+$input-group-addon-color:           $gray-500 !default;
+$input-group-addon-bg:              $gray-700 !default;
+$input-disabled-color:              $gray-600 !default;
+$input-disabled-bg:                 #ccc !default;
+
+$form-check-input-bg:                     $white !default;
+
+$form-select-disabled-bg:           $input-disabled-bg !default;
+$form-select-disabled-color:        $input-disabled-color !default;
+
+$form-file-button-color:          $input-group-addon-color !default;
+$form-file-button-bg:             $input-group-addon-bg !default;
+$form-file-button-hover-bg:       darken($form-file-button-bg, 5%) !default;
+
+// Dropdowns
+
+$dropdown-bg:                       $gray-800 !default;
+$dropdown-border-color:             rgba($black, .6) !default;
+$dropdown-divider-bg:               rgba($black, .15) !default;
+$dropdown-link-color:               $body-color !default;
+$dropdown-link-hover-color:         $white !default;
+$dropdown-link-hover-bg:            $body-bg !default;
+$dropdown-link-active-color:        $dropdown-link-hover-color !default;
+$dropdown-link-active-bg:           $dropdown-link-hover-bg !default;
+
+// Navs
+
+$nav-tabs-border-color:             rgba($black, .6) !default;
+$nav-tabs-link-hover-border-color:  $nav-tabs-border-color !default;
+$nav-tabs-link-active-color:        $white !default;
+$nav-tabs-link-active-border-color: $nav-tabs-border-color !default;
+
+// Navbar
+
+$navbar-padding-y:                  0 !default;
+
+// Pagination
+$pagination-padding-y:              $input-btn-padding-y !default;
+$pagination-padding-x:              $input-btn-padding-x !default;
+
+$pagination-color:                  $white !default;
+$pagination-bg:                     transparent !default;
+$pagination-border-color:           rgba($black, .6) !default;
+$pagination-hover-color:            $white !default;
+$pagination-hover-bg:               transparent !default;
+$pagination-hover-border-color:     rgba($black, .6) !default;
+$pagination-active-bg:              transparent !default;
+$pagination-active-border-color:    rgba($black, .6) !default;
+$pagination-disabled-bg:            transparent !default;
+$pagination-disabled-border-color:  rgba($black, .6) !default;
+
+// Cards
+
+$card-border-color:                 rgba($black, .6) !default;
+$card-cap-bg:                       lighten($gray-800, 10%) !default;
+$card-bg:                           lighten($body-bg, 5%) !default;
+
+// Accordions
+
+$accordion-bg:                      lighten($body-bg, 5%) !default;
+$accordion-border-color:            $table-border-color !default;
+$accordion-button-active-color:     $white !default;
+
+// Popovers
+
+$popover-bg:                        lighten($body-bg, 5%) !default;
+
+// Toasts
+
+$toast-background-color:            lighten($body-bg, 5%) !default;
+$toast-border-color:                rgba(0, 0, 0, .2) !default;
+$toast-header-color:                $body-color !default;
+$toast-header-background-color:     $toast-background-color !default;
+$toast-header-border-color:         $toast-border-color !default;
+
+// Modals
+
+$modal-content-bg:                  lighten($body-bg, 5%) !default;
+$modal-header-border-color:         rgba(0, 0, 0, .2) !default;
+
+// Progress bars
+
+$progress-bg:                       darken($gray-900, 5%) !default;
+$progress-bar-color:                $gray-600 !default;
+
+// List group
+
+$list-group-color:                  $white !default;
+$list-group-bg:                     lighten($body-bg, 5%) !default;
+$list-group-border-color:           rgba($black, .6) !default;
+$list-group-item-bg-scale:          0% !default;
+$list-group-hover-bg:               lighten($body-bg, 10%) !default;
+$list-group-active-color:           $white !default;
+$list-group-active-bg:              $list-group-hover-bg !default;
+$list-group-active-border-color:    $list-group-border-color !default;
+$list-group-disabled-color:         $gray-700 !default;
+$list-group-action-color:           $white !default;
+
+// Breadcrumbs
+
+$breadcrumb-padding-y:              .375rem !default;
+$breadcrumb-padding-x:              .75rem !default;
+$breadcrumb-active-color:           $gray-500 !default;
+$breadcrumb-border-radius:          .25rem !default;
+
+// Code
+
+$pre-color:                         inherit !default;
+
+// Mixins
+
+// Shade a color: mix a color with black
+@function shade-color($color, $weight) {
+    @return mix(black, $color, $weight);
+}
+
+@mixin btn-shadow($color){
+    @include gradient-y-three-colors(tint-color($color, 5%), $color, 20%, shade-color($color, 20%));
+    filter: none;
+}
+
+@mixin btn-shadow-inverse($color){
+    @include gradient-y-three-colors(shade-color($color, 16%), shade-color($color, 10%), 40%, shade-color($color, 6%));
+    filter: none;
+}
+
+@mixin btn-shadow-inverse-dark($color){
+    @include gradient-y-three-colors(shade-color($color, 36%), shade-color($color, 30%), 40%, shade-color($color, 26%));
+    filter: none;
+}
+
+// Navbar
+
+.navbar {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+    border: 1px solid rgba(0, 0, 0, .6);
+
+    .container {
+        padding: 0;
+    }
+
+    .navbar-toggler {
+        border-color: rgba(0, 0, 0, .6);
+    }
+
+    &-fixed-top {
+        border-width: 0 0 1px;
+    }
+
+    &-fixed-bottom {
+        border-width: 1px 0 0;
+    }
+
+    .nav-link {
+        padding: 1rem;
+        border-right: 1px solid rgba(0, 0, 0, .2);
+        border-left: 1px solid rgba(255, 255, 255, .1);
+    }
+
+    @function subtract($value1, $value2, $return-calc: true) {
+        @if $value1 == null and $value2 == null {
+            @return null;
+        }
+
+        @if $value1 == null {
+            @return -$value2;
+        }
+
+        @if $value2 == null {
+            @return $value1;
+        }
+
+        @if type-of($value1) == number and type-of($value2) == number and comparable($value1, $value2) {
+            @return $value1 - $value2;
+        }
+
+        @if type-of($value2) != number {
+            $value2: unquote("(") + $value2 + unquote(")");
+        }
+
+        @return if($return-calc == true, calc(#{$value1} - #{$value2}), $value1 + unquote(" - ") + $value2);
+    }
+
+    &-brand {
+        padding: .75rem 1rem subtract(24px, .75rem);
+        margin-right: 0;
+        border-right: 1px solid rgba(0, 0, 0, .2);
+    }
+
+    .nav-item.active .nav-link {
+        background-color: rgba(0, 0, 0, .3);
+        border-left: 1px solid rgba(0, 0, 0, .2);
+    }
+
+    &-nav .nav-item + .nav-item {
+        margin-left: 0;
+    }
+
+    $theme-colors: (
+        primary:                            $blue,
+        secondary:                          $secondary,
+        success:                            $success,
+        info:                               $info,
+        warning:                            $warning,
+        danger:                             $danger,
+        light:                              $light,
+        dark:                               $dark
+    ) !default;
+
+    @each $color, $value in $theme-colors {
+        &.bg-#{$color} {
+
+            .nav-link {
+                &:hover {
+                    @include btn-shadow-inverse($value);
+                    border-left: 1px solid rgba(0, 0, 0, .2);
+                }
+
+                &:active,
+                &.active {
+                    @include btn-shadow-inverse-dark($value);
+                    border-left: 1px solid rgba(0, 0, 0, .2);
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-expand-sm {
+        .navbar-brand,
+        .nav-link {
+            border: none !important;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-expand-md {
+        .navbar-brand,
+        .nav-link {
+            border: none !important;
+        }
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-expand-lg {
+        .navbar-brand,
+        .nav-link {
+            border: none !important;
+        }
+    }
+}
+
+// Buttons
+
+.btn {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+    border-color: rgba(0, 0, 0, .6);
+
+    &:not([disabled]):not(.disabled).active,
+    &.disabled {
+        border-color: rgba(0, 0, 0, .6);
+        box-shadow: none;
+    }
+
+    &:hover,
+    &:focus,
+    &:not([disabled]):not(.disabled):active,
+    &:not([disabled]):not(.disabled):active:hover,
+    &:not([disabled]):not(.disabled).active:hover {
+        border-color: rgba(0, 0, 0, .6);
+    }
+
+    $theme-colors: (
+        primary:                            $blue,
+        secondary:                          $secondary,
+        success:                            $success,
+        info:                               $info,
+        warning:                            $warning,
+        danger:                             $danger,
+        light:                              $light,
+        dark:                               $dark
+    ) !default;
+
+    @each $color, $value in $theme-colors {
+        &-#{$color} {
+            @include btn-shadow($value);
+
+            &:not([disabled]):not(.disabled):hover {
+                @include btn-shadow-inverse($value);
+            }
+
+            &:not([disabled]):not(.disabled):active:hover,
+            &:not([disabled]):not(.disabled).active:hover {
+                @include btn-shadow-inverse-dark($value);
+            }
+        }
+    }
+}
+
+.btn-outline {
+    &-primary {
+        color: $white;
+    }
+}
+
+.btn-link,
+.btn-link:hover {
+    border-color: transparent;
+}
+
+.btn-group,
+.btn-group-vertical {
+    .btn.active {
+        border-color: rgba(0, 0, 0, .6);
+    }
+}
+
+.btn-check:checked + .btn,
+.btn-check + .btn:hover {
+    color: $white;
+    border-color: rgba(0, 0, 0, .6);
+}
+
+// Typography
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, .3);
+}
+
+// Forms
+
+legend {
+    color: $white;
+}
+
+.input-group-addon {
+    @include btn-shadow($secondary);
+    color: $white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+}
+
+// Navs
+
+.nav-tabs {
+    .nav-link {
+        @include btn-shadow-inverse($gray-800);
+        border: 1px solid rgba(0, 0, 0, .6);
+
+        &:not([disabled]):not(.disabled):hover,
+        &:not([disabled]):not(.disabled):focus,
+        &:not([disabled]):not(.disabled):active,
+        &:not([disabled]):not(.disabled).active {
+            @include btn-shadow($gray-800);
+        }
+
+        &.disabled {
+            border: 1px solid rgba(0, 0, 0, .6);
+        }
+    }
+
+    .nav-link,
+    .nav-link:hover {
+        color: $white;
+    }
+}
+
+
+
+.pagination {
+    .page-link {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+        @include btn-shadow($gray-800);
+
+        &:hover {
+            @include btn-shadow-inverse($gray-800);
+            text-decoration: none;
+        }
+    }
+
+    .page-item.active .page-link {
+        @include btn-shadow-inverse($gray-800);
+    }
+
+    .page-item.disabled .page-link {
+        @include btn-shadow($gray-800);
+    }
+}
+
+.breadcrumb {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, .6);
+    @include btn-shadow($gray-800);
+
+    a,
+    a:hover {
+        color: $white;
+    }
+}
+
+// Indicators
+
+.badge {
+    &.bg-light {
+        color: $dark;
+    }
+}
+
+.tooltip {
+    --bs-tooltip-bg: var(--bs-tertiary-bg);
+    --bs-tooltip-color: var(--bs-emphasis-color);
+}
+
+// Containers
+
+.list-group {
+    &-item {
+        color: $white;
+
+        &-light {
+            color: $dark;
+        }
+    }
+
+    &-item-action:hover {
+        background-color: shade-color($gray-900, 10%);
+    }
+
+}
+
+// VMM Overrides
+
+.bg-primary {
+    background-color: $primary !important;
+}
