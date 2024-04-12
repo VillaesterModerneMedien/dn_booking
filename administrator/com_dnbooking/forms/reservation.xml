@@ -85,14 +85,15 @@
     </fieldset>
 
     <fieldset name="reservationfieldset">
-        <field
+        <!-- <field
             name="content"
             type="editor"
             label="COM_DNBOOKING_FIELD_CONTENT_LABEL"
             filter="JComponentHelper::filterText"
             buttons="true"
+			class="hidden"
             hide="readmore,pagebreak"
-        />
+        /> -->
 
         <field
             name="reservation_price"

@@ -28,7 +28,10 @@
     {
       "name": "com_dnbooking.reservation",
       "type": "style",
-      "uri": "com_dnbooking/reservation.css"
+      "uri": "com_dnbooking/reservation.css",
+      "dependencies": [
+        "template.atum.ltr"
+      ]
     }
   ]
 }

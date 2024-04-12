@@ -11,6 +11,7 @@
 
 use Joomla\CMS\Language\Text;
 ?>
+
 <div class="container-popup">
 	<?php $this->setLayout('edit'); ?>
 	<?php echo $this->loadTemplate(); ?>

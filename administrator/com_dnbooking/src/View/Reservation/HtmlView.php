@@ -60,6 +60,7 @@ class HtmlView extends BaseHtmlView
 		$this->form = $this->get('Form');
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
+        $this->customer = $this->get('Customer');
 
 		$this->addToolbar($this->item);
 
@@ -78,16 +79,14 @@ class HtmlView extends BaseHtmlView
         $app = Factory::getApplication();
         $app->input->set('hidemainmenu', \true);
         $user = $app->getIdentity();
-        /*
-        $isNew = $this->item->id == 0;
-        $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
-        $canDo = $this->canDo; */
 
         $title = $item->title;
         $id = $item->id;
         $created = \date("d.m.Y | H:i", \strtotime($item->created));
-        ToolbarHelper::title('Bestellung (ID ' . $id . ') vom ' . $created . 'Uhr || Firma: ' . $title);
+
+        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $title) ;
+        ToolbarHelper::title($headline);
         // If not checked out, can save the item.
-        ToolbarHelper::cancel('order.cancel');
+        ToolbarHelper::cancel('reservation.cancel');
     }
 }
