@@ -24,6 +24,14 @@
       "name": "com_dnbooking.admin-calendar",
       "type": "style",
       "uri": "com_dnbooking/admin-calendar.css"
+    },
+    {
+      "name": "com_dnbooking.reservation",
+      "type": "style",
+      "uri": "com_dnbooking/reservation.css",
+      "dependencies": [
+        "template.atum.ltr"
+      ]
     }
   ]
 }

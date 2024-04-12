@@ -8,7 +8,7 @@
  */
 
 namespace DnbookingNamespace\Component\Dnbooking\Administrator\View\Reservation;
- 
+
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Helper\ContentHelper;
@@ -47,7 +47,7 @@ class HtmlView extends BaseHtmlView
      * @var  object
      */
     protected $state;
-	
+
 	/**
 	 * Display the view
 	 *
@@ -60,99 +60,33 @@ class HtmlView extends BaseHtmlView
 		$this->form = $this->get('Form');
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
-		
-		$this->addToolbar();
+        $this->customer = $this->get('Customer');
+
+		$this->addToolbar($this->item);
 
 		return parent::display($tpl);
 	}
 
-	/**
-	 * Add the page title and toolbar.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.6
-	 */
-	protected function addToolbar()
-	{
-		// disable Joomla main menue
-		Factory::getApplication()->input->set('hidemainmenu', true);
-		
-		$user = Factory::getApplication()->getIdentity();
-		$canDo = ContentHelper::getActions('com_dnbooking');
-		
-		$isNew = ($this->item->id == 0);
-		
-		if ($isNew)
-		{
-			ToolbarHelper::title(Text::_('COM_DNBOOKING_MANAGER_RESERVATION_NEW'), 'home com_dnbooking');
-		}
-		else
-		{
-			ToolbarHelper::title(Text::_('COM_DNBOOKING_MANAGER_RESERVATION_EDIT'), 'home com_dnbooking');
-		}
-		
-		$toolbarButtons = [];
+    /**
+     * Displays a toolbar for a specific page.
+     *
+     * @return  void
+     *
+     * @since   1.0.0
+     */
+    private function addToolbar($item)
+    {
+        $app = Factory::getApplication();
+        $app->input->set('hidemainmenu', \true);
+        $user = $app->getIdentity();
 
-		// If a new reservation, can save the reservation.  Allow users with edit permissions to apply changes to prevent returning to grid.
-		if ($isNew && $canDo->get('core.create'))
-		{
-			if ($canDo->get('core.edit'))
-			{
-				ToolbarHelper::apply('reservation.apply');
-			}
+        $title = $item->title;
+        $id = $item->id;
+        $created = \date("d.m.Y | H:i", \strtotime($item->created));
 
-			$toolbarButtons[] = ['save', 'reservation.save'];
-		}
-
-		// If not checked out, can save the reservation.
-		if (!$isNew && $canDo->get('core.edit'))
-		{
-			ToolbarHelper::apply('reservation.apply');
-
-			$toolbarButtons[] = ['save', 'reservation.save'];
-		}
-
-		// If the user can create new reservations, allow them to see Save & New
-		if ($canDo->get('core.create'))
-		{
-			$toolbarButtons[] = ['save2new', 'reservation.save2new'];
-		}
-
-		// If an existing reservation, can save to a copy only if we have create rights.
-		if (!$isNew && $canDo->get('core.create'))
-		{
-			$toolbarButtons[] = ['save2copy', 'reservation.save2copy'];
-		}
-
-		ToolbarHelper::saveGroup(
-			$toolbarButtons,
-			'btn-success'
-		);
-
-		if (empty($this->item->id))
-		{
-			ToolbarHelper::cancel('reservation.cancel');
-		}
-		else
-		{
-			ToolbarHelper::cancel('reservation.cancel', 'JTOOLBAR_CLOSE');
-		}
-		
-		ToolbarHelper::divider();
-        
-        if (version_compare(JVERSION, 4.2, '>='))
-		{
-            // inline help button
-            $inlinehelp  = (string) $this->form->getXml()->config->inlinehelp['button'] == 'show' ?: false;
-            if ($inlinehelp)
-            {
-                ToolbarHelper::inlinehelp();
-            }
-        }
-        
-		
-		ToolbarHelper::help('index', true);
-		
-	}
+        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $title) ;
+        ToolbarHelper::title($headline);
+        // If not checked out, can save the item.
+        ToolbarHelper::cancel('reservation.cancel');
+    }
 }
