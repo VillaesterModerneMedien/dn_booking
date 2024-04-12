@@ -28,58 +28,79 @@ $priceRegular = $params->get('packagepriceregular');
 $priceCustom = $params->get('packagepricecustom');
 
 ?>
-<form class="uk-form-stacked" action="/index.php?option=com_dnbooking&task=booking.sendForm" name="bookingForm" id="bookingForm" method="POST">
-    <section id="booking" class="booking uk-section uk-section-default">
-        <div class="uk-grid uk-child-width-1-2@m" uk-grid>
-            <div>
+<section id="bookingTimes" class="booking uk-section uk-section-default">
+    <form class="uk-form-stacked"
+          action="/index.php?option=com_dnbooking&task=booking.sendForm"
+          name="bookingForm"
+          id="bookingForm"
+          method="POST">
+        <div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="">
+            <div class="uk-width-1-3@m uk-first-column uk-flex-bottom uk-grid-item-match">
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="date"><?php echo Text::_('COM_DNBOOKING_DATE_LABEL'); ?></label>
-                    <div class="uk-form-controls">
-                        <input type="date" class="uk-input checkrooms" id="date" name="date">
+                    <div>
+                        <label class="uk-form-label" for="date"><?php echo Text::_('COM_DNBOOKING_DATE_LABEL'); ?></label>
+                        <div class="uk-form-controls">
+                            <input type="date" class="uk-input" id="date" name="date">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="time"><?php echo Text::_('COM_DNBOOKING_TIME_LABEL'); ?></label>
-                    <div class="uk-form-controls">
-                        <input type="time" class="uk-input checkrooms" id="time" name="time">
+                    <div>
+                        <label class="uk-form-label" for="time"><?php echo Text::_('COM_DNBOOKING_TIME_LABEL'); ?></label>
+                        <div class="uk-form-controls">
+                            <input type="time" class="uk-input" id="time" name="time">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="uk-grid uk-child-width-1-2@m" uk-grid>
-            <div>
+            <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="visitors"><?php echo Text::_('COM_DNBOOKING_VISITORS_LABEL'); ?></label>
-                    <div class="uk-form-controls">
-                        <input type="number" class="uk-input checkrooms" id="visitors" name="visitors" value="0">
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="uk-margin">
-                    <label class="uk-form-label" for="birthdaychildren"><?php echo Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></label>
-                    <div class="uk-form-controls">
-                        <input type="number" class="uk-input" id="birthdaychildren" name="birthdaychildren" value="0">
-                    </div>
+                    <button id="checkStatus" class="uk-button uk-button-default uk-width-1-1">
+                        Verfügbarkeit prüfen
+                    </button>
                 </div>
             </div>
         </div>
-
+        <div class="uk-grid tm-grid-expand uk-grid-margin step2 hidden " uk-grid>
+            <div class="uk-width-1-3@m uk-first-column">
+                <div class="uk-margin">
+                    <div>
+                        <label class="uk-form-label" for="visitors"><?php echo Text::_('COM_DNBOOKING_VISITORS_LABEL'); ?></label>
+                        <div class="uk-form-controls">
+                            <input type="number" class="uk-input checkrooms" id="visitors" name="visitors" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-3@m" >
+                <div class="uk-margin">
+                    <div>
+                        <label class="uk-form-label" for="birthdaychildren"><?php echo Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></label>
+                        <div class="uk-form-controls">
+                            <input type="number" class="uk-input" id="birthdaychildren" name="birthdaychildren" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-3@m" data-id="page#0-1-2">
+            </div>
+        </div>
     </section>
 
-    <section id="rooms" class="rooms uk-section uk-section-default">
-		<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
+    <section id="rooms" class="rooms uk-section uk-section-default step2 hidden">
+        <?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
     </section>
 
-    <section id="rooms" class="rooms uk-section uk-section-default">
-		<?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+    <section id="extras" class="rooms uk-section uk-section-default step2 hidden" >
+        <?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
     </section>
 
-    <section id="customer" class="customer uk-section  uk-section-default">
-	    <?php echo LayoutHelper::render('booking.customer'); ?>
+    <section id="customer" class="customer uk-section  uk-section-default step2 hidden" >
+        <?php echo LayoutHelper::render('booking.customer'); ?>
     </section>
 
-	<button type="button" id="checkBooking" class="btn btn-primary"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+    <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+
 </form>

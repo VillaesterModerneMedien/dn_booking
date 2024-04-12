@@ -11,6 +11,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Controller;
 
 \defined('_JEXEC') or die;
 
+use DateTime;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -41,6 +42,34 @@ class BookingController extends FormController
 	 */
 	protected $view_item = 'booking';
 	protected $input = '';
+
+	/**
+	 * Method to get the weekday number of a date.
+	 *
+	 * @param $date
+	 *
+	 * @return int
+	 *
+	 * @since version
+	 */
+	protected function _getWeekdayNumber($date)
+	{
+		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
+		return $weekdayNumber;
+	}
+	protected function _checkTime($time, $startTime, $endTime)
+	{
+		$timeObj = DateTime::createFromFormat('H:i', $time);
+		$startTimeObj = DateTime::createFromFormat('H:i', $startTime);
+		$endTimeObj = DateTime::createFromFormat('H:i', $endTime);
+
+		$isOpen = false;
+		if ($timeObj >= $startTimeObj && $timeObj <= $endTimeObj)
+		{
+			$isOpen = true;
+		}
+		return $isOpen;
+	}
 
 	/**
 	 * Constructor.
@@ -96,28 +125,78 @@ class BookingController extends FormController
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
 		$date         = $this->input->get('date', null, 'string');
+		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
 		$time         = $this->input->get('time', null, 'string');
 		$personscount = $this->input->get('visitors', null, 'int');
 		$model        = $this->getModel();
 		$rooms        = $model->updateRooms();
 		$reservations = $model->getReservations();
 		$openingHours = $model->getOpeningHours($date, $time);
+		$isOpen = true;
+		//$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : null;
+
+		$customOpeningHour = isset($openingHours['opening_hours'][0]) ? $openingHours['opening_hours'][0] : false;
+		$regularOpeningHour = $openingHours['regular_opening_hours'];
+		$weeklyOpeningHour = $openingHours['weekly_opening_hours'];
+
+
+		$weeklyOpeningHour = $weeklyOpeningHour;
+		$weeklyOpeningHourKeys = array_keys($weeklyOpeningHour);
 
 		$blockedRooms = [];
-		foreach ($rooms as $room)
-		{
-			foreach ($reservations as $reservation)
-			{
-				$reservation['reservation_date'] = date('Y-m-d', strtotime($reservation['reservation_date']));
-				if ($reservation['room_id'] == $room['id'] && $reservation['reservation_date'] == $date)
+		$blockedDays = [];
+
+		if($time){
+			if ($customOpeningHour) {
+				$a = $customOpeningHour['opening_time'];
+				$b = $regularOpeningHour['regular_opening_hours' . $a];
+				$startTime = $b['starttime'];
+				$endTime = $b['endtime'];
+				$isOpen = $this->_checkTime($time, $startTime, $endTime);
+				$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
+			}
+
+			$a = ($weekdayNumber != -1) ? $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]] : false;
+			if ($a && !$customOpeningHour) {
+				$b = json_decode($a, true);
+				$c = array_keys($b);
+				$openingTime = $b[$c[0]];
+				if(str_contains($openingTime, 'closed'))
 				{
-					$blockedRooms[] = $room['id'];
-					break;
+					$isOpen = false;
+					$blockedRooms['times'] = $isOpen ? '' : 'dayclosed';
+				}
+				else
+				{
+					$d = $regularOpeningHour[$openingTime];
+					$startTime = $d['starttime'];
+					$endTime = $d['endtime'];
+					$isOpen = $this->_checkTime($time, $startTime, $endTime);
+					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
 				}
 			}
-			if ($room['personsmax'] < $personscount)
+		}
+		if($isOpen) {
+			foreach ($rooms as $room)
 			{
-				$blockedRooms[] = $room['id'];
+				foreach ($reservations as $reservation)
+				{
+					$reservation['reservation_date'] = date('Y-m-d', strtotime($reservation['reservation_date']));
+					if ($reservation['room_id'] == $room['id'] && $reservation['reservation_date'] == $date)
+					{
+						$blockedRooms['rooms'][] = $room['id'];
+						break;
+					}
+				}
+				if ($room['personsmax'] < $personscount)
+				{
+					$blockedRooms['rooms'][] = $room['id'];
+				}
+			}
+		}
+		else{
+			foreach ($rooms as $room) {
+				$blockedRooms['rooms'][] = $room['id'];
 			}
 		}
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
