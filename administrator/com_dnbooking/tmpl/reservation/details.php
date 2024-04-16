@@ -16,14 +16,18 @@
     use Joomla\CMS\Language\Text;
     use Joomla\CMS\Layout\LayoutHelper;
 
+
     $app   = Factory::getApplication();
     $input = $app->input;
-    
+
     $wa = $this->document->getWebAssetManager();
     $wa->useScript('joomla.dialog-autocreate');
     $wa->useStyle('com_dnbooking.reservation');
     $reservation     = $this->item;
     $customer = $this->customer;
+
+    $layout  = 'details';
+    $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 ?>
 
 <script>
@@ -55,8 +59,9 @@
 </script>
 
 <div class="dnbooking dnbooking_reservation">
-    <form action="<?php echo Route::_('index.php?option=com_dnbooking&view=reservations'); ?>" method="post"
-          name="adminForm" id="reservation" enctype="multipart/form-data" class="form-validate">
+    <form action="<?php echo Route::_('index.php?option=com_dnbooking&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+
+	    <?php echo $this->form->renderFieldset('mybasic'); ?>
 
         <div class="row">
 
@@ -126,26 +131,10 @@
                                     <div class="card-header">
                                         <h3><?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_HEADLINE'); ?></h3></div>
                                     <div class="card-body">
-                                        <!-- <h4 class="card-title">Secondary card title</h4> -->
-
                                         <div class="row">
-                                            <div class="col-lg-9">
+                                            <div class="col-12">
                                                 <?php echo $this->form->renderFieldset('reservationfieldset'); ?>
                                             </div>
-                                            <div class="col-lg-3">
-                                                <?php echo LayoutHelper::render('joomla.edit.global', $this); ?>
-                                            </div>
-
-                                            <div class="input-group mb-6">
-                                                <input type="text" class="form-control"
-                                                       placeholder="<?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_TITLE'); ?>"
-                                                       aria-label="<?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_TITLE'); ?>"
-                                                       aria-describedby="button-addon2">
-                                                <button class="btn btn-primary" type="button" id="button-addon2">
-                                                    Button
-                                                </button>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -179,7 +168,7 @@
 
         </div>
 
-        <input type="hidden" name="task" value=""/>
-        <?php echo HTMLHelper::_('form.token'); ?>
+	    <?php echo HTMLHelper::_('form.token'); ?>
+        <input type="hidden" name="task" value="">
     </form>
 </div>

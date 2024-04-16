@@ -114,6 +114,19 @@
                 size="10"
                 default="0"
         />
+
+        <field
+                name="additional_info_form"
+                type="textarea"
+                label="Add Infos"
+                description=""
+                cols="5"
+                rows="10"
+                filter="RAW"
+        />
+
+
+
     </fieldset>
     <fieldset
             name="permissions"

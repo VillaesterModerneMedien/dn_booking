@@ -4,22 +4,14 @@
 		<inlinehelp button="show"/>
 	</config>
 
-    <fieldset addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field">
+    <fieldset name="mybasic" addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
+
         <field
 			name="id"
 			type="text"
 			label="JGLOBAL_FIELD_ID_LABEL"
 			default="0"
-			class="readonly"
-			readonly="true"
-		/>
-
-        <field
-			name="alias"
-			type="text"
-			label="JFIELD_ALIAS_LABEL"
-			description="JFIELD_ALIAS_DESC"
-			hint="JFIELD_ALIAS_PLACEHOLDER"
+			disabled="true"
 		/>
 
         <field
@@ -35,23 +27,6 @@
 			<option value="2">JARCHIVED</option>
 			<option value="-2">JTRASHED</option>
 		</field>
-
-        <field
-			name="title"
-			type="text"
-			label="COM_DNBOOKING_FIELD_TITLE_LABEL"
-			description="COM_DNBOOKING_FIELD_TITLE_DESC"
-			class="input-xxlarge"
-			default=""
-			required="true"
-        />
-
-        <field
-			name="created_by"
-			type="user"
-			label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-			validate="UserId"
-		/>
 
 		<field
 			name="created"
@@ -73,27 +48,9 @@
 			filter="user_utc"
 		/>
 
-		<field
-			name="modified_by"
-			type="user"
-			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
-			class="readonly"
-			readonly="true"
-			filter="unset"
-			validate="UserId"
-		/>
     </fieldset>
 
     <fieldset name="reservationfieldset">
-        <!-- <field
-            name="content"
-            type="editor"
-            label="COM_DNBOOKING_FIELD_CONTENT_LABEL"
-            filter="JComponentHelper::filterText"
-            buttons="true"
-			class="hidden"
-            hide="readmore,pagebreak"
-        /> -->
 
         <field
             name="reservation_price"
@@ -155,7 +112,6 @@
 			key_field="id"
 			value_field="title"
 			header="COM_DNBOOKING_FIELD_SELECT_ROOM"
-
 		/>
 
 		<field
@@ -180,11 +136,15 @@
         />
 
 		<field
-			name="additional_info"
-			type="textarea"
-			label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
-			description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC"
-			default=""
+				name="additional_info"
+				type="AdditionalInfos"
+				label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
+				description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC"
+				min="1"
+				max="1"
+				multiple="false"
+				hiddenLabel="true"
 		/>
+
     </fieldset>
 </form>

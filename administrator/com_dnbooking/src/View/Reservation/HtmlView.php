@@ -87,6 +87,7 @@ class HtmlView extends BaseHtmlView
         $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $title) ;
         ToolbarHelper::title($headline);
         // If not checked out, can save the item.
+        ToolbarHelper::save('reservation.save');
         ToolbarHelper::cancel('reservation.cancel');
     }
 }

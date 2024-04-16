@@ -27,9 +27,9 @@ use Joomla\Registry\Registry;
  * @since  1.0.0
  */
 class ReservationTable extends Table implements VersionableTableInterface, TaggableTableInterface
-{   
+{
     use TaggableTableTrait;
-    
+
     /**
 	 * Indicates that columns fully support the NULL value in the database
 	 *
@@ -45,7 +45,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 * @since  1.0.0
 	 */
 	//protected $_jsonEncode = array('params', 'metadata');
-    
+
     /**
 	 * Constructor
 	 *
@@ -81,10 +81,10 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 			return false;
 		}
-        
+
 		// Add your checks here
 
-        
+
         // Generate a valid alias
 		$this->generateAlias();
 
@@ -112,7 +112,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	{
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
-        
+
         $db     = $this->getDbo();
 
 		// Set created date if not set.
@@ -121,7 +121,9 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			$this->created = $date;
 		}
 
-		$this->extras_ids = json_encode($this->extras_ids);
+		//$this->extras_ids = json_encode($this->extras_ids);
+
+		$this->additional_info = json_encode($this->additional_info);
 
 		if ($this->id)
 		{
@@ -147,13 +149,13 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 				$this->modified_by = $userId;
 			}
 		}
-        
+
         // Verify that the alias is unique
 		$table = Table::getInstance('ReservationTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 
         return parent::store($updateNulls);
 	}
-    
+
 	/**
 	 * Generate a valid alias from title / date.
 	 * Remains public to be able to check for duplicated alias before saving
