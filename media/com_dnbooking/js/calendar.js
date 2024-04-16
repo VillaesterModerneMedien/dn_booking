@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let keysZeiten = Object.keys(zeiten);
     let farben = options.farben;
     let keysFarben = Object.keys(farben);
-
     let customTimes = [];
     let editingDayID = 0;
     let editingDate = '';
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     function checkMonth(date) {
         date+=1;
-        //console.log('checkMonth: ', date);
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.checkMonth');
         let token = Joomla.getOptions('csrf.token', '');
@@ -47,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 let response = JSON.parse(xhr.responseText);
                 afterAjaxSuccess(response);
             } else {
-                //console.log('Error: ' + xhr.status);
             }
         };
         xhr.send('date=' + date + '&token=' + token);
@@ -75,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.onload = function() {
             if (xhr.status === 200) {
                openingHoursModal.hide();
+               location.reload();
             } else {
                 alert(taskText + ' ' + text.failed);
             }
@@ -105,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     function generateCalendar(d) {
-        //console.log('zeiten', zeiten);
         let month =d.getMonth();
 
         const weekdays = [text.monday, text.tuesday, text.wednesday, text.thursday, text.friday, text.saturday, text.sunday];
@@ -120,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let start = new Date(d.getFullYear(), d.getMonth()).getDay()-1;
         let cal = [];
         let day = 1;
-        console.log('customTimes:', customTimes);
 
         // Fügen Sie eine Zeile für die Wochentage hinzu
         cal.push('<tr>');
@@ -173,12 +169,10 @@ class="dayInner">${day++}${icons}</div></td>`);
                 let date = dayElement.getAttribute('data-date');
                 editingDayID = dayElement.getAttribute('data-id');
                 editingDate = date;
-                //console.log(editingDayID);
                 modalTitle.innerText = readifyDate(date);
                 if (isDateCustom(date)){
                     let day = new Date(date)
                     day = day.getDate();
-                    //console.log(customTimes[day].opening_time);
                     let options = modalSelect.options;
                     for (var i = 0; i < options.length; i++) {
                         if (options[i].value == 'regular_opening_hours' + customTimes[day].opening_time) {

@@ -68,7 +68,6 @@ function checkDate(date, visitors, time){
             let rooms = document.querySelectorAll('.roomList .room');
             if((blocked.times === undefined || blocked.times === '') && date !== '' && time !== ''){
                 let step2 = document.querySelectorAll('.step2');
-                console.log(step2);
                 step2.forEach(function(step){
                     step.classList.remove('hidden');
                 });
@@ -143,6 +142,13 @@ function renderOrderHTML() {
     xhr.send(encodedData);
 }
 
+function disableFields(classname)
+{
+    let fields = document.querySelectorAll(classname);
+    fields.forEach(function(field){
+        field.classList.add('hidden');
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
     const timeInput = document.getElementById('time');
@@ -154,7 +160,15 @@ document.addEventListener('DOMContentLoaded', function () {
     checkBooking.addEventListener('click', function() {
         renderOrderHTML();
     });
-
+    dateInput.addEventListener('change', function() {
+        disableFields('.step2')
+    });
+    timeInput.addEventListener('change', function() {
+        disableFields('.step2')
+    });
+    personsInput.addEventListener('change', function() {
+        updateRoomStatus(dateInput.value, personsInput.value, timeInput.value)
+    });
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
         checkDate(dateInput.value, personsInput.value, timeInput.value);

@@ -63,7 +63,7 @@ $priceCustom = $params->get('packagepricecustom');
                 </div>
             </div>
         </div>
-        <div class="uk-grid tm-grid-expand uk-grid-margin step2 hidden " uk-grid>
+        <div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
             <div class="uk-width-1-3@m uk-first-column">
                 <div class="uk-margin">
                     <div>

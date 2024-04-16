@@ -23,7 +23,8 @@ $counter=0;
 Factory::getApplication()
 ?>
 <ul class="uk-list uk-list-divider">
-    <?php foreach($extras as $extra): ?>
+    <?php foreach($extras as $extra):
+	    if ($extra->published == -2) continue;?>
         <li class="extra extraListItem" data-extra-id="<?= $extra["id"] ?>">
             <div class="uk-grid-small uk-flex-middle" uk-grid>
                 <div class="uk-width-auto">
@@ -34,7 +35,7 @@ Factory::getApplication()
                     <p class="uk-text-meta uk-margin-remove-top">
                         <?= $extra["description"] ?>
                     </p>
-                    <p><?= Text::_('COM_DNBOOKING_EXTRAS_PRICE'); ?>: <?= $extra["price"] ?></p>
+                    <p><?= Text::_('COM_DNBOOKING_EXTRAS_PRICE'); ?>: <?= number_format($extra["price"], 2, ",", '.' )?> €</p>
                 </div>
                 <div class="uk-width-auto">
                     <input class="uk-checkbox" type="checkbox" id="extra-<?= $extra["id"] ?>" style="display: none;">

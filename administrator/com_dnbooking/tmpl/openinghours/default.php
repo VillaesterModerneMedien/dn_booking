@@ -32,13 +32,18 @@ $zeiten = [
 $colors = [
 ];
 
+$closedColor = $params['closed_color'];
+
 $regularOpeningHours = $this->openinghours['regular_opening_hours'];
 
 $regularOpeningHoursHTML = '';
-
+$counter=0;
 foreach ($regularOpeningHours as $day => $value) {
     $regularOpeningHoursHTML .= "<option value='" . $day . "'>" . $value['starttime'] . " - " . $value['endtime'] . "</option>";
+    $counter++;
 }
+    $regularOpeningHoursHTML .= "<option value='regular_opening_hours".$counter."'>" . Text::_('COM_DNBOOKING_CALENDAR_CLOSED'). "</option>";
+
 
 $translations = [
     'monday' => Text::_('COM_DNBOOKING_CALENDAR_MONDAY'),
@@ -66,13 +71,14 @@ $translations = [
     'success' => Text::_('COM_DNBOOKING_CALENDAR_TASK_SUCCESS'),
     'failed' => Text::_('COM_DNBOOKING_CALENDAR_TASK_FAILED')
 ];
+
 foreach ($params['weekly_opening_hours'] as $day => $value) {
     $zeiten[$day] = $value;
 }
-
 foreach ($params['regular_opening_hours'] as $name => $value) {
     $colors[$name] = $value;
 }
+$colors['regular_opening_hours'.$counter]['openinghour_color'] = $closedColor;
 
 $settings = [
    'zeiten' => $zeiten,
