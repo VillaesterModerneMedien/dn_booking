@@ -88,32 +88,33 @@ $priceCustom = $params->get('packagepricecustom');
             </div>
         </div>
     </section>
-<ul uk-accordion>
+<ul uk-accordion class ="step2 hidden">
     <li class="uk-open">
-        <a class="uk-accordion-title" href>Räume</a>
+        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></a>
         <div class="uk-accordion-content">
             <section id="rooms" class="rooms uk-section uk-section-default step2 hidden">
-		        <?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
+				<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
             </section>
         </div>
     </li>
     <li>
-        <a class="uk-accordion-title" href>Extras</a>
+        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></a>
         <div class="uk-accordion-content">
-            <section id="extras" class="rooms uk-section uk-section-default step2 hidden" >
-		        <?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+            <section id="extras" class="rooms uk-section uk-section-default">
+				<?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
             </section>
         </div>
     </li>
     <li>
-        <a class="uk-accordion-title" href>Daten eingeben</a>
+        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></a>
         <div class="uk-accordion-content">
-            <section id="customer" class="customer uk-section  uk-section-default step2 hidden" >
-		        <?php echo LayoutHelper::render('booking.customer'); ?>
+            <section id="customer" class="customer uk-section  uk-section-default ">
+				<?php echo LayoutHelper::render('booking.customer'); ?>
             </section>
-            <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+            <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo JText::_('COM_DNBOOKING_SEARCH'); ?></button>
         </div>
     </li>
 </ul>
+
 
 </form>
