@@ -12,7 +12,7 @@
 use Joomla\CMS\Language\Text;
 ?>
 
-aaaaa
+Kunde
 <div class="subhead noshadow mb-3">
     <?php echo $this->document->getToolbar('toolbar')->render(); ?>
 </div>

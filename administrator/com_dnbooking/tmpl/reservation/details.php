@@ -19,11 +19,13 @@
     $app   = Factory::getApplication();
     $input = $app->input;
 
+
     $wa = $this->document->getWebAssetManager();
     $wa->useScript('joomla.dialog-autocreate');
     $wa->useStyle('com_dnbooking.reservation');
     $item     = $this->item;
     $customer = $this->customer;
+
 ?>
 
 <script>
@@ -49,6 +51,9 @@
             });
         });
     });
+
+
+
 </script>
 
 <div class="dnbooking dnbooking_reservation">
@@ -90,7 +95,7 @@
                                             <?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_HEADLINE'); ?>
                                         </h3>
 
-                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "width":"80vw", "height": "80vh", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
+                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
                                             <span class="icon-edit" aria-hidden="true"></span>
                                             <?= Text::_('COM_DNBOOKING_LABEL_EDIT'); ?>
                                         </button>
@@ -166,97 +171,7 @@
 
 
                         <div class="container">
-                            <h2><?= Text::_('COM_DNBOOKING_TABLE_HEADING'); ?></h2>
-                            <table class="table">
-                                <tbody>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_BOOKINGNUMBER'); ?></th>
-                                    <td>9995</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_BIRTHDAYCHILD'); ?></th>
-                                    <td>Audrey</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_BIRTHDAYCHILD'); ?></th>
-                                    <td>Mary Anne</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_DATE'); ?></th>
-                                    <td>11.09.2021</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_ARRIVALTIME'); ?></th>
-                                    <td>12:00 Uhr</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_PACKAGE'); ?></th>
-                                    <td>Häppi Motto</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_ROOM'); ?></th>
-                                    <td>Zauberküche</td>
-                                </tr>
-                                <!-- Personenzahl und Preise -->
-                                <tr>
-                                    <th scope="row" class="dividerRow"
-                                        colspan="2"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_NUMBEROFPEOPLE'); ?></th>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <table>
-                                            <tr>
-                                                <td><?= text::_('com_dnbooking_table_label_2birthdaychildren'); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td><?= text::_('com_dnbooking_table_label_4children'); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td><?= text::_('com_dnbooking_table_label_0children'); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td><?= text::_('com_dnbooking_table_label_2adults'); ?></td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <tr>
-                                                <td>56,00 EUR</td>
-                                            </tr>
-                                            <tr>
-                                                <td>0,00 EUR</td>
-                                            </tr>
-                                            <tr>
-                                                <td>12,00 EUR</td>
-                                            </tr>
-                                            <tr>
-                                                <td>20,00 EUR</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <!-- Kuchen und Extras -->
-                                <tr>
-                                <tr>
-                                    <th scope="row" class="dividerRow"
-                                        colspan="2"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_CAKEANDEXTRAS'); ?></th>
-                                </tr>
-                                <tr>
-                                    <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_OWNCAKE'); ?></td>
-                                    <td>9,50 EUR</td>
-                                </tr>
-                                <!-- Gesamtsumme -->
-                                <tr>
-                                    <th scope="row" class="dividerRow"
-                                        colspan="2"><?= Text::_('COM_DNBOOKING_TABLE_LABEL_GESAMMTSUMME'); ?></th>
-                                </tr>
-                                <tr>
-                                    <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_TOTAL'); ?></td>
-                                    <td>233,50 EUR</td>
-                                </tr>
-                                </tbody>
-                            </table>
+		                        <?php echo LayoutHelper::render('reservation.reservation_table', $item); ?>
                         </div>
 
 

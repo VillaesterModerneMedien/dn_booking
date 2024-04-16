@@ -26,13 +26,14 @@ $wa->useScript('keepalive')
 $layout  = 'edit';
 $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 ?>
+
 <div class="dnbooking dnbooking_reservation">
 	<form action="<?php echo Route::_('index.php?option=com_dnbooking&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 		<?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
-        
+
         <div class="main-card">
             <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details', 'recall' => true, 'breakpoint' => 768)); ?>
-            
+
             <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', empty($this->item->id) ? Text::_('COM_DNBOOKING_NEW_RESERVATION') : Text::_('COM_DNBOOKING_EDIT_RESERVATION')); ?>
             <div class="row">
                 <div class="col-lg-9">
@@ -43,7 +44,7 @@ $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
                 </div>
             </div>
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
-                
+
             <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
             <div class="row">
                 <div class="col-lg-6">
@@ -59,10 +60,10 @@ $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
                 </div>
             </div>
             <?php echo HTMLHelper::_('uitab.endTab'); ?>
-                
+
             <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
         </div>
-        
+
 		<?php echo HTMLHelper::_('form.token'); ?>
 		<input type="hidden" name="task" value="">
 	</form>

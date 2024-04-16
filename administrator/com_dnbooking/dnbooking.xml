@@ -11,21 +11,21 @@
 	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
     <namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
 	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
-	
+
 	<scriptfile>script.php</scriptfile>
-	
+
 	<install> <!-- Runs on install -->
 		<sql>
 			<file charset="utf8" driver="mysql">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
-	
+
 	<uninstall> <!-- Runs on uninstall -->
 		<sql>
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
-	
+
 	<update> <!-- Runs on update -->
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
@@ -48,15 +48,15 @@
 		<folder>src</folder>
 		<folder>tmpl</folder>
 	</files>
-	
+
 	<languages folder="site/language">
-		
+
 			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
-		
+
 			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
-		
+
 	</languages>
- 
+
 	<administration>
         <menu img="class:comment">
 			COM_DNBOOKING			<params>
@@ -92,6 +92,13 @@
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=extra.add</menu-quicktask>
 				</params>
             </menu>
+			<menu view="packages">
+                COM_DNBOOKING_SUBMENU_PACKAGES
+                <params>
+					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_PACKAGE</menu-quicktask-title>
+					<menu-quicktask>index.php?option=com_dnbooking&amp;task=package.add</menu-quicktask>
+				</params>
+            </menu>
 			<menu view="openinghours">
 				COM_DNBOOKING_SUBMENU_OPENING_HOURS
 			</menu>
@@ -99,11 +106,11 @@
 				COM_DNBOOKING_SUBMENU_SETTINGS
 			</menu>
 		</submenu>
-        
+
 		<files folder="administrator">
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
-			<filename>dnbooking.xml</filename>	
+			<filename>dnbooking.xml</filename>
 
 			<filename>script.php</filename>
             <folder>presets</folder>
@@ -114,23 +121,23 @@
 			<folder>tmpl</folder>
 			<folder>misc</folder>
 		</files>
-		
+
 		<languages folder="administrator/language">
-			
+
 			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
 			<language tag="de-DE">de-DE/com_dnbooking.sys.ini</language>
-		
+
 			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
 			<language tag="en-GB">en-GB/com_dnbooking.sys.ini</language>
-					
+
 		</languages>
 	</administration>
     <dashboards>
 		<dashboard title="COM_DNBOOKING_DASHBOARD_TITLE" icon="icon-file-alt">dnbooking</dashboard>
 	</dashboards>
-    
+
 	<updateservers>
 		<server type="extension" priority="1" name="dnbooking Updates">https://YOUR-UPDATE-URL.COM/com_dnbooking/extension.xml</server>
 	</updateservers>
-    
+
 </extension>
