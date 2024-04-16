@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Helper\TagsHelper;
 use Joomla\CMS\Language\Associations;
@@ -35,7 +36,7 @@ use Joomla\Utilities\ArrayHelper;
 class RoomModel extends AdminModel
 {
 	use VersionableModelTrait;
-    
+
 	/**
 	 * The type alias for this content type.
 	 *
@@ -49,7 +50,7 @@ class RoomModel extends AdminModel
 	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_DNBOOKING';
-    
+
     /**
 	 * Name of the form
 	 *
@@ -63,7 +64,7 @@ class RoomModel extends AdminModel
 	 * @since  1.0.0
 	 */
 	// protected $helpURL;
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -78,7 +79,7 @@ class RoomModel extends AdminModel
 	{
 		parent::__construct($config, $factory, $formFactory);
 	}
-	
+
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
@@ -95,7 +96,7 @@ class RoomModel extends AdminModel
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Method to get the row form.
 	 *
@@ -122,17 +123,17 @@ class RoomModel extends AdminModel
         {
             return false;
         }
-        
+
         // Modify the form based on access controls.
 		if (!$this->canEditState((object) $data))
         {
             $form->setFieldAttribute('published', 'disabled', 'true');
-            
+
             // Disable fields while saving.
 			// The controller has already verified this is a record you can edit.
 			$form->setFieldAttribute('published', 'filter', 'unset');
         }
-        
+
         // Don't allow to change the created_by user if not allowed to access com_users.
 		if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_users'))
 		{
@@ -141,7 +142,94 @@ class RoomModel extends AdminModel
 
         return $form;
 	}
-	
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  CMSObject|boolean  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getItem($pk = null)
+	{
+		$pk    = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+
+		if ($pk > 0) {
+			// Attempt to load the row.
+			$return = $table->load($pk);
+
+			// Check for a table object error.
+			if ($return === false) {
+				// If there was no underlying error, then the false means there simply was not a row in the db for this $pk.
+				if (!$table->getError()) {
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_NOT_EXIST'));
+				} else {
+					$this->setError($table->getError());
+				}
+
+				return false;
+			}
+		}
+
+		// Convert to the CMSObject before adding other data.
+		$properties = $table->getProperties(1);
+		$item       = ArrayHelper::toObject($properties, CMSObject::class);
+
+		if (property_exists($item, 'params')) {
+			$registry     = new Registry($item->params);
+			$item->params = $registry->toArray();
+		}
+
+		return $item;
+	}
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  CMSObject|boolean  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getReservationRoom($pk = null)
+	{
+		$pk    = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+
+		if ($pk > 0) {
+			// Attempt to load the row.
+			$return = $table->load($pk);
+
+			// Check for a table object error.
+			if ($return === false) {
+				// If there was no underlying error, then the false means there simply was not a row in the db for this $pk.
+				if (!$table->getError()) {
+					$this->setError(Text::_('JLIB_APPLICATION_ERROR_NOT_EXIST'));
+				} else {
+					$this->setError($table->getError());
+				}
+
+				return false;
+			}
+		}
+
+		$room =  [
+			'id' => $table->id,
+			'title' => $table->title,
+			'personsmin' => $table->personsmin,
+			'personsmax' => $table->personsmax,
+			'pricecustom' => $table->pricecustom,
+			'priceregular' =>  $table->priceregular,
+		];
+
+		return $room;
+
+	}
+
 	/**
 	 * Preprocess the form.
 	 *
@@ -157,7 +245,7 @@ class RoomModel extends AdminModel
 	{
         parent::preprocessForm($form, $data, $group);
 	}
-    
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -178,7 +266,7 @@ class RoomModel extends AdminModel
 
 		return $data;
 	}
-    
+
 
     /**
 	 * Prepare and sanitise the table prior to saving.
@@ -192,9 +280,9 @@ class RoomModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate()->toSql();
-        
+
 		$table->generateAlias();
-        
+
         if (empty($table->id))
 		{
 			// Set the values
@@ -207,7 +295,7 @@ class RoomModel extends AdminModel
 			$table->modified_by = Factory::getApplication()->getIdentity()->id;
 		}
 	}
-    
+
     /**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -224,7 +312,7 @@ class RoomModel extends AdminModel
 			return false;
 		}
         return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_dnbooking.room.' . (int) $record->id);
- 
+
 	}
 
 	/**

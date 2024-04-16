@@ -14,18 +14,15 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\CMS\MVC\Factory\MVCFactoryServiceInterface;
+use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Helper\TagsHelper;
-use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Language\LanguageHelper;
+
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\String\PunycodeHelper;
+
 use Joomla\CMS\Versioning\VersionableModelTrait;
-use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
-use Joomla\Database\ParameterType;
-use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
+
 
 /**
  * Item Model for a Reservation.
@@ -58,6 +55,7 @@ class ReservationModel extends AdminModel
 	 */
 	protected $formName = 'reservation';
 
+
 	/**
 	 * @var    string  The help screen base URL for the component.
 	 * @since  1.0.0
@@ -76,6 +74,7 @@ class ReservationModel extends AdminModel
 	 */
 	public function __construct($config = array(), MVCFactoryInterface $factory = null, FormFactoryInterface $formFactory = null)
 	{
+		$this->factory = $factory;
 		parent::__construct($config, $factory, $formFactory);
 	}
 
@@ -140,6 +139,43 @@ class ReservationModel extends AdminModel
 		}
 
         return $form;
+	}
+
+
+	/**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  CMSObject|boolean  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getItem($pk = null)
+	{
+		$pk    = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
+		$table = $this->getTable();
+
+		if ($pk > 0)
+		{
+			// Attempt to load the row.
+			$return = $table->load($pk);
+
+			// Check for a table object error.
+			if ($return === false)
+			{
+				return false;
+			}
+		}
+
+		$reservation = $table;
+		if ($this->factory) {
+			$roomModel = $this->getMVCFactory()->createModel('Room', 'Administrator', ['ignore_request' => true]);
+			$reservation->room = $roomModel->getReservationRoom($reservation->room_id);
+		}
+
+		return $reservation;
+
 	}
 
 	/**

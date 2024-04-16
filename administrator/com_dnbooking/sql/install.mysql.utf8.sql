@@ -119,27 +119,3 @@ CREATE TABLE if not exists `#__dnbooking_customers`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
-
-CREATE TABLE if not exists `#__dnbooking_packages`
-(
-    `id`                   int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `alias`       varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    `title`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `price_birthday_child` float            NOT NULL,
-    `price_adult`          float            NOT NULL,
-    `price_child`          float,
-    `price_children`       float            NOT NULL,
-    `available_rooms`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `deposit`              float            NOT NULL,
-    `published`   tinyint(4)                                             NOT NULL DEFAULT '0',
-    `created`     datetime                                               NOT NULL,
-    `created_by`  int(10) unsigned                                       NOT NULL DEFAULT '0',
-    `modified`    datetime                                               NOT NULL,
-    `modified_by` int(10) unsigned                                       NOT NULL DEFAULT '0',
-    PRIMARY KEY (`id`),
-    KEY `idx_createdby` (`created_by`),
-    KEY `published` (`published`),
-    KEY `idx_alias` (`alias`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;

@@ -18,14 +18,12 @@
 
     $app   = Factory::getApplication();
     $input = $app->input;
-
-
+    
     $wa = $this->document->getWebAssetManager();
     $wa->useScript('joomla.dialog-autocreate');
     $wa->useStyle('com_dnbooking.reservation');
-    $item     = $this->item;
+    $reservation     = $this->item;
     $customer = $this->customer;
-
 ?>
 
 <script>
@@ -171,7 +169,7 @@
 
 
                         <div class="container">
-		                        <?php echo LayoutHelper::render('reservation.reservation_table', $item); ?>
+		                        <?php echo LayoutHelper::render('reservation.reservation_table', $reservation); ?>
                         </div>
 
 
