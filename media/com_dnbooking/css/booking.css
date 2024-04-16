@@ -1,7 +1,7 @@
-.room {
+.room, .extraList {
   transition: 0.5s opacity ease-in-out;
 }
-.room .el-item {
+.room .el-item, .extraList .el-item {
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   background-color: #fff;
@@ -9,19 +9,19 @@
   transition: all 0.3s ease-in-out;
   padding: 10px;
 }
-.room .el-item:not(.room.disabled .el-item):hover {
+.room .el-item:not(.room.disabled .el-item):hover, .extraList .el-item:not(.room.disabled .el-item):hover {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.24);
 }
-.room .el-item .roomlistRoomTitle {
+.room .el-item .roomlistRoomTitle, .extraList .el-item .roomlistRoomTitle {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
 }
-.room .el-item .roomlistRoomDescription {
+.room .el-item .roomlistRoomDescription, .extraList .el-item .roomlistRoomDescription {
   font-size: 14px;
   margin-bottom: 10px;
 }
-.room.disabled {
+.room.disabled, .extraList.disabled {
   opacity: 0.3;
 }
 

@@ -21,12 +21,15 @@ function updateRoomStatus(date, visitors, time){
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
             let rooms = document.querySelectorAll('.roomList .room');
-            if(blocked.times === undefined || blocked.times === ''){
                 if(blocked.rooms !== undefined) {
                     let blockedRooms = blocked.rooms;
+                }
+                else{
+                    let blockedRooms = ['all available'];
+                }
                     rooms.forEach(function(room) {
                         let roomid = parseInt(room.getAttribute('data-room-id'));
-                        if (blockedRooms.includes(roomid)) {
+                        if (blocked.rooms.includes(roomid)) {
                             room.classList.add('disabled');
                             room.removeEventListener('click', handleRoomClick);
                         }
@@ -36,8 +39,6 @@ function updateRoomStatus(date, visitors, time){
                             room.addEventListener('click', handleRoomClick);
                         }
                     });
-                }
-            }
         }
     };
 
@@ -105,6 +106,7 @@ function handleRoomClick() {
     let rooms = document.querySelectorAll('.roomList .room');
     rooms.forEach(function(room) {
         room.classList.remove('activeRoom');
+        console.log(room);
     });
     if (radioButton) {
         radioButton.checked = true;

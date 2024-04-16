@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let openingHoursModal = new bootstrap.Modal(document.getElementById('openingHoursModal'), options);
     let modalTitle = document.getElementById('modal-title');
     let modalSelect = document.getElementById('timeSelect');
-    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() );
+    currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth());
 
     checkMonth(currentDate.getMonth());
 

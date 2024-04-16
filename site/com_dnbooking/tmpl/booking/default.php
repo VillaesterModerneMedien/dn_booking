@@ -88,19 +88,32 @@ $priceCustom = $params->get('packagepricecustom');
             </div>
         </div>
     </section>
-
-    <section id="rooms" class="rooms uk-section uk-section-default step2 hidden">
-        <?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
-    </section>
-
-    <section id="extras" class="rooms uk-section uk-section-default step2 hidden" >
-        <?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
-    </section>
-
-    <section id="customer" class="customer uk-section  uk-section-default step2 hidden" >
-        <?php echo LayoutHelper::render('booking.customer'); ?>
-    </section>
-
-    <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+<ul uk-accordion>
+    <li class="uk-open">
+        <a class="uk-accordion-title" href>Räume</a>
+        <div class="uk-accordion-content">
+            <section id="rooms" class="rooms uk-section uk-section-default step2 hidden">
+		        <?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
+            </section>
+        </div>
+    </li>
+    <li>
+        <a class="uk-accordion-title" href>Extras</a>
+        <div class="uk-accordion-content">
+            <section id="extras" class="rooms uk-section uk-section-default step2 hidden" >
+		        <?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+            </section>
+        </div>
+    </li>
+    <li>
+        <a class="uk-accordion-title" href>Daten eingeben</a>
+        <div class="uk-accordion-content">
+            <section id="customer" class="customer uk-section  uk-section-default step2 hidden" >
+		        <?php echo LayoutHelper::render('booking.customer'); ?>
+            </section>
+            <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo Text::_('COM_DNBOOKING_SEARCH'); ?></button>
+        </div>
+    </li>
+</ul>
 
 </form>

@@ -92,13 +92,6 @@
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=extra.add</menu-quicktask>
 				</params>
             </menu>
-			<menu view="packages">
-                COM_DNBOOKING_SUBMENU_PACKAGES
-                <params>
-					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_PACKAGE</menu-quicktask-title>
-					<menu-quicktask>index.php?option=com_dnbooking&amp;task=package.add</menu-quicktask>
-				</params>
-            </menu>
 			<menu view="openinghours">
 				COM_DNBOOKING_SUBMENU_OPENING_HOURS
 			</menu>

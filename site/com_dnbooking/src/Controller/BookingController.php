@@ -199,6 +199,9 @@ class BookingController extends FormController
 				$blockedRooms['rooms'][] = $room['id'];
 			}
 		}
+		if (empty($blockedRooms['rooms'])) {
+			$blockedRooms['rooms'][] = 'all available';
+		}
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
 		$app->close();
