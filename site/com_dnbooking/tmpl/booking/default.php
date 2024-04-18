@@ -28,6 +28,9 @@ $priceRegular = $params->get('packagepriceregular');
 $priceCustom = $params->get('packagepricecustom');
 
 ?>
+
+<?php echo $this->form->renderField('additional_info'); ?>
+
 <form class="uk-form-stacked"
          action="/index.php?option=com_dnbooking&task=booking.sendForm"
          name="bookingForm"

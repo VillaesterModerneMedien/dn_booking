@@ -165,7 +165,66 @@
                     <option value="number">COM_DNBOOKING_OPTION_FIELDTYPE_NUMBER</option>
                     <option value="textarea">COM_DNBOOKING_OPTION_FIELDTYPE_TEXTAREA</option>
                     <option value="checkbox">COM_DNBOOKING_OPTION_FIELDTYPE_CHECKBOX</option>
+                    <option value="list">COM_DNBOOKING_OPTION_FIELDTYPE_LIST</option>
+                    <option value="calendar">COM_DNBOOKING_OPTION_FIELDTYPE_CALENDAR</option>
                 </field>
+            </form>
+        </field>
+
+        <field type="spacer" name="myspacer" label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS2_HINT"/>
+
+        <field
+                name="additional_info_form2"
+                type="subform"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.repeatable-table"
+                description=""
+                multiple="true"
+                min="1"
+                max="10"
+        >
+            <form>
+                <field
+                        name="fieldName"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_NAME_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                />
+                <field
+                        name="fieldLabel"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_LABEL_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                />
+                <field name="fieldType"
+                       type="list"
+                       default=""
+                       required="true"
+                       label="COM_DNBOOKING_FIELD_TYPE_LABEL"
+                       description=""
+                >
+                    <option value="">COM_DNBOOKING_LABEL_CHOOSE</option>
+                    <option value="text">COM_DNBOOKING_OPTION_FIELDTYPE_TEXT</option>
+                    <option value="number">COM_DNBOOKING_OPTION_FIELDTYPE_NUMBER</option>
+                    <option value="textarea">COM_DNBOOKING_OPTION_FIELDTYPE_TEXTAREA</option>
+                    <option value="checkbox">COM_DNBOOKING_OPTION_FIELDTYPE_CHECKBOX</option>
+                    <option value="list">COM_DNBOOKING_OPTION_FIELDTYPE_LIST</option>
+                    <option value="calendar">COM_DNBOOKING_OPTION_FIELDTYPE_CALENDAR</option>
+
+                </field>
+                <field
+                        name="fieldOptions"
+                        type="textarea"
+                        label="COM_DNBOOKING_FIELD_OPTIONS_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                        showon="fieldType:list"
+                />
             </form>
         </field>
 

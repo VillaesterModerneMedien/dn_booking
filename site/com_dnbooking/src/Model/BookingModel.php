@@ -11,11 +11,10 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Model\ReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
 
 /**
@@ -23,7 +22,7 @@ use Joomla\Database\DatabaseInterface;
  *
  * @since  1.0.0
  */
-class BookingModel extends BaseDatabaseModel
+class BookingModel extends ReservationModel
 {
     protected $db;
 

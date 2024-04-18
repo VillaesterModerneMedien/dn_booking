@@ -116,14 +116,43 @@ class AdditionalInfosField extends SubformField
 	{
 		$params = ComponentHelper::getParams('com_dnbooking');
 
-		$formDataJSON = $params->get('additional_info_form');
-		$formXML = '<form>';
+		$formXML = '';
 
-		foreach ($formDataJSON as $field) {
-			$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" />';
+		if($this->fieldname == 'additional_info'){
+			$formDataJSON = $params->get('additional_info_form');
+			$formXML = '<form>';
+		}else{
+			$formDataJSON = $params->get('additional_info_form2');
+			$formXML .= '<form>';
+			$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
+			$formXML .= '<form>';
 		}
 
-		$formXML .= '</form>';
+		foreach ($formDataJSON as $field) {
+
+			switch($field->fieldType) {
+				case 'list':
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" />';
+					break;
+				case 'calendar':
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" 
+	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y" format="%d.%m.%Y"/>';
+
+					break;
+				default:
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" />';
+			}
+
+		}
+
+		if($this->fieldname == 'additional_info'){
+			$formXML .= '</form>';
+		}else{
+			$formXML .= '</form>';
+			$formXML .= '</field>';
+			$formXML .= '</form>';
+		}
+
 
 		$this->formsource = $formXML;
 

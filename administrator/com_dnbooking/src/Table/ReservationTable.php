@@ -124,6 +124,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		//$this->extras_ids = json_encode($this->extras_ids);
 
 		$this->additional_info = json_encode($this->additional_info);
+		$this->additional_infos2 = json_encode($this->additional_infos2);
 
 		if ($this->id)
 		{

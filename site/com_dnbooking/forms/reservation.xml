@@ -4,12 +4,12 @@
         <inlinehelp button="show"/>
     </config>
 
-    <fieldset name="reservationfieldset_data1">
+    <fieldset name="reservationfieldset_left">
 
         <field
                 name="reservation_date"
                 type="calendar"
-                label="COM_DNBOOKING_FIELD_RESERVATION_DATE_LABEL"
+                label="COM_DNBOOKING_FIELD_RESERVATION_DATE_LABEL_FRONMT"
                 translateformat="true"
                 showtime="true"
                 filter="user_utc"
@@ -51,7 +51,7 @@
 
     </fieldset>
 
-    <fieldset name="reservationfieldset_data2" addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
+    <fieldset name="reservationfieldset_right" addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
 
         <field
                 name="reservation_price"
@@ -81,22 +81,6 @@
         </field>
 
     </fieldset>
-
-    <fieldset name="reservationfieldset_data3">
-
-        <field
-                name="additional_infos2"
-                type="AdditionalInfos"
-                label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL2"
-                description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC2"
-                min="1"
-                max="1"
-                multiple="false"
-                hiddenLabel="true"
-        />
-
-    </fieldset>
-
 
     <fieldset name="customerfieldset">
 

@@ -12,6 +12,7 @@ CREATE TABLE if not exists `#__dnbooking_reservations`
     `persons_count`      int(11)                                                NOT NULL DEFAULT '0',
     `extras_ids`         varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `additional_info`    json                                                   NOT NULL,
+    `additional_info2`   json                                                   NOT NULL,
     `reservation_date`   datetime                                               NOT NULL,
     `published`          tinyint(4)                                             NOT NULL DEFAULT '0',
     `created`            datetime                                               NOT NULL,

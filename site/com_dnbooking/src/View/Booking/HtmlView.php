@@ -91,6 +91,7 @@ class HtmlView extends BaseHtmlView
 		$app  = Factory::getApplication();
 		$user = $this->getCurrentUser();
 	//	$this->state = $this->get('State');
+		$this->form = $this->get('Form');
 		$this->rooms = $this->get('Rooms');
 		$this->extras = $this->get('Extras');
 		$this->reservations = $this->get('Reservations');
