@@ -4,9 +4,7 @@
 CREATE TABLE if not exists `#__dnbooking_reservations`
 (
     `id`                 int(11) unsigned                                       NOT NULL AUTO_INCREMENT,
-    `alias`              varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    `title`              varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `content`            mediumtext COLLATE utf8mb4_unicode_ci,
+    `admin_notes`        mediumtext COLLATE utf8mb4_unicode_ci,
     `reservation_price`  varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `reservation_status` int(11)                                                NOT NULL DEFAULT '0',
     `customer_id`        int(11)                                                NOT NULL DEFAULT '0',
@@ -17,14 +15,10 @@ CREATE TABLE if not exists `#__dnbooking_reservations`
     `reservation_date`   datetime                                               NOT NULL,
     `published`          tinyint(4)                                             NOT NULL DEFAULT '0',
     `created`            datetime                                               NOT NULL,
-    `created_by`         int(10) unsigned                                       NOT NULL DEFAULT '0',
     `modified`           datetime                                               NOT NULL,
-    `modified_by`        int(10) unsigned                                       NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    KEY `idx_createdby` (`created_by`),
-    KEY `published` (`published`),
-    KEY `idx_alias` (`alias`)
-
+    KEY `idx_customer_id` (`customer_id`),
+    KEY `published` (`published`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;

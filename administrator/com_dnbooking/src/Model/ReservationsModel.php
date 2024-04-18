@@ -24,7 +24,7 @@ use Joomla\CMS\Table\Table;
  * @since  1.0.0
  */
 class ReservationsModel extends ListModel
-{	
+{
 	/**
 	 * Constructor.
 	 *
@@ -48,7 +48,7 @@ class ReservationsModel extends ListModel
 
 		parent::__construct($config);
 	}
-	
+
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -65,7 +65,7 @@ class ReservationsModel extends ListModel
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Returns an object list
 	 *
@@ -79,33 +79,29 @@ class ReservationsModel extends ListModel
 	{
 		$listOrder = $this->getState('list.ordering', 'a.id');
 		$listDirn  = $this->getState('list.direction', 'asc');
-		
+
 		$query->order($this->_db->quoteName($listOrder) . ' ' . $this->_db->escape($listDirn));
 
 		// Process pagination.
 		$result = parent::_getList($query, $limitstart, $limit);
 		return $result;
 	}
-	
-	
-	/**
-	 * Build an SQL query to load the list data.
-	 *
-	 * @return  \Joomla\Database\DatabaseQuery
-	 *
-     * @return      string  An SQL query
-     */
-    protected function getListQuery()
-    {
+
+
+	protected function getListQuery()
+	{
 		// Create a new query object.
 		$db    = $this->getDatabase();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.*');
+		$query->select('a.*, c.id AS customer_id, c.firstname, c.lastname');
 		$query->from($db->quoteName('#__dnbooking_reservations', 'a'));
 
-        // Filter by published state
+		// Join over the customers table.
+		$query->join('LEFT', $db->quoteName('#__dnbooking_customers', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.customer_id'));
+
+		// Filter by published state
 		$published = (string) $this->getState('filter.published');
 
 		if (is_numeric($published))
@@ -117,10 +113,10 @@ class ReservationsModel extends ListModel
 		{
 			$query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
 		}
-        
+
 		// Filter by search in title or note or id:.
 		$search = $this->getState('filter.search');
-        
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -131,16 +127,13 @@ class ReservationsModel extends ListModel
 			}
 			else
 			{
-                $search = '%' . trim($search) . '%';
+				$search = '%' . trim($search) . '%';
 				$query->where('(' .
-                        '(' . $db->quoteName('a.title') . ' LIKE :title)' . ' OR ' .
-                        '(' . $db->quoteName('a.alias') . ' LIKE :alias)' . ' OR ' .
-                        '(' . $db->quoteName('a.content') . ' LIKE :content)' .
-                    ')'
-                );
-                $query->bind(':title', $search);
-				$query->bind(':alias', $search);
-                $query->bind(':content', $search);
+					'CONCAT(' . $db->quoteName('a.created') . ', ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ') LIKE :combined' .
+					' OR ' . $db->quoteName('a.content') . ' LIKE :content' .
+					')');
+				$query->bind(':combined', $search);
+				$query->bind(':content', $search);
 			}
 		}
 
@@ -174,7 +167,7 @@ class ReservationsModel extends ListModel
 
         return $form;
     }
-    
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -191,11 +184,11 @@ class ReservationsModel extends ListModel
 	{
 		// Load the filter state.
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-		
+
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}
-    
+
 	/**
 	 * Method to get a store id based on model configuration state.
 	 *
@@ -217,5 +210,5 @@ class ReservationsModel extends ListModel
 
 		return parent::getStoreId($id);
 	}
-    
+
 }

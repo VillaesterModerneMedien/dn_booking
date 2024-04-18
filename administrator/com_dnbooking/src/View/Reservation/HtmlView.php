@@ -78,15 +78,19 @@ class HtmlView extends BaseHtmlView
     {
         $app = Factory::getApplication();
         $app->input->set('hidemainmenu', \true);
-        $user = $app->getIdentity();
-
-        $title = $item->title;
         $id = $item->id;
-        $created = \date("d.m.Y | H:i", \strtotime($item->created));
+		$headline = Text::_('COM_DNBOOKING_HEADLINE_NEW_RESERVATION');
 
-        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $title) ;
+		if(!empty($item->id)){
+		    $customer = $this->customer->firstname . ' ' . $this->customer->lastname;
+	        $created = \date("d.m.Y | H:i", \strtotime($item->created));
+            $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $customer) ;
+		}
+
         ToolbarHelper::title($headline);
-        // If not checked out, can save the item.
+
+        ToolbarHelper::apply('reservation.apply');
+        ToolbarHelper::save('reservation.save');
         ToolbarHelper::cancel('reservation.cancel');
     }
 }

@@ -24,6 +24,7 @@ $userId    = $user->get('id');
 
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
+
 ?>
 <form action="<?php echo Route::_('index.php?option=com_dnbooking&view=reservations'); ?>" method="post" name="adminForm" id="adminForm">
     <div class="row">
@@ -64,11 +65,20 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </thead>
                         <tbody>
                         <?php foreach ($this->items as $i => $item) :
+
+	                        $id = $item->id;
+	                        $created = \date("d.m.Y | H:i", \strtotime($item->created));
+                            $customer = $item->firstname . ' ' . $item->lastname;
+	                        $admin_notes = $item->admin_notes;
+	                        $admin_notes_without_html = strip_tags($admin_notes);
+	                        $short_admin_notes = substr($admin_notes_without_html, 0, 150);
+	                        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $customer) ;
+
                             $canCreate  = $user->authorise('core.create',     'com_dnbooking.reservation.' . $item->id);
 							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.reservation.' . $item->id);
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.reservation.' . $item->id) && $item->created_by == $userId;
+                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.reservation.' . $item->id);
 							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.reservation.' . $item->id);
- 
+
                         ?>
                             <tr class="row<?php echo $i % 2; ?>">
                                 <td class="center">
@@ -77,22 +87,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                 <th scope="row" class="has-context">
                                     <div>
                                         <?php if ($canEdit) : ?>
-                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&view=reservation&layout=details&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
-                                            <?php echo $item->title; ?>
+                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&view=reservation&layout=details&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($headline); ?>">
+                                            <?php echo $headline; ?>
                                         </a>
                                         <?php else : ?>
-                                            <?php echo $this->escape($item->title); ?>
+                                            <?php echo $this->escape($headline); ?>
                                         <?php endif; ?>
 
-                                        <?php if (!empty($item->note)) : ?>
+                                        <?php if (!empty($short_admin_notes)) : ?>
                                             <div class="small">
-                                                <?php echo Text::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note)); ?>
+                                                <?php echo Text::_('COM_DNBOOKING_RESERVATION_INTERNAL_NOTICE') . ' ' .  $this->escape($short_admin_notes); ?>
                                             </div>
                                         <?php endif; ?>
-                                                                        
-                                        <div class="small">
-                                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-                                        </div>
+
                                     </div>
                                 </th>
                                 <td>
@@ -106,7 +113,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </tbody>
                     </table>
                     <?php // load the pagination.
-					echo $this->pagination->getListFooter(); 
+					echo $this->pagination->getListFooter();
                     ?>
 
                 <?php endif; ?>

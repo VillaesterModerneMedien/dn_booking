@@ -18,14 +18,14 @@
         />
 
 
-
     </fieldset>
     <fieldset
-        name="openighourssetting"
-        label="COM_DNBOOKING_CONFIG_OPENINGHOURSSETTINGS_LABEL"
-        addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\OpeningHours"
-        >
-        <field name="closed_color" type="color" default="" label="COM_DNBOOKING_CONFIG_CLOSED_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_CLOSEDCOLOR_DESC"/>
+            name="openighourssetting"
+            label="COM_DNBOOKING_CONFIG_OPENINGHOURSSETTINGS_LABEL"
+            addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\OpeningHours"
+    >
+        <field name="closed_color" type="color" default="" label="COM_DNBOOKING_CONFIG_CLOSED_COLOR_LABEL"
+               description="COM_DNBOOKING_CONFIG_CLOSEDCOLOR_DESC"/>
 
         <field name="regular_opening_hours" type="subform"
                label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOURS_LABEL"
@@ -38,20 +38,21 @@
                        description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_START_DESC"
                        format="%H:%M"
                        showtime="true"
-                       filter="server_utc" />
+                       filter="server_utc"/>
                 <field name="endtime" type="time"
                        label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_LABEL"
                        description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_DESC"
                        format="%H:%M"
                        showtime="true"
-                       filter="server_utc" />
-                <field name="openinghour_color" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL" description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
+                       filter="server_utc"/>
+                <field name="openinghour_color" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL"
+                       description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
             </form>
         </field>
         <field name="weekly_opening_hours" type="subform"
                label="COM_DNBOOKING_CONFIG_WEEKLY_OPENINGHOURS_LABEL"
                description="COM_DNBOOKING_CONFIG_WEEKLY_OPENINGHOURS_DESC"
-               >
+        >
             <form>
                 <field
                         name="opening_hours_monday"
@@ -69,31 +70,32 @@
                         name="opening_hours_wednesday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY_DESC" />
+                        description="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY_DESC"/>
                 <field
                         name="opening_hours_thursday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_THURSDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_THURSDAY_DESC" />
+                        description="COM_DNBOOKING_CONFIG_DAY_THURSDAY_DESC"/>
                 <field
                         name="opening_hours_friday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_FRIDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_FRIDAY_DESC" />
+                        description="COM_DNBOOKING_CONFIG_DAY_FRIDAY_DESC"/>
                 <field
                         name="opening_hours_saturday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_SATURDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_SATURDAY_DESC" />
+                        description="COM_DNBOOKING_CONFIG_DAY_SATURDAY_DESC"/>
                 <field
                         name="opening_hours_sunday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_SUNDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_SUNDAY_DESC" />
+                        description="COM_DNBOOKING_CONFIG_DAY_SUNDAY_DESC"/>
             </form>
         </field>
 
     </fieldset>
+
     <fieldset
             name="pricesettings"
             label="COM_DNBOOKING_CONFIG_PRICESETTINGS_LABEL"
@@ -115,6 +117,70 @@
                 default="0"
         />
     </fieldset>
+
+
+    <fieldset
+            name="additional_fields"
+            label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS_LABEL"
+    >
+
+        <field type="spacer" name="myspacer" label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS_HINT"/>
+
+       <field
+                name="additional_info_form"
+                type="subform"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.repeatable-table"
+                description=""
+                multiple="true"
+                min="1"
+                max="10"
+        >
+            <form>
+                <field
+                        name="fieldName"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_NAME_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                />
+                <field
+                        name="fieldLabel"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_LABEL_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                />
+                <field name="fieldType"
+                       type="list"
+                       default=""
+                       required="true"
+                       label="COM_DNBOOKING_FIELD_TYPE_LABEL"
+                       description=""
+                >
+                    <option value="">COM_DNBOOKING_LABEL_CHOOSE</option>
+                    <option value="text">COM_DNBOOKING_OPTION_FIELDTYPE_TEXT</option>
+                    <option value="number">COM_DNBOOKING_OPTION_FIELDTYPE_NUMBER</option>
+                    <option value="textarea">COM_DNBOOKING_OPTION_FIELDTYPE_TEXTAREA</option>
+                    <option value="checkbox">COM_DNBOOKING_OPTION_FIELDTYPE_CHECKBOX</option>
+                </field>
+            </form>
+        </field>
+
+    </fieldset>
+
+    <fieldset
+            name="emailsettings"
+            label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_LABEL"
+    >
+
+        <field type="spacer" name="myspacer" label="NUr Platzhalters"/>
+
+    </fieldset>
+
+
     <fieldset
             name="permissions"
             label="JCONFIG_PERMISSIONS_LABEL"
