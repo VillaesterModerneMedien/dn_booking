@@ -1,7 +1,7 @@
 <?php
 
 use Joomla\CMS\Language\Text;
-$form = $displayData->get('form');
+$form = $displayData;
 ?>
 <div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="">
     <div class="uk-width-1-3@m uk-first-column uk-flex-bottom uk-grid-item-match">
@@ -9,7 +9,7 @@ $form = $displayData->get('form');
             <div>
                 <label class="uk-form-label" for="date"><?php echo Text::_('COM_DNBOOKING_DATE_LABEL'); ?></label>
                 <div class="uk-form-controls">
-	                <?php echo $this->form->renderField('reservation_date'); ?>
+	                <?php echo $form->renderField('reservation_date'); ?>
                     <!-- >input type="date" class="uk-input" id="date" name="date"> -->
                 </div>
             </div>

@@ -25,8 +25,8 @@ $wa->useStyle('com_dnbooking.booking');
 $dateformat = 'Y-m-d';
 $params = ComponentHelper::getParams('com_dnbooking');
 $priceRegular = $params->get('packagepriceregular');
+$form = $this->form;
 $priceCustom = $params->get('packagepricecustom');
-
 ?>
 
 <form class="uk-form-stacked"
