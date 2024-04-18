@@ -28,7 +28,6 @@ $priceRegular = $params->get('packagepriceregular');
 $priceCustom = $params->get('packagepricecustom');
 
 ?>
-
 <form class="uk-form-stacked"
          action="/index.php?option=com_dnbooking&task=booking.sendForm"
          name="bookingForm"
@@ -36,7 +35,7 @@ $priceCustom = $params->get('packagepricecustom');
          method="POST">
     <section id="bookingTimes" class="booking uk-section uk-section-default" data-step="1">
         <h2><?php echo JText::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
-	    <?php echo LayoutHelper::render('booking.reservationdata', $this->form); ?>
+	    <?php echo LayoutHelper::render('booking.reservationdata'); ?>
         <div id="childrenContainer" class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
 	    <?php echo LayoutHelper::render('booking.childrencontainer'); ?>
         </div>
