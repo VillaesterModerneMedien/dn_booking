@@ -60,9 +60,6 @@
 
 <div class="dnbooking dnbooking_reservation">
     <form action="<?php echo Route::_('index.php?option=com_dnbooking&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-
-	    <?php echo $this->form->renderFieldset('mybasic'); ?>
-
         <div class="row">
 
             <div class="col-md-6">
@@ -98,7 +95,7 @@
                                             <?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_HEADLINE'); ?>
                                         </h3>
 
-                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
+                                        <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "textHeader":"<?= Text::sprintf('COM_DNBOOKING_EDIT_CUSTOMER_SPRINTF', ' (ID: ' .$customer->id . ')' . $customer->firstname . ' ' . $customer->lastname); ?>", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
                                             <span class="icon-edit" aria-hidden="true"></span>
                                             <?= Text::_('COM_DNBOOKING_LABEL_EDIT'); ?>
                                         </button>
@@ -151,23 +148,20 @@
                         <h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_SUMMARY_HEADLINE'); ?></h3>
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title">Secondary card title</h4>
-
-                        - Kundenfeld als readonly Textfeld mit Icon, dann Task
-                        - Raum ebenfalls
-
-
                         <div class="container">
 		                        <?php echo LayoutHelper::render('reservation.reservation_table', $reservation); ?>
                         </div>
-
-
                     </div>
                 </div>
             </div>
 
         </div>
 
+        <div style="display: none;">
+
+	        <?php echo $this->form->renderFieldset('mybasic'); ?>
+
+        </div>
 	    <?php echo HTMLHelper::_('form.token'); ?>
         <input type="hidden" name="task" value="">
     </form>

@@ -126,7 +126,7 @@
 
         <field type="spacer" name="myspacer" label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS_HINT"/>
 
-        <field
+       <field
                 name="additional_info_form"
                 type="subform"
                 hiddenLabel="true"
