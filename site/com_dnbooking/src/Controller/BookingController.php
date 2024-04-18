@@ -22,6 +22,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Service\Provider\Console;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Plugin\Fields\Text\Extension\Text;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -89,6 +90,17 @@ class BookingController extends FormController
 		parent::__construct($config, $factory, $app, $input);
 	}
 
+	/**
+	 *
+	 * @return Registry
+	 *
+	 * @since version
+	 */
+	private function _getComponentParams()
+	{
+		$params = ComponentHelper::getParams('com_dnbooking');
+		return $params;
+	}
 
 	/**
 	 * Method to get a model object, loading it if required.
@@ -105,6 +117,8 @@ class BookingController extends FormController
 	{
 		return parent::getModel($name, $prefix, ['ignore_request' => false]);
 	}
+
+
 
 
 	/**
@@ -154,6 +168,8 @@ class BookingController extends FormController
 				$endTime = $b['endtime'];
 				$isOpen = $this->_checkTime($time, $startTime, $endTime);
 				$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
+				$blockedRooms['start'] = $startTime;
+				$blockedRooms['end'] = $endTime;
 			}
 
 			$a = ($weekdayNumber != -1) ? $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]] : false;
@@ -173,6 +189,8 @@ class BookingController extends FormController
 					$endTime = $d['endtime'];
 					$isOpen = $this->_checkTime($time, $startTime, $endTime);
 					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
+					$blockedRooms['start'] = $startTime;
+					$blockedRooms['end'] = $endTime;
 				}
 			}
 		}
@@ -218,16 +236,31 @@ class BookingController extends FormController
 		$input = $app->input;
 		$model = $this->getModel();
 		$layout = new FileLayout('booking.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
+		$component = $this->_getComponentParams();
+
 
 		foreach ($formFields as $key => $value){
 			if($key == "room"){
 				$orderData[$key] = $model->getRoom($value);
 			}
+			else if(str_contains($key, 'extra')){
+				if($value > 0){
+					$extras = $model->getExtra($key);
+
+					$orderData['extras'][$extras['title']]['name'] = $extras['title'];
+					$orderData['extras'][$extras['title']]['price_single'] = $extras['price'];
+					$orderData['extras'][$extras['title']]['amount'] = $value;
+					$orderData['extras'][$extras['title']]['price_total'] = $extras['price'] * $value;
+				}
+			}
 			else {
 				$orderData[$key] = $value;
 			}
-		}
 
+		}
+		foreach ($component as $key => $value){
+			$orderData['params'][$key] = $component->get($key);
+		}
 		$html = $layout->render($orderData);
 
 		echo $html;
@@ -240,7 +273,6 @@ class BookingController extends FormController
 	{
 		$model = $this->getModel();
 		$data  = $this->input->post->getArray();
-
 		if ($model->saveReservation($data))
 		{
 			$params = ComponentHelper::getParams('com_dnbooking');

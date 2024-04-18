@@ -29,8 +29,27 @@
   border: 2px solid green;
 }
 
-.step2 .hidden {
-  display: none !important;
+.uk-modal-dialog {
+  width: 80vw !important;
+}
+.uk-modal-dialog .uk-table-shrink {
+  min-width: fit-content;
+  width: 80px;
+}
+
+.stickyBottom {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1230px;
+  padding: 20px 15px;
+  z-index: 1000;
+}
+.stickyBottom > div > div:last-child {
+  display: flex;
+  justify-content: flex-end;
 }
 
 /*# sourceMappingURL=booking.css.map */

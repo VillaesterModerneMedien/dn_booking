@@ -12,6 +12,8 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Model;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Associations;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Language\Text;
 use Joomla\Database\DatabaseInterface;
@@ -31,6 +33,52 @@ class BookingModel extends BaseDatabaseModel
         parent::__construct();
     }
 
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  Form|boolean  A Form object on success, false on failure
+	 *
+	 * @since   1.6
+	 */
+	public function getForm($data = [], $loadData = true)
+	{
+		$form = parent::getForm($data, $loadData);
+
+		if (empty($form)) {
+			return false;
+		}
+
+		$app  = Factory::getApplication();
+		$user = $app->getIdentity();
+
+		// On edit article, we get ID of article from article.id state, but on save, we use data from input
+		$id = (int) $this->getState('article.id', $app->getInput()->getInt('a_id'));
+
+		// Existing record. We can't edit the category in frontend if not edit.state.
+		if ($id > 0 && !$user->authorise('core.edit.state', 'com_content.article.' . $id)) {
+			$form->setFieldAttribute('catid', 'readonly', 'true');
+			$form->setFieldAttribute('catid', 'required', 'false');
+			$form->setFieldAttribute('catid', 'filter', 'unset');
+		}
+
+		// Prevent messing with article language and category when editing existing article with associations
+		if ($this->getState('article.id') && Associations::isEnabled()) {
+			$associations = Associations::getAssociations('com_content', '#__content', 'com_content.item', $id);
+
+			// Make fields read only
+			if (!empty($associations)) {
+				$form->setFieldAttribute('language', 'readonly', 'true');
+				$form->setFieldAttribute('catid', 'readonly', 'true');
+				$form->setFieldAttribute('language', 'filter', 'unset');
+				$form->setFieldAttribute('catid', 'filter', 'unset');
+			}
+		}
+
+		return $form;
+	}
     /**
      * Method to get all rooms from the database.
      *
@@ -160,10 +208,37 @@ class BookingModel extends BaseDatabaseModel
 		return $this->db->loadAssocList();
 	}
 
+	/**
+	 * Method to get all extras from the database.
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0.0
+	 */
+	public function getExtra($inputData = null): array
+	{
+		if($inputData){
+			$query = $this->db->getQuery(true);
+			$inputData = $this->db->escape($inputData);
+			$extra = explode('-', $inputData);
+			$id = $extra[1];
+
+			$query->select('title, price')
+				->from($this->db->quoteName('#__dnbooking_extras'))
+				->where($this->db->quoteName('id') . ' = ' . $id);
+
+			$this->db->setQuery($query);
+
+			return $this->db->loadAssoc();
+		}
+		else {
+			$a[] = 'extras';
+			return $a;
+		}
+	}
+
 	public function saveReservation($data){
-		echo "<pre>";
-		var_dump($data);
-		echo "</pre>";
+
 
 		return true;
 	}

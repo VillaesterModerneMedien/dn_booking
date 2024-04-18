@@ -28,93 +28,47 @@ $priceRegular = $params->get('packagepriceregular');
 $priceCustom = $params->get('packagepricecustom');
 
 ?>
-<section id="bookingTimes" class="booking uk-section uk-section-default">
-    <form class="uk-form-stacked"
-          action="/index.php?option=com_dnbooking&task=booking.sendForm"
-          name="bookingForm"
-          id="bookingForm"
-          method="POST">
-        <div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="">
-            <div class="uk-width-1-3@m uk-first-column uk-flex-bottom uk-grid-item-match">
-                <div class="uk-margin">
-                    <div>
-                        <label class="uk-form-label" for="date"><?php echo Text::_('COM_DNBOOKING_DATE_LABEL'); ?></label>
-                        <div class="uk-form-controls">
-                            <input type="date" class="uk-input" id="date" name="date">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
-                <div class="uk-margin">
-                    <div>
-                        <label class="uk-form-label" for="time"><?php echo Text::_('COM_DNBOOKING_TIME_LABEL'); ?></label>
-                        <div class="uk-form-controls">
-                            <input type="time" class="uk-input" id="time" name="time">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
-                <div class="uk-margin">
-                    <button id="checkStatus" class="uk-button uk-button-default uk-width-1-1">
-                        Verfügbarkeit prüfen
-                    </button>
-                </div>
-            </div>
+<form class="uk-form-stacked"
+         action="/index.php?option=com_dnbooking&task=booking.sendForm"
+         name="bookingForm"
+         id="bookingForm"
+         method="POST">
+    <section id="bookingTimes" class="booking uk-section uk-section-default" data-step="1">
+        <h2><?php echo JText::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
+	    <?php echo LayoutHelper::render('booking.reservationdata'); ?>
+        <div id="childrenContainer" class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
+	    <?php echo LayoutHelper::render('booking.childrencontainer'); ?>
         </div>
-        <div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
-            <div class="uk-width-1-3@m uk-first-column">
-                <div class="uk-margin">
-                    <div>
-                        <label class="uk-form-label" for="visitors"><?php echo Text::_('COM_DNBOOKING_VISITORS_LABEL'); ?></label>
-                        <div class="uk-form-controls">
-                            <input type="number" class="uk-input checkrooms" id="visitors" name="visitors" value="0">
-                        </div>
-                    </div>
-                </div>
+    </section>
+    <section id="rooms" class="rooms uk-section uk-section-default" data-step="2">
+        <h2><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></h2>
+		<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
+    </section>
+    <section id="extras" class="rooms uk-section uk-section-default" data-step="3">
+        <h2><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></h2>
+		<?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+    </section>
+    <section id="customer" class="customer uk-section uk-section-default" data-step="4">
+        <h2><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></h2>
+		<?php echo LayoutHelper::render('booking.customer'); ?>
+        <button type="button" id="checkBooking" class="uk-button uk-button-default"><?php echo JText::_('COM_DNBOOKING_CHECKBOOKING_LABEL'); ?></button>
+    </section>
+    <section data-step="2" class="stickyBottom uk-section uk-section-default">
+        <div class="uk-grid uk-grid-small uk-child-width-1-3@m " uk-grid>
+            <div>
+                <button class="uk-button uk-button-primary" dnprev>
+                    zurück
+                </button>
             </div>
-            <div class="uk-width-1-3@m" >
-                <div class="uk-margin">
-                    <div>
-                        <label class="uk-form-label" for="birthdaychildren"><?php echo Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></label>
-                        <div class="uk-form-controls">
-                            <input type="number" class="uk-input" id="birthdaychildren" name="birthdaychildren" value="0">
-                        </div>
-                    </div>
-                </div>
+            <div>
+
             </div>
-            <div class="uk-width-1-3@m" data-id="page#0-1-2">
+            <div>
+                <button class="uk-button uk-button-primary" dnnext>
+                    Weiter
+                </button>
             </div>
         </div>
     </section>
-<ul uk-accordion class ="step2 hidden">
-    <li class="uk-open">
-        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></a>
-        <div class="uk-accordion-content">
-            <section id="rooms" class="rooms uk-section uk-section-default step2 hidden">
-				<?php echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
-            </section>
-        </div>
-    </li>
-    <li>
-        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></a>
-        <div class="uk-accordion-content">
-            <section id="extras" class="rooms uk-section uk-section-default">
-				<?php echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
-            </section>
-        </div>
-    </li>
-    <li>
-        <a class="uk-accordion-title" href><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></a>
-        <div class="uk-accordion-content">
-            <section id="customer" class="customer uk-section  uk-section-default ">
-				<?php echo LayoutHelper::render('booking.customer'); ?>
-            </section>
-            <button type="button" id="checkBooking" class="btn btn-primary step2 hidden"><?php echo JText::_('COM_DNBOOKING_SEARCH'); ?></button>
-        </div>
-    </li>
-</ul>
-
 
 </form>

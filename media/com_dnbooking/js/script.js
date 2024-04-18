@@ -3,6 +3,50 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+let step = 1;
+let maxSteps = 1;
+let lastValue = 0;
+
+function changeChildrenNumber(input) {
+    // Lese den aktuellen Wert des Eingabefelds
+    const currentValue = parseInt(input, 10) || 0;
+
+    // Vergleiche den aktuellen Wert mit dem letzten Wert
+    if (currentValue > lastValue) {
+        // Füge ein neues Formularfeld hinzu
+        addFormField();
+    } else if (currentValue < lastValue) {
+        // Entferne das letzte Formularfeld
+        removeFormField();
+    }
+
+    // Aktualisiere den letzten Wert
+    lastValue = currentValue;
+}
+
+function addFormField() {
+    // Erstelle die neuen Formularfelder für Name, Geburtsdatum und Geschlecht
+    const formGroup = document.createElement('div');
+    const examplechild = document.getElementById('childExample');
+    let child = lastValue + 1;
+    let childHTML = examplechild.innerHTML;
+    childHTML = childHTML.replace(/childname/g, 'childname-' + child);
+    childHTML = childHTML.replace(/childdate/g, 'childdate-' + child);
+    childHTML = childHTML.replace(/childgender/g, 'childgender-' + child);
+    formGroup.innerHTML = '<h4>Kind ' + child + '</h4><div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="" id="child-' + child + '">' + childHTML + '</div>';
+    // Füge die neuen Felder zum Dokument hinzu
+    document.querySelector('#childrenContainer').appendChild(formGroup);
+}
+
+function removeFormField() {
+    // Wähle den Container, der die Formularfelder enthält
+    const childrenContainer = document.querySelector('#childrenContainer');
+    if (childrenContainer.children.length > 1) {
+        // Entferne das letzte Element
+        childrenContainer.removeChild(childrenContainer.lastElementChild);
+    }
+}
+
 function updateRoomStatus(date, visitors, time){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
@@ -66,16 +110,14 @@ function checkDate(date, visitors, time){
     xhr.onload = function() {
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
+            step = 2;
             let rooms = document.querySelectorAll('.roomList .room');
             if((blocked.times === undefined || blocked.times === '') && date !== '' && time !== ''){
-                let step2 = document.querySelectorAll('.step2');
-                step2.forEach(function(step){
-                    step.classList.remove('hidden');
-                });
+                setStep(step);
                 updateRoomStatus(date, visitors, time);
             }
             else if(blocked.times === 'timeclosed'){
-                setMessage('Zu dieser Zeit haben wir leider nicht geöffnet, bitte versuchen Sie es mit einer anderen Uhrzeit');
+                setMessage('Bitte wählen Sie eine andere Uhrzeit, an diesem Tag haben wir von: ' + blocked.start + ' bis ' + blocked.end + ' Uhr geöffnet');
             }
             else if(blocked.times === 'dayclosed'){
                 setMessage('An diesem Tag haben wir leider nicht geöffnet, bitte versuchen Sie es mit einem anderen Datum');
@@ -144,35 +186,86 @@ function renderOrderHTML() {
     xhr.send(encodedData);
 }
 
-function disableFields(classname)
-{
-    let fields = document.querySelectorAll(classname);
-    fields.forEach(function(field){
-        field.classList.add('hidden');
+// Funktion, die aufgerufen wird, um die Sichtbarkeit der Elemente zu aktualisieren
+function setStep(newStep) {
+    step = newStep;
+    let scrollToElement = null;
+    document.querySelectorAll('[data-step]').forEach(element => {
+        const elementStep = parseInt(element.getAttribute('data-step'), 10);
+        if(elementStep <= step) {
+            element.style.display = '';
+            if(elementStep === step) {
+                scrollToElement = element;
+            }
+        } else {
+            element.style.display = 'none';
+        }
     });
+    if(scrollToElement) {
+        scrollToElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
+
+
 document.addEventListener('DOMContentLoaded', function () {
+
     const dateInput = document.getElementById('date');
     const timeInput = document.getElementById('time');
     const personsInput = document.getElementById('visitors');
+    const personsPackageInput = document.getElementById('visitorsPackage');
+    const birthdaychildrenInput = document.getElementById('birthdaychildren');
     const checkBooking = document.getElementById('checkBooking');
     const checkStatus = document.getElementById('checkStatus');
     const inputs = document.querySelectorAll('.checkrooms');
+    const buttons = document.querySelectorAll("button");
+    const uniqueSteps = new Set();
+    const elements = document.querySelectorAll('[data-step]');
+
+    elements.forEach(element => {
+        const stepValue = element.getAttribute('data-step');
+        uniqueSteps.add(stepValue);
+    });
+    maxSteps = uniqueSteps.size;
 
     checkBooking.addEventListener('click', function() {
         renderOrderHTML();
     });
     dateInput.addEventListener('change', function() {
-        disableFields('.step2')
+        step=1;
+        setStep(step);
     });
     timeInput.addEventListener('change', function() {
-        disableFields('.step2')
+        step = 1;
+        setStep(step);
     });
-    personsInput.addEventListener('change', function() {
-        updateRoomStatus(dateInput.value, personsInput.value, timeInput.value)
+    personsPackageInput.addEventListener('change', function() {
+        updateRoomStatus(dateInput.value, personsPackageInput.value, timeInput.value)
+    });
+    birthdaychildrenInput.addEventListener('change', function() {
+        changeChildrenNumber(birthdaychildrenInput.value);
     });
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
-        checkDate(dateInput.value, personsInput.value, timeInput.value);
+        checkDate(dateInput.value, personsPackageInput.value, timeInput.value);
     });
+    buttons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            // Verhindere die Standardaktion des Buttons
+            event.preventDefault();
+        });
+    });
+    document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
+        button.addEventListener('click', event => {
+            if(event.target.hasAttribute('dnnext')) {
+                if (step < maxSteps){
+                    step++;
+                }
+            } else if(event.target.hasAttribute('dnprev')) {
+                step = Math.max(1, step - 1);
+            }
+
+            setStep(step);
+        });
+    });
+    setStep(step);
 });

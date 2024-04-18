@@ -51,7 +51,7 @@ Factory::getApplication()
                                     <div class="uk-width-1-1 ">
                                         <h3 class="el-title uk-margin-remove-bottom"><?= $extra["title"] ?></h3>
                                         <p class="el-meta uk-text-meta uk-margin-remove-top"><?= $extra["description"] ?></p>
-                                        <p class="el-content"><?= Text::_('COM_DNBOOKING_EXTRAS_PRICE'); ?>: <?= number_format($extra["price"], 2, ",", '.') ?> €</p>
+                                        <p class="el-content"><?= Text::_('COM_DNBOOKING_PRICE_LABEL'); ?>: <?= number_format($extra["price"], 2, ",", '.') ?> €</p>
                                         <input type="number" class="uk-input uk-form-width-small" value="0" min="0" name="extra-<?= $extra["id"] ?>" placeholder="Anzahl">
                                     </div>
                                 </div>
