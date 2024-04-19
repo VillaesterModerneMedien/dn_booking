@@ -3,29 +3,48 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+/**
+ * Current step in the booking process.
+ * @type {number}
+ */
 let step = 1;
+
+/**
+ * Maximum number of steps in the booking process.
+ * @type {number}
+ */
 let maxSteps = 1;
+
+/**
+ * Last value of the children number input.
+ * @type {number}
+ */
 let lastValue = 0;
 
+/**
+ * Changes the number of children form fields based on the input value.
+ * @param {HTMLInputElement} input - The input element for the number of children.
+ */
 function changeChildrenNumber(input) {
-    // Lese den aktuellen Wert des Eingabefelds
     const currentValue = parseInt(input, 10) || 0;
 
-    // Vergleiche den aktuellen Wert mit dem letzten Wert
     if (currentValue > lastValue) {
-        // Füge ein neues Formularfeld hinzu
         addFormField();
     } else if (currentValue < lastValue) {
-        // Entferne das letzte Formularfeld
         removeFormField();
     }
 
-    // Aktualisiere den letzten Wert
     lastValue = currentValue;
 }
 
+
+/**
+ * Adds a new child form field.
+ */
+
+/*
 function addFormField() {
-    // Erstelle die neuen Formularfelder für Name, Geburtsdatum und Geschlecht
+
     const formGroup = document.createElement('div');
     const examplechild = document.getElementById('childExample');
     let child = lastValue + 1;
@@ -34,33 +53,39 @@ function addFormField() {
     childHTML = childHTML.replace(/childdate/g, 'childdate-' + child);
     childHTML = childHTML.replace(/childgender/g, 'childgender-' + child);
     formGroup.innerHTML = '<h4>Kind ' + child + '</h4><div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="" id="child-' + child + '">' + childHTML + '</div>';
-    // Füge die neuen Felder zum Dokument hinzu
+
     document.querySelector('#childrenContainer').appendChild(formGroup);
 }
-
+*/
+/**
+ * Removes the last child form field.
+ */
+/*
 function removeFormField() {
-    // Wähle den Container, der die Formularfelder enthält
+
     const childrenContainer = document.querySelector('#childrenContainer');
     if (childrenContainer.children.length > 1) {
-        // Entferne das letzte Element
+
         childrenContainer.removeChild(childrenContainer.lastElementChild);
     }
 }
+*/
+/**
+ * Updates the room status based on the selected date and number of visitors.
+ * @param {string} date - The selected date.
+ * @param {number} visitors - The number of visitors.
+ */
 
-function updateRoomStatus(date, visitors, time){
-    // Create an AJAX request
+function updateRoomStatus(date, visitors){
     let xhr = new XMLHttpRequest();
 
-    // Define the URL to the BookingController's getAvailableRooms method
+    const time = extractTimeFromDateTime();
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
 
-    // Open the request
     xhr.open('POST', url, true);
 
-    // Set the request header
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    // Define what happens on successful data submission
     xhr.onload = function() {
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
@@ -93,20 +118,24 @@ function updateRoomStatus(date, visitors, time){
     xhr.send('date=' + encodeURIComponent(date) + '&visitors=' + encodeURIComponent(visitors) + '&time=' + encodeURIComponent(time));
 }
 
+/**
+ * Checks the selected date and number of visitors.
+ * @param {string} date - The selected date.
+ * @param {number} visitors - The number of visitors.
+ * @param {string} time - The selected time.
+ */
 function checkDate(date, visitors, time){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
 
-    // Define the URL to the BookingController's getAvailableRooms method
+    const time = extractTimeFromDateTime();
+
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
 
-    // Open the request
     xhr.open('POST', url, true);
 
-    // Set the request header
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    // Define what happens on successful data submission
     xhr.onload = function() {
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
@@ -114,7 +143,7 @@ function checkDate(date, visitors, time){
             let rooms = document.querySelectorAll('.roomList .room');
             if((blocked.times === undefined || blocked.times === '') && date !== '' && time !== ''){
                 setStep(step);
-                updateRoomStatus(date, visitors, time);
+                updateRoomStatus(date, visitors);
             }
             else if(blocked.times === 'timeclosed'){
                 setMessage('Bitte wählen Sie eine andere Uhrzeit, an diesem Tag haben wir von: ' + blocked.start + ' bis ' + blocked.end + ' Uhr geöffnet');
@@ -135,6 +164,10 @@ function checkDate(date, visitors, time){
     xhr.send('date=' + encodeURIComponent(date) + '&visitors=' + encodeURIComponent(visitors) + '&time=' + encodeURIComponent(time));
 }
 
+/**
+ * Displays a message to the user.
+ * @param {string} message - The message to display.
+ */
 function setMessage(message){
     UIkit.notification({
         message: message,
@@ -143,6 +176,10 @@ function setMessage(message){
         timeout: 5000
     });
 }
+
+/**
+ * Handles the click event on a room element.
+ */
 function handleRoomClick() {
     let radioButton = this.querySelector('input[type="radio"]');
     let rooms = document.querySelectorAll('.roomList .room');
@@ -156,6 +193,9 @@ function handleRoomClick() {
     this.classList.add('activeRoom');
 }
 
+/**
+ * Renders the order HTML and displays it in a modal.
+ */
 function renderOrderHTML() {
     const form = document.getElementById('bookingForm');
     let formData = new FormData(form);
@@ -164,10 +204,8 @@ function renderOrderHTML() {
 
     xhr.open('POST', url, true);
 
-    // Set the request header
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-    // Define what happens on successful data submission
     xhr.onload = function() {
         if (this.status === 200) {
             let response = this.responseText;
@@ -186,7 +224,10 @@ function renderOrderHTML() {
     xhr.send(encodedData);
 }
 
-// Funktion, die aufgerufen wird, um die Sichtbarkeit der Elemente zu aktualisieren
+/**
+ * Updates the visibility of the elements based on the current step.
+ * @param {number} newStep - The new step.
+ */
 function setStep(newStep) {
     step = newStep;
     let scrollToElement = null;
@@ -206,17 +247,30 @@ function setStep(newStep) {
     }
 }
 
+/**
+ * Extracts the time from the date and time input field.
+ * @returns {string} The extracted time.
+ */
+function extractTimeFromDateTime() {
+    const dateTimeInput = document.getElementById('jform_reservation_date');
+    const dateTimeString = dateTimeInput.getAttribute('data-alt-value'); // Get the full date and time string
+    const timeString = dateTimeString.split(' ')[1]; // Split the string and get the time part
+    return timeString;
+}
 
+/**
+ * Initializes the booking process when the DOM is ready.
+ */
 document.addEventListener('DOMContentLoaded', function () {
 
-    const dateInput = document.getElementById('date');
-    const timeInput = document.getElementById('time');
-    const personsInput = document.getElementById('visitors');
-    const personsPackageInput = document.getElementById('visitorsPackage');
-    const birthdaychildrenInput = document.getElementById('birthdaychildren');
+    const dateInput = document.getElementById('jform_reservation_date');
+    //const timeInput = document.getElementById('time');
+    //const personsInput = document.getElementById('visitors');
+    const personsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
+    const birthdaychildrenInput = document.getElementById('jform_additional_info__birthdaychildren-lbl');
     const checkBooking = document.getElementById('checkBooking');
     const checkStatus = document.getElementById('checkStatus');
-    const inputs = document.querySelectorAll('.checkrooms');
+    //const inputs = document.querySelectorAll('.checkrooms');
     const buttons = document.querySelectorAll("button");
     const uniqueSteps = new Set();
     const elements = document.querySelectorAll('[data-step]');
@@ -234,12 +288,15 @@ document.addEventListener('DOMContentLoaded', function () {
         step=1;
         setStep(step);
     });
+
+    /*
     timeInput.addEventListener('change', function() {
         step = 1;
         setStep(step);
     });
+    */
     personsPackageInput.addEventListener('change', function() {
-        updateRoomStatus(dateInput.value, personsPackageInput.value, timeInput.value)
+        updateRoomStatus(dateInput.value, personsPackageInput.value)
     });
     birthdaychildrenInput.addEventListener('change', function() {
         changeChildrenNumber(birthdaychildrenInput.value);

@@ -129,14 +129,14 @@ class ReservationsModel extends ListModel
 			{
 				$search = '%' . trim($search) . '%';
 				$query->where('(' .
-					'CONCAT(' . $db->quoteName('a.created') . ', ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ') LIKE :combined' .
-					' OR ' . $db->quoteName('a.content') . ' LIKE :content' .
+					'CONCAT(DATE_FORMAT(' . $db->quoteName('a.reservation_date') . ', "%d.%m.%Y"), ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ') LIKE :combined' .
+					' OR ' . $db->quoteName('a.admin_notes') . ' LIKE :admin_notes' .
 					')');
 				$query->bind(':combined', $search);
-				$query->bind(':content', $search);
+				$query->bind(':admin_notes', $search);
 			}
 		}
-
+		$test = (string) $query;
 		return $query;
 	}
 

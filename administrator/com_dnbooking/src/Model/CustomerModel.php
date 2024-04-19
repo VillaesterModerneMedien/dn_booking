@@ -133,12 +133,6 @@ class CustomerModel extends AdminModel
 			$form->setFieldAttribute('published', 'filter', 'unset');
         }
 
-        // Don't allow to change the created_by user if not allowed to access com_users.
-		if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_users'))
-		{
-			$form->setFieldAttribute('created_by', 'filter', 'unset');
-		}
-
         return $form;
 	}
 
@@ -193,8 +187,6 @@ class CustomerModel extends AdminModel
 	{
 		$date = Factory::getDate()->toSql();
 
-		$table->generateAlias();
-
         if (empty($table->id))
 		{
 			// Set the values
@@ -204,7 +196,6 @@ class CustomerModel extends AdminModel
 		{
 			// Set the values
 			$table->modified = $date;
-			$table->modified_by = Factory::getApplication()->getIdentity()->id;
 		}
 	}
 

@@ -15,7 +15,11 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Model\ReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Event\Model;
 
 /**
  * Booking model for the Joomla Dnbooking component.
@@ -24,13 +28,13 @@ use Joomla\Database\DatabaseInterface;
  */
 class BookingModel extends ReservationModel
 {
-    protected $db;
+	protected $db;
 
-    public function __construct($db)
-    {
-        $this->db = Factory::getContainer()->get(DatabaseInterface::class);
-        parent::__construct();
-    }
+	public function __construct($db)
+	{
+		$this->db = Factory::getContainer()->get(DatabaseInterface::class);
+		parent::__construct();
+	}
 
 	/**
 	 * Method to get the record form.
@@ -46,7 +50,8 @@ class BookingModel extends ReservationModel
 	{
 		$form = parent::getForm($data, $loadData);
 
-		if (empty($form)) {
+		if (empty($form))
+		{
 			return false;
 		}
 
@@ -57,18 +62,21 @@ class BookingModel extends ReservationModel
 		$id = (int) $this->getState('article.id', $app->getInput()->getInt('a_id'));
 
 		// Existing record. We can't edit the category in frontend if not edit.state.
-		if ($id > 0 && !$user->authorise('core.edit.state', 'com_content.article.' . $id)) {
+		if ($id > 0 && !$user->authorise('core.edit.state', 'com_content.article.' . $id))
+		{
 			$form->setFieldAttribute('catid', 'readonly', 'true');
 			$form->setFieldAttribute('catid', 'required', 'false');
 			$form->setFieldAttribute('catid', 'filter', 'unset');
 		}
 
 		// Prevent messing with article language and category when editing existing article with associations
-		if ($this->getState('article.id') && Associations::isEnabled()) {
+		if ($this->getState('article.id') && Associations::isEnabled())
+		{
 			$associations = Associations::getAssociations('com_content', '#__content', 'com_content.item', $id);
 
 			// Make fields read only
-			if (!empty($associations)) {
+			if (!empty($associations))
+			{
 				$form->setFieldAttribute('language', 'readonly', 'true');
 				$form->setFieldAttribute('catid', 'readonly', 'true');
 				$form->setFieldAttribute('language', 'filter', 'unset');
@@ -78,24 +86,25 @@ class BookingModel extends ReservationModel
 
 		return $form;
 	}
-    /**
-     * Method to get all rooms from the database.
-     *
-     * @return  array
-     *
-     * @since   1.0.0
-     */
-    public function getRooms(): array
-    {
-        $query = $this->db->getQuery(true);
 
-        $query->select('*')
-            ->from($this->db->quoteName('#__dnbooking_rooms'));
+	/**
+	 * Method to get all rooms from the database.
+	 *
+	 * @return  array
+	 *
+	 * @since   1.0.0
+	 */
+	public function getRooms(): array
+	{
+		$query = $this->db->getQuery(true);
 
-        $this->db->setQuery($query);
+		$query->select('*')
+			->from($this->db->quoteName('#__dnbooking_rooms'));
 
-        return $this->db->loadObjectList();
-    }
+		$this->db->setQuery($query);
+
+		return $this->db->loadObjectList();
+	}
 
 
 	/**
@@ -108,18 +117,18 @@ class BookingModel extends ReservationModel
 	 * @since   1.0.0
 	 */
 	public function getRoom($id): array
-    {
-        $query = $this->db->getQuery(true);
-		$id = $this->db->escape($id);
+	{
+		$query = $this->db->getQuery(true);
+		$id    = $this->db->escape($id);
 
-        $query->select('*')
-            ->from($this->db->quoteName('#__dnbooking_rooms'))
-            ->where($this->db->quoteName('id') . ' = ' . $id);
+		$query->select('*')
+			->from($this->db->quoteName('#__dnbooking_rooms'))
+			->where($this->db->quoteName('id') . ' = ' . $id);
 
-        $this->db->setQuery($query);
+		$this->db->setQuery($query);
 
-        return $this->db->loadAssoc();
-    }
+		return $this->db->loadAssoc();
+	}
 
 	public function updateRooms(): array
 	{
@@ -151,6 +160,7 @@ class BookingModel extends ReservationModel
 
 		return $this->db->loadAssocList();
 	}
+
 	public function getOpeningHours($date, $time): array
 	{
 
@@ -177,14 +187,15 @@ class BookingModel extends ReservationModel
 		//$regularOpeningHours = $params->regular_opening_hours;
 		//$weeklyOpeningHours = json_decode($params['weekly_opening_hours']);
 
-		$paramsArray = json_decode($params, true);
+		$paramsArray         = json_decode($params, true);
 		$regularOpeningHours = $paramsArray['regular_opening_hours'];
-		$weeklyOpeningHours = $paramsArray['weekly_opening_hours'];
+		$weeklyOpeningHours  = $paramsArray['weekly_opening_hours'];
+
 		// Rückgabe der Ergebnisse
 		return array(
-			'opening_hours' => $openingHours,
+			'opening_hours'         => $openingHours,
 			'regular_opening_hours' => $regularOpeningHours,
-			'weekly_opening_hours' => $weeklyOpeningHours
+			'weekly_opening_hours'  => $weeklyOpeningHours
 		);
 	}
 
@@ -216,11 +227,12 @@ class BookingModel extends ReservationModel
 	 */
 	public function getExtra($inputData = null): array
 	{
-		if($inputData){
-			$query = $this->db->getQuery(true);
+		if ($inputData)
+		{
+			$query     = $this->db->getQuery(true);
 			$inputData = $this->db->escape($inputData);
-			$extra = explode('-', $inputData);
-			$id = $extra[1];
+			$extra     = explode('-', $inputData);
+			$id        = $extra[1];
 
 			$query->select('title, price')
 				->from($this->db->quoteName('#__dnbooking_extras'))
@@ -230,30 +242,99 @@ class BookingModel extends ReservationModel
 
 			return $this->db->loadAssoc();
 		}
-		else {
+		else
+		{
 			$a[] = 'extras';
+
 			return $a;
 		}
 	}
 
-	public function saveReservation($data){
+	protected function _saveCustomer($data)
+	{
+		$table = $this->getTable('Customer', 'Administrator');
+		$customer      = [
+			'salutation' => $data['firstname'],
+			'firstname'  => $data['firstname'],
+			'lastname'   => $data['lastname'],
+			'email'      => $data['email'],
+			'phone'      => $data['phone'],
+			'address'    => $data['address'],
+			'zip'        => $data['zip'],
+			'city'       => $data['city'],
+			//'country'    => $data['country'],
+		];
+
+		// Allow an exception to be thrown.
+		try
+		{
+
+			// Bind the data.
+			if (!$table->bind($customer))
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			// Prepare the row for saving
+			$this->prepareTable($table);
+
+			// Check the data.
+			if (!$table->check())
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+
+			// Store the data.
+			if (!$table->store())
+			{
+				$this->setError($table->getError());
+
+				return false;
+			}
+			else
+			{
+				return $table->id;
+			}
+
+			// Clean the cache.
+			$this->cleanCache();
+
+		}
+		catch (\Exception $e)
+		{
+			$this->setError($e->getMessage());
+
+			return false;
+		}
 
 
-		return true;
 	}
 
-    /**
-     * Method to auto-populate the model state.
-     *
-     * Note. Calling getState in this method will result in recursion.
-     *
-     * @return  void
-     *
-     * @since   1.0.0
-     */
-    protected function populateState()
-    {
-        $app = Factory::getApplication();
+	public function saveReservation($data)
+	{
+
+		$customerID = $this->_saveCustomer($data);
+		$data['customer_id'] = $customerID;
+
+		return $data;
+	}
+
+	/**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0.0
+	 */
+	protected function populateState()
+	{
+		$app = Factory::getApplication();
 
 		$this->setState('booking.id', $app->input->getInt('id'));
 		$this->setState('params', $app->getParams());

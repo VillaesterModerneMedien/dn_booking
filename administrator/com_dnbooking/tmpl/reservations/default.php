@@ -49,11 +49,14 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </caption>
                         <thead>
                             <tr>
-                                <td class="w-1 text-center">
+                                <th class="w-1 text-center">
                                     <?php echo HTMLHelper::_('grid.checkall'); ?>
-                                </td>
+                                </th>
                                 <th scope="col">
                                     <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'), 'a.title', $listDirn, $listOrder); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'), 'a.reservation_date', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="w-1 text-center">
                                     <?php echo HTMLHelper::_('searchtools.sort', Text::_('JSTATUS'), 'a.published', $listDirn, $listOrder); ?>
@@ -67,12 +70,16 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         <?php foreach ($this->items as $i => $item) :
 
 	                        $id = $item->id;
-	                        $created = \date("d.m.Y | H:i", \strtotime($item->created));
+	                        $reservationDate = HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5'));
                             $customer = $item->firstname . ' ' . $item->lastname;
 	                        $admin_notes = $item->admin_notes;
-	                        $admin_notes_without_html = strip_tags($admin_notes);
-	                        $short_admin_notes = substr($admin_notes_without_html, 0, 150);
-	                        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $customer) ;
+                            $short_admin_notes = null;
+                            if(!empty($admin_notes))
+                            {
+	                            $admin_notes_without_html = strip_tags($admin_notes);
+	                            $short_admin_notes = substr($admin_notes_without_html, 0, 150);
+                            }
+	                        $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $customer) ;
 
                             $canCreate  = $user->authorise('core.create',     'com_dnbooking.reservation.' . $item->id);
 							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.reservation.' . $item->id);
@@ -84,7 +91,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                 <td class="center">
                                     <?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
                                 </td>
-                                <th scope="row" class="has-context">
+                                <td scope="row" class="has-context">
                                     <div>
                                         <?php if ($canEdit) : ?>
                                         <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&view=reservation&layout=details&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($headline); ?>">
@@ -101,7 +108,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                         <?php endif; ?>
 
                                     </div>
-                                </th>
+                                </td>
+                                <td>
+                                    <?= $reservationDate; ?>
+                                </td>
                                 <td>
                                     <?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'reservations.', $canChange, 'cb'); ?>
                                 </td>

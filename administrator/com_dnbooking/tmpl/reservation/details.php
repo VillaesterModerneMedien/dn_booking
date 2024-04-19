@@ -122,7 +122,7 @@
 
         </div>
 
-        <div style="display: none;">
+        <div>
 
 	        <?php echo $this->form->renderFieldset('mybasic'); ?>
 

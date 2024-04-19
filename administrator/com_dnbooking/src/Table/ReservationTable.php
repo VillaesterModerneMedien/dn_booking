@@ -13,6 +13,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Table;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Tag\TaggableTableInterface;
 use Joomla\CMS\Tag\TaggableTableTrait;
@@ -82,20 +83,9 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			return false;
 		}
 
-		// Add your checks here
-
-
-        // Generate a valid alias
-		$this->generateAlias();
-
         if (!$this->modified)
 		{
 			$this->modified = $this->created;
-		}
-
-		if (empty($this->modified_by))
-		{
-			$this->modified_by = $this->created_by;
 		}
 
 		return true;
@@ -110,6 +100,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 */
 	public function store($updateNulls = false)
 	{
+		$app = Factory::getApplication();
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
 
@@ -126,58 +117,26 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		$this->additional_info = json_encode($this->additional_info);
 		$this->additional_infos2 = json_encode($this->additional_infos2);
 
+		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
+
 		if ($this->id)
 		{
-			// Existing item
-			$this->modified_by = $userId;
 			$this->modified    = $date;
 		}
 		else
 		{
-			// Field created_by field can be set by the user, so we don't touch it if it's set.
-			if (empty($this->created_by))
-			{
-				$this->created_by = $userId;
-			}
 
 			if (!(int) $this->modified)
 			{
 				$this->modified = $date;
 			}
 
-			if (empty($this->modified_by))
-			{
-				$this->modified_by = $userId;
-			}
 		}
 
         // Verify that the alias is unique
 		$table = Table::getInstance('ReservationTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 
         return parent::store($updateNulls);
-	}
-
-	/**
-	 * Generate a valid alias from title / date.
-	 * Remains public to be able to check for duplicated alias before saving
-	 *
-	 * @return  string
-	 */
-	public function generateAlias()
-	{
-		if (empty($this->alias))
-		{
-			$this->alias = $this->title;
-		}
-
-		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
-
-		if (trim(str_replace('-', '', $this->alias)) == '')
-		{
-			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
-		}
-
-		return $this->alias;
 	}
 
 

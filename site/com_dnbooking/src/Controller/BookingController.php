@@ -12,16 +12,17 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Controller;
 \defined('_JEXEC') or die;
 
 use DateTime;
+use DnbookingNamespace\Component\Dnbooking\Administrator\Controller\ReservationController;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Service\Provider\Console;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Plugin\Fields\Text\Extension\Text;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
@@ -33,7 +34,7 @@ use Joomla\Utilities\ArrayHelper;
 
 
 
-class BookingController extends FormController
+class BookingController extends ReservationController
 {
 	/**
 	 * The URL view item variable.
@@ -272,8 +273,12 @@ class BookingController extends FormController
 	public function sendForm()
 	{
 		$model = $this->getModel();
-		$data  = $this->input->post->getArray();
-		if ($model->saveReservation($data))
+		$input = $this->input;
+		$formData = $input->get('jform', null, 'array');
+		$formData = $model->saveReservation($formData);
+		$input->set('jform', $formData);
+
+		if ($this->save())
 		{
 			$params = ComponentHelper::getParams('com_dnbooking');
 			$menuItem    = $params->get('returnurl');

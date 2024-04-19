@@ -391,4 +391,11 @@ legend {
   justify-content: space-between;
 }
 
+.addInfos2Tab {
+  margin-bottom: 80px;
+}
+.js-calendar.open {
+  position: static !important;
+}
+
 /*# sourceMappingURL=reservation.css.map */

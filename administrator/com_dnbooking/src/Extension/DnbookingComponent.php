@@ -35,7 +35,7 @@ use Psr\Container\ContainerInterface;
  *
  * @since  1.0.0
  */
-class DnbookingComponent extends MVCComponent implements 
+class DnbookingComponent extends MVCComponent implements
 	BootableExtensionInterface, CategoryServiceInterface, FieldsServiceInterface, AssociationServiceInterface, RouterServiceInterface,
 	TagServiceInterface
 {
@@ -100,8 +100,7 @@ class DnbookingComponent extends MVCComponent implements
 		Factory::getLanguage()->load('com_dnbooking', JPATH_ADMINISTRATOR);
 
 		$contexts = array(
-			'com_dnbooking.reservation'    => Text::_('COM_DNBOOKING'),
-            'com_dnbooking.categories' => Text::_('JCATEGORY')
+			'com_dnbooking.reservation'    => Text::_('COM_DNBOOKING')
 		);
 
 		return $contexts;

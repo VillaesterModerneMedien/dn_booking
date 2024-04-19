@@ -27,9 +27,9 @@ use Joomla\Registry\Registry;
  * @since  1.0.0
  */
 class CustomerTable extends Table implements VersionableTableInterface, TaggableTableInterface
-{   
+{
     use TaggableTableTrait;
-    
+
     /**
 	 * Indicates that columns fully support the NULL value in the database
 	 *
@@ -45,7 +45,7 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 	 * @since  1.0.0
 	 */
 	//protected $_jsonEncode = array('params', 'metadata');
-    
+
     /**
 	 * Constructor
 	 *
@@ -81,22 +81,10 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 
 			return false;
 		}
-        
-		// Add your checks here
-
-        
-        // Generate a valid alias
-		$this->generateAlias();
-
 
         if (!$this->modified)
 		{
 			$this->modified = $this->created;
-		}
-
-		if (empty($this->modified_by))
-		{
-			$this->modified_by = $this->created_by;
 		}
 
 		return true;
@@ -113,14 +101,9 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 	{
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
-        
+
         $db     = $this->getDbo();
 
-		$this->images = json_encode($this->images);
-
-		$this->title = $this->lastname . ', ' . $this->firstname;
-
-		// Set created date if not set.
 		if (!(int) $this->created)
 		{
 			$this->created = $date;
@@ -128,61 +111,18 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 
 		if ($this->id)
 		{
-			// Existing item
-			$this->modified_by = $userId;
 			$this->modified    = $date;
 		}
 		else
 		{
-			// Field created_by field can be set by the user, so we don't touch it if it's set.
-			if (empty($this->created_by))
-			{
-				$this->created_by = $userId;
-			}
-
 			if (!(int) $this->modified)
 			{
 				$this->modified = $date;
 			}
-
-			if (empty($this->modified_by))
-			{
-				$this->modified_by = $userId;
-			}
 		}
-        
-        // Verify that the alias is unique
-		$table = Table::getInstance('CustomerTable', __NAMESPACE__ . '\\', array('dbo' => $db));
-		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
-		{
-			$this->setError(Text::_('COM_DNBOOKING_ERROR_UNIQUE_ALIAS'));
 
-			return false;
-		}
         return parent::store($updateNulls);
 	}
-    
-	/**
-	 * Generate a valid alias from title / date.
-	 * Remains public to be able to check for duplicated alias before saving
-	 *
-	 * @return  string
-	 */
-	public function generateAlias()
-	{
-
-		$this->alias = $this->lastname . '-' . $this->firstname . '-'. Factory::getDate()->format('Y-m-d-H-i-s');
-
-		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
-
-		if (trim(str_replace('-', '', $this->alias)) == '')
-		{
-			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
-		}
-
-		return $this->alias;
-	}
-
 
 	/**
 	 * Get the type alias for the history table
@@ -195,5 +135,4 @@ class CustomerTable extends Table implements VersionableTableInterface, Taggable
 	{
 		return $this->typeAlias;
 	}
-
 }

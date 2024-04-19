@@ -29,7 +29,10 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
     <div class="row">
         <div class="col-md-12">
             <div id="j-main-container" class="j-main-container">
-
+	            <?php
+	            // Search tools bar
+	            echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+	            ?>
                 <?php if (empty($this->items)) : ?>
                     <div class="alert alert-info">
 						<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
@@ -51,8 +54,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                 <th scope="col">
                                     <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_CUSTOMER_TITLE'), 'a.title', $listDirn, $listOrder); ?>
                                 </th>
-                                <th scope="col" class="w-1 text-center">
-                                    <?php echo HTMLHelper::_('searchtools.sort', Text::_('JSTATUS'), 'a.published', $listDirn, $listOrder); ?>
+                                <th scope="col">
+                                    <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_CUSTOMER_EMAIL'), 'a.email', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="w-5 d-none d-md-table-cell">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -63,9 +66,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         <?php foreach ($this->items as $i => $item) :
                             $canCreate  = $user->authorise('core.create',     'com_dnbooking.customer.' . $item->id);
 							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.customer.' . $item->id);
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.customer.' . $item->id) && $item->created_by == $userId;
+                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.customer.' . $item->id);
 							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.customer.' . $item->id);
-
 
                         ?>
                             <tr class="row<?php echo $i % 2; ?>">
@@ -75,28 +77,19 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                 <th scope="row" class="has-context">
                                     <div>
                                         <?php if ($canEdit) : ?>
-                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&task=customer.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
-                                            <?php echo $item->title; ?>
+                                        <a class="hasTooltip" href="<?php echo Route::_('index.php?option=com_dnbooking&task=customer.edit&id=' . (int) $item->id); ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->firstname . ' ' . $item->lastname); ?>">
+                                            <?php echo $item->firstname . ' ' . $item->lastname; ?>
                                         </a>
                                         <?php else : ?>
-                                            <?php echo $this->escape($item->title); ?>
+                                            <?php echo $this->escape($item->firstname . ' ' . $item->lastname); ?>
                                         <?php endif; ?>
-
-                                        <?php if (!empty($item->note)) : ?>
-                                            <div class="small">
-                                                <?php echo Text::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note)); ?>
-                                            </div>
-                                        <?php endif; ?>
-                                                                        
-                                        <div class="small">
-                                            <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-                                        </div>
-
                                     </div>
                                 </th>
-                                <td>
-                                    <?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'customers.', $canChange, 'cb'); ?>
-                                </td>
+                                <th scope="row" class="has-context">
+                                    <div>
+                                        <?php echo $this->escape($item->email); ?>
+                                    </div>
+                                </th>
                                 <td class="d-none d-md-table-cell">
                                     <?php echo $item->id; ?>
                                 </td>
@@ -105,7 +98,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </tbody>
                     </table>
                     <?php // load the pagination.
-					echo $this->pagination->getListFooter(); 
+					echo $this->pagination->getListFooter();
                     ?>
 
                 <?php endif; ?>

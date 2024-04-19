@@ -12,6 +12,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalI
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Form\Form;
 
@@ -115,6 +116,7 @@ class AdditionalInfosField extends SubformField
 	public function loadSubForm()
 	{
 		$params = ComponentHelper::getParams('com_dnbooking');
+		$app = Factory::getApplication();
 
 		$formXML = '';
 
@@ -124,23 +126,41 @@ class AdditionalInfosField extends SubformField
 		}else{
 			$formDataJSON = $params->get('additional_info_form2');
 			$formXML .= '<form>';
-			$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
+			if ($app->isClient('site')) {
+				$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
+			} else if ($app->isClient('administrator')) {
+				$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
+			}
 			$formXML .= '<form>';
 		}
 
+		$counter = 0;
 		foreach ($formDataJSON as $field) {
+
+			$counter++;
+			$firstClass = '';
+			if($counter == 1)
+			{
+				$firstClass = 'uk-first-column';
+			}
 
 			switch($field->fieldType) {
 				case 'list':
-					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" />';
+					$options = explode(',', $field->fieldOptions);
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"  class="' . $firstClass . '">';
+					foreach ($options as $option) {
+						list($value, $text) = explode(':', trim($option));
+						$formXML .= '<option value="' . $value . '">' . $text . '</option>';
+					}
+					$formXML .= '</field>';
 					break;
 				case 'calendar':
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" 
-	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y" format="%d.%m.%Y"/>';
+	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y" format="%d.%m.%Y"   class="' . $firstClass . '" />';
 
 					break;
 				default:
-					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" />';
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '" />';
 			}
 
 		}

@@ -12,8 +12,9 @@
                 label="COM_DNBOOKING_FIELD_RESERVATION_DATE_LABEL"
                 translateformat="true"
                 showtime="true"
-                filter="user_utc"
                 required="true"
+                filter="server_utc"
+                default="NOW"
         />
 
         <field
@@ -58,7 +59,7 @@
                 type="text"
                 label="COM_DNBOOKING_FIELD_RESERVATION_PRICE_LABEL"
                 description="COM_DNBOOKING_FIELD_RESERVATION_PRICE_DESC"
-                default=""
+                default="0"
                 required="true"
                 readonly="true"
         />
@@ -139,6 +140,8 @@
                 type="text"
                 label="JGLOBAL_FIELD_ID_LABEL"
                 default="0"
+                class="readonly"
+                readonly="true"
         />
 
         <field
@@ -159,7 +162,7 @@
         <field
                 name="created"
                 type="calendar"
-                label="COM_DNBOOKING_FIELD_CREATED_LABEL"
+                label="COM_CONTENT_FIELD_CREATED_LABEL"
                 translateformat="true"
                 showtime="true"
                 filter="user_utc"
@@ -169,10 +172,10 @@
                 name="modified"
                 type="calendar"
                 label="JGLOBAL_FIELD_MODIFIED_LABEL"
-                class="readonly"
-                readonly="true"
+                class="form-control"
                 translateformat="true"
                 showtime="true"
+                readonly="true"
                 filter="user_utc"
         />
 
