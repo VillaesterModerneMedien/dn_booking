@@ -266,8 +266,11 @@ class ReservationModel extends AdminModel
      */
     public function getCustomer($pk = \null)
     {
+		$form = $this->getForm();
+
+		$customerId = $form->getField('customer_id')->value;
         $table = $this->getTable('Customer');
-        $table->load(1);
+        $table->load($customerId);
 
         return $table;
     }
