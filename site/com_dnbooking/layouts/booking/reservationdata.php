@@ -13,7 +13,7 @@ $fieldsets = $form->getFieldsets();
 	    <?php echo $form->renderField('persons_count'); ?>
     </div>
     <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
-		<?php echo $form->renderField('room_id'); ?>
+		leer
     </div>
     <div class="uk-width-1-3@m uk-flex-bottom uk-grid-item-match">
         <div class="uk-margin">

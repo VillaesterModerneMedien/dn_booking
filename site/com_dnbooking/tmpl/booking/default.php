@@ -45,7 +45,7 @@ $priceCustom = $params->get('packagepricecustom');
     </section>
     <section id="rooms" class="rooms uk-section uk-section-default" data-step="2">
         <h2><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></h2>
-		<?php //echo LayoutHelper::render('booking.roomlist', $this->rooms); ?>
+		<?php echo LayoutHelper::render('booking.roomlist', $this->form); ?>
     </section>
     <section id="extras" class="rooms uk-section uk-section-default" data-step="3">
         <h2><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></h2>

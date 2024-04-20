@@ -18,19 +18,6 @@
         />
 
         <field
-                name="room_id"
-                type="sql"
-                label="COM_DNBOOKING_FIELD_ROOM_ID_LABEL"
-                description="COM_DNBOOKING_ROOM_LABEL"
-                default="0"
-                required="true"
-                query="SELECT id, title FROM #__dnbooking_rooms"
-                key_field="id"
-                value_field="title"
-                header="COM_DNBOOKING_FIELD_SELECT_ROOM"
-        />
-
-        <field
                 name="persons_count"
                 type="text"
                 label="COM_DNBOOKING_FIELD_PERSONS_COUNT_LABEL"
@@ -127,6 +114,20 @@
         />
 
     </fieldset>
+
+    <fieldset name="fieldset_rooms" addfieldprefix="DnbookingNamespace\Component\Dnbooking\Site\Field">
+        <field
+                name="room_id"
+                type="Rooms"
+                label="COM_DNBOOKING_FIELD_ROOM_ID_LABEL"
+                description="COM_DNBOOKING_ROOM_LABEL"
+                default="0"
+                required="true"
+                header="COM_DNBOOKING_FIELD_SELECT_ROOM"
+        >
+        </field>
+    </fieldset>
+
 
     <fieldset name="hiddenFields">
 
