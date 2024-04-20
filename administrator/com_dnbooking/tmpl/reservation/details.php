@@ -28,6 +28,8 @@
 
     $layout  = 'details';
     $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
+
+    $reservationId = $reservation->id;
 ?>
 
 <script>
@@ -74,11 +76,20 @@
                                                     data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
                                                     aria-selected="true"><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_VIEW_HEADLINE'); ?></button>
                                         </li>
+
+
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
-                                                    aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_EDIT_HEADLINE'); ?></button>
+                                                    aria-selected="false">
+	                                            <?php if(!$reservationId): ?>
+                                                    <?= Text::_('COM_DNBOOKING_NEW_CUSTOMER'); ?>
+                                                <?php else: ?>
+		                                            <?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_EDIT_HEADLINE'); ?>
+	                                            <?php endif; ?>
+                                            </button>
                                         </li>
+
                                         <!-- <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="tab3-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab3" type="button" role="tab" aria-controls="tab2"

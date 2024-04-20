@@ -11,10 +11,17 @@
 
 			</h3>
 
-			<button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "textHeader":"<?= Text::sprintf('COM_DNBOOKING_EDIT_CUSTOMER_SPRINTF', ' (ID: ' .$customer->id . ')' . $customer->firstname . ' ' . $customer->lastname); ?>", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
-				<span class="icon-edit" aria-hidden="true"></span>
-				<?= Text::_('COM_DNBOOKING_LABEL_EDIT'); ?>
-			</button>
+            <?php if($customer->id): ?>
+                <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "textHeader":"<?= Text::sprintf('COM_DNBOOKING_EDIT_CUSTOMER_SPRINTF', ' (ID: ' .$customer->id . ')' . $customer->firstname . ' ' . $customer->lastname); ?>", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.edit&id=' . (int) $customer->id ?>"}'>
+                    <span class="icon-edit" aria-hidden="true"></span>
+                    <?= Text::_('COM_DNBOOKING_LABEL_EDIT'); ?>
+                </button>
+            <?php else: ?>
+                <button type="button" class="btn btn-secondary btn-sm apply-sample-data" data-joomla-dialog='{"popupType": "iframe", "id":"test", "width":"80vw", "height": "80vh", "textHeader":"<?= Text::_('COM_DNBOOKING_NEW_CUSTOMER'); ?>", "src": "<?= 'index.php?option=com_dnbooking&view=customer&tmpl=component&layout=modal&task=customer.add' ?>"}'>
+                    <span class="icon-edit" aria-hidden="true"></span>
+                    <?= Text::_('COM_DNBOOKING_NEW_CUSTOMER'); ?>
+                </button>
+            <?php endif; ?>
 
 		</div>
 		<div class="card-body">
