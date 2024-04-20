@@ -122,15 +122,13 @@ function updateRoomStatus(date, visitors){
  * Checks the selected date and number of visitors.
  * @param {string} date - The selected date.
  * @param {number} visitors - The number of visitors.
- * @param {string} time - The selected time.
  */
-function checkDate(date, visitors, time){
+function checkDate(date, visitors){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
 
-    const time = extractTimeFromDateTime();
-
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
+    const time = extractTimeFromDateTime();
 
     xhr.open('POST', url, true);
 
@@ -303,12 +301,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
-        checkDate(dateInput.value, personsPackageInput.value, timeInput.value);
+        checkDate(dateInput.value, personsPackageInput.value);
     });
     buttons.forEach(button => {
         button.addEventListener('click', function(event) {
             // Verhindere die Standardaktion des Buttons
-            event.preventDefault();
+            //event.preventDefault();
         });
     });
     document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {

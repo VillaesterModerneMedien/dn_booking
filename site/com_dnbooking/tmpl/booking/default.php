@@ -18,7 +18,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-//$wa->useScript('com_dnbooking.script');
+$wa->useScript('com_dnbooking.script');
 $wa->useStyle('com_dnbooking.booking');
 // $wa->useAsset('script', 'jquery');
 

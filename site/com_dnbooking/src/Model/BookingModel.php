@@ -14,6 +14,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Model;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Model\ReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\Database\DatabaseInterface;
 
@@ -173,6 +174,7 @@ class BookingModel extends ReservationModel
 	public function getOpeningHours($date, $time): array
 	{
 
+		$date = HTMLHelper::_('date', $date, 'Y-m-d');
 		$query = $this->db->getQuery(true);
 
 		// Abfrage für die Tabelle #__dnbooking_openinghours

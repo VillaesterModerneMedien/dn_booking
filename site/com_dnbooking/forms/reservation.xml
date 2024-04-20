@@ -124,8 +124,7 @@
                 default="0"
                 required="true"
                 header="COM_DNBOOKING_FIELD_SELECT_ROOM"
-        >
-        </field>
+        />
     </fieldset>
 
     <fieldset name="fieldset_extras">
