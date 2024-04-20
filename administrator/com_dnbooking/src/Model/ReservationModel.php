@@ -10,6 +10,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -135,6 +136,26 @@ class ReservationModel extends AdminModel
         return $form;
 	}
 
+	/**
+	 * Stock method to auto-populate the model state.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	protected function populateState()
+	{
+		$table = $this->getTable();
+		$key   = $table->getKeyName();
+
+		// Get the pk of the record from the request.
+		$pk = Factory::getApplication()->getInput()->getInt($key);
+		$this->setState($this->getName() . '.id', $pk);
+
+		// Load the parameters.
+		$value = ComponentHelper::getParams($this->option);
+		$this->setState('params', $value);
+	}
 
 	/**
 	 * Method to get a single record.
@@ -233,18 +254,6 @@ class ReservationModel extends AdminModel
 			$table->modified = $date;
 		}
 	}
-    /**
-	 * Is the user allowed to create an on the fly category?
-	 *
-	 * @return  boolean
-	 *
-	 * @since   1.0.0
-	 */
-	private function canCreateCategory()
-	{
-		return Factory::getApplication()->getIdentity()->authorise('core.create', 'com_dnbooking');
-	}
-
 
     /**
      * Method to get a single record.

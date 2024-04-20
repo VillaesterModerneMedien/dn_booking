@@ -8,12 +8,22 @@
 		class="js-stools-search-string"
 		/>
 
-		<field
+		<!-- <field
 		name="searchDate"
 		type="text"
 		hint="JSEARCH_FILTER_DATE"
 		class="js-stools-search-string"
-		/>
+		/> -->
+
+		<field
+				name="published"
+				type="status"
+				label="JOPTION_SELECT_PUBLISHED"
+				class="js-select-submit-on-change"
+				extension="com_content"
+		>
+			<option value="">JOPTION_SELECT_PUBLISHED</option>
+		</field>
 
 	</fields>
 
@@ -48,5 +58,7 @@
 			default="25"
 			onchange="this.form.submit();"
 		/>
+
 	</fields>
+
 </form>

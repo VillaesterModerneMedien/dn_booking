@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 	 * @since 1.0.0
 	 */
 	private $isEmptyState = false;
-	
+
 	/**
 	 * Method to display the view.
 	 *
@@ -85,13 +85,13 @@ class HtmlView extends BaseHtmlView
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
 		$this->filterForm    = $this->get('FilterForm');
-		$this->activeFilters = $this->get('ActiveFilters'); 
-        
+		$this->activeFilters = $this->get('ActiveFilters');
+
         if (empty($this->items) && $this->isEmptyState = $this->get('IsEmptyState'))
         {
 			$this->setLayout('emptystate');
 		}
-        
+
         // We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
@@ -112,17 +112,17 @@ class HtmlView extends BaseHtmlView
 	{
 		$user = Factory::getApplication()->getIdentity();
         $canDo = ContentHelper::getActions('com_dnbooking', 'category', $this->state->get('filter.category_id'));
-        
+
 		ToolbarHelper::title(Text::_('COM_DNBOOKING_HEADLINE_ROOMS'), 'list com_dnbooking');
-        
+
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
         if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_dnbooking', 'core.create')) > 0)
 		{
 			$toolbar->addNew('room.add');
 		}
-        
-        if (!$this->isEmptyState && $canDo->get('core.edit.state'))
+
+        if (!$this->isEmptyState && $canDo->get('core.edit'))
 		{
             $dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -136,15 +136,15 @@ class HtmlView extends BaseHtmlView
 			$childBar->publish('rooms.publish')->listCheck(true);
 
 			$childBar->unpublish('rooms.unpublish')->listCheck(true);
-            
+
             $childBar->archive('rooms.archive')->listCheck(true);
-            
+
             if ($this->state->get('filter.published') != -2)
 			{
 				$childBar->trash('rooms.trash')->listCheck(true);
 			}
         }
-        
+
         if (!$this->isEmptyState && $this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
 			$toolbar->delete('rooms.delete')
@@ -152,13 +152,13 @@ class HtmlView extends BaseHtmlView
 				->message('JGLOBAL_CONFIRM_DELETE')
 				->listCheck(true);
 		}
-		
+
 		if ($user->authorise('core.admin', 'com_dnbooking') || $user->authorise('core.options', 'com_dnbooking'))
 		{
 			$toolbar->preferences('com_dnbooking');
 		}
-		
+
 		ToolbarHelper::help('index', true);
-		
+
 	}
 }

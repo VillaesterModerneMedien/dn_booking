@@ -185,6 +185,9 @@ class ReservationsModel extends ListModel
 		// Load the filter state.
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}

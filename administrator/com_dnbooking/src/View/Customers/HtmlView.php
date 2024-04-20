@@ -69,7 +69,7 @@ class HtmlView extends BaseHtmlView
 	 * @since 1.0.0
 	 */
 	private $isEmptyState = false;
-	
+
 	/**
 	 * Method to display the view.
 	 *
@@ -91,7 +91,7 @@ class HtmlView extends BaseHtmlView
         {
 			$this->setLayout('emptystate');
 		}
-        
+
         // We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
@@ -121,8 +121,8 @@ class HtmlView extends BaseHtmlView
 		{
 			$toolbar->addNew('customer.add');
 		}
-        
-        if (!$this->isEmptyState && $canDo->get('core.edit.state'))
+
+        if (!$this->isEmptyState && $canDo->get('core.edit'))
 		{
             $dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
@@ -136,15 +136,15 @@ class HtmlView extends BaseHtmlView
 			$childBar->publish('customers.publish')->listCheck(true);
 
 			$childBar->unpublish('customers.unpublish')->listCheck(true);
-            
+
             $childBar->archive('customers.archive')->listCheck(true);
-            
+
             if ($this->state->get('filter.published') != -2)
 			{
 				$childBar->trash('customers.trash')->listCheck(true);
 			}
         }
-        
+
         if (!$this->isEmptyState && $this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
 			$toolbar->delete('customers.delete')
@@ -152,13 +152,13 @@ class HtmlView extends BaseHtmlView
 				->message('JGLOBAL_CONFIRM_DELETE')
 				->listCheck(true);
 		}
-		
+
 		if ($user->authorise('core.admin', 'com_dnbooking') || $user->authorise('core.options', 'com_dnbooking'))
 		{
 			$toolbar->preferences('com_dnbooking');
 		}
-		
+
 		ToolbarHelper::help('index', true);
-		
+
 	}
 }
