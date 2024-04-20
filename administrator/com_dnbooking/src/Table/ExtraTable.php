@@ -27,9 +27,9 @@ use Joomla\Registry\Registry;
  * @since  1.0.0
  */
 class ExtraTable extends Table implements VersionableTableInterface, TaggableTableInterface
-{   
+{
     use TaggableTableTrait;
-    
+
     /**
 	 * Indicates that columns fully support the NULL value in the database
 	 *
@@ -45,7 +45,7 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
 	 * @since  1.0.0
 	 */
 	//protected $_jsonEncode = array('params', 'metadata');
-    
+
     /**
 	 * Constructor
 	 *
@@ -81,10 +81,10 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
 
 			return false;
 		}
-        
+
 		// Add your checks here
 
-        
+
         // Generate a valid alias
 		$this->generateAlias();
 
@@ -92,11 +92,6 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
         if (!$this->modified)
 		{
 			$this->modified = $this->created;
-		}
-
-		if (empty($this->modified_by))
-		{
-			$this->modified_by = $this->created_by;
 		}
 
 		return true;
@@ -113,10 +108,11 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
 	{
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
-        
+
         $db     = $this->getDbo();
 
-		$this->images = json_encode($this->images);
+		 $this->images = json_encode($this->images);
+		 $this->extra_options = json_encode($this->extra_options);
 
 		// Set created date if not set.
 		if (!(int) $this->created)
@@ -126,29 +122,16 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
 
 		if ($this->id)
 		{
-			// Existing item
-			$this->modified_by = $userId;
 			$this->modified    = $date;
 		}
 		else
 		{
-			// Field created_by field can be set by the user, so we don't touch it if it's set.
-			if (empty($this->created_by))
-			{
-				$this->created_by = $userId;
-			}
-
 			if (!(int) $this->modified)
 			{
 				$this->modified = $date;
 			}
-
-			if (empty($this->modified_by))
-			{
-				$this->modified_by = $userId;
-			}
 		}
-        
+
         // Verify that the alias is unique
 		$table = Table::getInstance('ExtraTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0))
@@ -160,7 +143,7 @@ class ExtraTable extends Table implements VersionableTableInterface, TaggableTab
 		}
         return parent::store($updateNulls);
 	}
-    
+
 	/**
 	 * Generate a valid alias from title / date.
 	 * Remains public to be able to check for duplicated alias before saving

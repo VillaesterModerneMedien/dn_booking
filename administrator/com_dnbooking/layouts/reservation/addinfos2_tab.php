@@ -3,7 +3,7 @@
 	//$reservation = $displayData;
     $form = $displayData->get('form');
 ?>
-<div class="tab-pane addInfos2Tab fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+<div class="tab-pane addInfos2Tab" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
     <div class="firstCard card text-white bg-secondary mb-3">
         <div class="card-header">
             <h3><?= Text::_('COM_DNBOOKING_HEADING_ADDINFOS2_HEADLINE'); ?></h3>

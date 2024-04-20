@@ -35,7 +35,7 @@ use Joomla\Utilities\ArrayHelper;
 class ExtraModel extends AdminModel
 {
 	use VersionableModelTrait;
-    
+
 	/**
 	 * The type alias for this content type.
 	 *
@@ -49,7 +49,7 @@ class ExtraModel extends AdminModel
 	 * @since  1.0.0
 	 */
 	protected $text_prefix = 'COM_DNBOOKING';
-    
+
     /**
 	 * Name of the form
 	 *
@@ -63,7 +63,7 @@ class ExtraModel extends AdminModel
 	 * @since  1.0.0
 	 */
 	// protected $helpURL;
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -78,7 +78,7 @@ class ExtraModel extends AdminModel
 	{
 		parent::__construct($config, $factory, $formFactory);
 	}
-	
+
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
@@ -95,7 +95,7 @@ class ExtraModel extends AdminModel
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Method to get the row form.
 	 *
@@ -122,17 +122,17 @@ class ExtraModel extends AdminModel
         {
             return false;
         }
-        
+
         // Modify the form based on access controls.
 		if (!$this->canEditState((object) $data))
         {
             $form->setFieldAttribute('published', 'disabled', 'true');
-            
+
             // Disable fields while saving.
 			// The controller has already verified this is a record you can edit.
 			$form->setFieldAttribute('published', 'filter', 'unset');
         }
-        
+
         // Don't allow to change the created_by user if not allowed to access com_users.
 		if (!Factory::getApplication()->getIdentity()->authorise('core.manage', 'com_users'))
 		{
@@ -141,7 +141,7 @@ class ExtraModel extends AdminModel
 
         return $form;
 	}
-	
+
 	/**
 	 * Preprocess the form.
 	 *
@@ -157,7 +157,7 @@ class ExtraModel extends AdminModel
 	{
         parent::preprocessForm($form, $data, $group);
 	}
-    
+
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -178,7 +178,7 @@ class ExtraModel extends AdminModel
 
 		return $data;
 	}
-    
+
 
     /**
 	 * Prepare and sanitise the table prior to saving.
@@ -192,9 +192,9 @@ class ExtraModel extends AdminModel
 	protected function prepareTable($table)
 	{
 		$date = Factory::getDate()->toSql();
-        
+
 		$table->generateAlias();
-        
+
         if (empty($table->id))
 		{
 			// Set the values
@@ -204,10 +204,9 @@ class ExtraModel extends AdminModel
 		{
 			// Set the values
 			$table->modified = $date;
-			$table->modified_by = Factory::getApplication()->getIdentity()->id;
 		}
 	}
-    
+
     /**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -224,7 +223,7 @@ class ExtraModel extends AdminModel
 			return false;
 		}
         return Factory::getApplication()->getIdentity()->authorise('core.delete', 'com_dnbooking.extra.' . (int) $record->id);
- 
+
 	}
 
 	/**
@@ -241,7 +240,7 @@ class ExtraModel extends AdminModel
 		// Check against the category.
 		if (!empty($record->id))
 		{
-            return Factory::getApplication()->getIdentity()->authorise('core.edit.state', 'com_dnbooking.extra.' . (int) $record->id);
+            return Factory::getApplication()->getIdentity()->authorise('core.edit', 'com_dnbooking.extra.' . (int) $record->id);
 		}
 
 		// Default to component settings if category not known.

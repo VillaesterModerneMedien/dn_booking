@@ -15,11 +15,7 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Model\ReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Database\DatabaseInterface;
-use Joomla\Database\ParameterType;
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\Event\Model;
 
 /**
  * Booking model for the Joomla Dnbooking component.
@@ -29,6 +25,8 @@ use Joomla\CMS\Event\Model;
 class BookingModel extends ReservationModel
 {
 	protected $db;
+
+	protected static $instances;
 
 	public function __construct($db)
 	{
@@ -96,6 +94,10 @@ class BookingModel extends ReservationModel
 	 */
 	public function getRooms(): array
 	{
+		if(!empty(static::$instances['rooms'])){
+			return static::$instances['rooms'];
+		}
+
 		$query = $this->db->getQuery(true);
 
 		$query->select('*')
@@ -103,7 +105,14 @@ class BookingModel extends ReservationModel
 
 		$this->db->setQuery($query);
 
-		return $this->db->loadObjectList();
+		try{
+			static::$instances['rooms'] = $this->db->loadObjectList();
+		}
+		catch(\Exception $e){
+			static::$instances['rooms'] = [];
+		}
+
+		return static::$instances['rooms'];
 	}
 
 
@@ -208,14 +217,26 @@ class BookingModel extends ReservationModel
 	 */
 	public function getExtras(): array
 	{
+		if(!empty(static::$instances['extras'])){
+			return static::$instances['extras'];
+		}
+
 		$query = $this->db->getQuery(true);
 
 		$query->select('*')
-			->from($this->db->quoteName('#__dnbooking_extras'));
+			->from($this->db->quoteName('#__dnbooking_extras'))
+			->where($this->db->quoteName('published') . ' = 1');
 
 		$this->db->setQuery($query);
 
-		return $this->db->loadAssocList();
+		try{
+			static::$instances['extras'] = $this->db->loadAssocList();
+		}
+		catch(\Exception $e){
+			static::$instances['extras'] = [];
+		}
+
+		return static::$instances['extras'];
 	}
 
 	/**

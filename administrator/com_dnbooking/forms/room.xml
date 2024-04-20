@@ -47,13 +47,6 @@
         />
 
         <field
-                name="created_by"
-                type="user"
-                label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-                validate="UserId"
-        />
-
-        <field
                 name="created"
                 type="calendar"
                 label="COM_DNBOOKING_FIELD_CREATED_LABEL"
@@ -73,15 +66,6 @@
                 filter="user_utc"
         />
 
-        <field
-                name="modified_by"
-                type="user"
-                label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
-                class="readonly"
-                readonly="true"
-                filter="unset"
-                validate="UserId"
-        />
     </fieldset>
     <fieldset name="roomfieldset">
         <field
@@ -151,17 +135,5 @@
 
         />
 
-        <field
-                name="extras"
-                type="sql"
-                default=""
-                label="COM_DNBOOKING_FIELD_ROOM_EXTRAS_LABEL"
-                description="COM_DNBOOKING_FIELD_ROOM_EXTRAS_LABEL_DESC"
-                query="SELECT id AS value, title AS text FROM #__dnbooking_extras"
-                key_field="value"
-                value_field="text"
-                multiple="true"
-                header="Bitte wählen"
-        />
     </fieldset>
 </form>

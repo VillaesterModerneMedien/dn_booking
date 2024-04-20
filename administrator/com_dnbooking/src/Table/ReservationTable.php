@@ -29,9 +29,9 @@ use Joomla\Registry\Registry;
  */
 class ReservationTable extends Table implements VersionableTableInterface, TaggableTableInterface
 {
-    use TaggableTableTrait;
+	use TaggableTableTrait;
 
-    /**
+	/**
 	 * Indicates that columns fully support the NULL value in the database
 	 *
 	 * @var    boolean
@@ -47,13 +47,12 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 */
 	//protected $_jsonEncode = array('params', 'metadata');
 
-    /**
+	/**
 	 * Constructor
 	 *
 	 * @param   DatabaseDriver  $db  Database connector object
 	 *
 	 * @since   1.0.0
-
 	 */
 	public function __construct(DatabaseDriver $db)
 	{
@@ -83,7 +82,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			return false;
 		}
 
-        if (!$this->modified)
+		if (!$this->modified)
 		{
 			$this->modified = $this->created;
 		}
@@ -100,11 +99,11 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 */
 	public function store($updateNulls = false)
 	{
-		$app = Factory::getApplication();
+		$app    = Factory::getApplication();
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
 
-        $db     = $this->getDbo();
+		$db = $this->getDbo();
 
 		// Set created date if not set.
 		if (!(int) $this->created)
@@ -114,14 +113,24 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		//$this->extras_ids = json_encode($this->extras_ids);
 
-		$this->additional_info = json_encode($this->additional_info);
+		$this->additional_info   = json_encode($this->additional_info);
 		$this->additional_infos2 = json_encode($this->additional_infos2);
+
+		foreach ($this->extras_ids as $key => $value)
+		{
+			if (empty($value['extra_count']))
+			{
+				unset($this->extras_ids[$key]);
+			}
+		}
+
+		$this->extras_ids         = json_encode($this->extras_ids);
 
 		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
 
 		if ($this->id)
 		{
-			$this->modified    = $date;
+			$this->modified = $date;
 		}
 		else
 		{
@@ -133,10 +142,10 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		}
 
-        // Verify that the alias is unique
+		// Verify that the alias is unique
 		$table = Table::getInstance('ReservationTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 
-        return parent::store($updateNulls);
+		return parent::store($updateNulls);
 	}
 
 

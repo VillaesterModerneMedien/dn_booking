@@ -49,7 +49,7 @@ $priceCustom = $params->get('packagepricecustom');
     </section>
     <section id="extras" class="rooms uk-section uk-section-default" data-step="3">
         <h2><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></h2>
-		<?php //echo LayoutHelper::render('booking.extraslist', $this->extras); ?>
+		<?php echo LayoutHelper::render('booking.extraslist',$this->form); ?>
     </section>
     <section id="customer" class="customer uk-section uk-section-default" data-step="4">
         <h2><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></h2>

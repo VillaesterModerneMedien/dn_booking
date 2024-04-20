@@ -128,6 +128,31 @@
         </field>
     </fieldset>
 
+    <fieldset name="fieldset_extras">
+        <field
+                name="extras_ids"
+                type="Extras"
+                label="COM_DNBOOKING_FIELD_EXTRAS_LABEL"
+                multiple="true"
+                min="1"
+                max="50"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.extras"
+        >
+            <form>
+                <field
+                        name="extra_count"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_EXTRA_COUNT_LABEL"
+                />
+                <field
+                        name="extra_id"
+                        type="hidden"
+                />
+            </form>
+        </field>
+    </fieldset>
+
 
     <fieldset name="hiddenFields">
 
@@ -142,12 +167,6 @@
         <field
                 name="customer_id"
                 type="hidden"
-        />
-
-        <field
-                name="extras_ids"
-                type="hidden"
-                label="COM_DNBOOKING_FIELD_EXTRAS_IDS_LABEL"
         />
 
         <field

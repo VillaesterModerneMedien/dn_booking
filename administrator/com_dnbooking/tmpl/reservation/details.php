@@ -77,7 +77,6 @@
                                                     aria-selected="true"><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_VIEW_HEADLINE'); ?></button>
                                         </li>
 
-
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
@@ -90,14 +89,15 @@
                                             </button>
                                         </li>
 
-                                        <!-- <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tab3-tab" data-bs-toggle="tab"
-                                                    data-bs-target="#tab3" type="button" role="tab" aria-controls="tab2"
-                                                    aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_EXTRAS_EDIT_HEADLINE'); ?></button>
-                                        </li> -->
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="tab3-tab" data-bs-toggle="tab"
-                                                    data-bs-target="#tab3" type="button" role="tab" aria-controls="tab2"
+                                                    data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3"
+                                                    aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_EXTRAS_EDIT_HEADLINE'); ?></button>
+                                        </li>
+
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab4-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab4" type="button" role="tab" aria-controls="tab4"
                                                     aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_ADDINFOS2_HEADLINE'); ?></button>
                                         </li>
                                     </ul>
@@ -109,7 +109,7 @@
 
 	                        <?php echo LayoutHelper::render('reservation.reservation_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.customer_tab', $customer); ?>
-	                        <?php //echo LayoutHelper::render('reservation.extras_tab', $this); ?>
+	                        <?php echo LayoutHelper::render('reservation.extras_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
 
 

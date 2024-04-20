@@ -63,7 +63,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         <?php foreach ($this->items as $i => $item) :
                             $canCreate  = $user->authorise('core.create',     'com_dnbooking.extra.' . $item->id);
 							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.extra.' . $item->id);
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.extra.' . $item->id) && $item->created_by == $userId;
+                            $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.extra.' . $item->id);
 							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.extra.' . $item->id);
 
 
@@ -87,7 +87,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                                                 <?php echo Text::sprintf('JGLOBAL_LIST_NOTE', $this->escape($item->note)); ?>
                                             </div>
                                         <?php endif; ?>
-                                                                        
+
                                         <div class="small">
                                             <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                         </div>
@@ -105,7 +105,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
                         </tbody>
                     </table>
                     <?php // load the pagination.
-					echo $this->pagination->getListFooter(); 
+					echo $this->pagination->getListFooter();
                     ?>
 
                 <?php endif; ?>

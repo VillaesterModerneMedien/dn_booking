@@ -120,15 +120,32 @@
 
         <field
                 name="extras_ids"
-                type="sql"
-                label="COM_DNBOOKING_FIELD_EXTRAS_IDS_LABEL"
-                description="COM_DNBOOKING_FIELD_EXTRAS_IDS_DESC"
+                type="subform"
+                label="COM_DNBOOKING_FIELD_EXTRAS_LABEL"
                 multiple="true"
-                layout="joomla.form.field.list-fancy-select"
-                query="SELECT id, title FROM #__dnbooking_extras"
-                key_field="id"
-                value_field="title"
-        />
+                min="1"
+                max="50"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.repeatable-table"
+        >
+            <form>
+                <field
+                        name="extra_count"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_EXTRA_COUNT_LABEL"
+                />
+                <field
+                        name="extra_id"
+                        type="sql"
+                        label="COM_DNBOOKING_FIELD_EXTRA_LABEL"
+                        multiple="false"
+                        layout="joomla.form.field.list-fancy-select"
+                        query="SELECT id, title FROM #__dnbooking_extras"
+                        key_field="id"
+                        value_field="title"
+                />
+            </form>
+        </field>
 
     </fieldset>
 
@@ -153,7 +170,7 @@
                 validate="options"
         >
             <option value="1">JPUBLISHED</option>
-            <option value="0">JUNPUBLISHED</option>
+            <option value="0">PENDING</option>
             <option value="2">JARCHIVED</option>
             <option value="-2">JTRASHED</option>
         </field>
