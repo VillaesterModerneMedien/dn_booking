@@ -16,7 +16,7 @@ use Joomla\Input\Input;
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
-$data = $displayData;
+$data = $displayData['jform'];
 $params = $displayData['params'];
 $packageprice = $params['packagepriceregular'];
 $packagepriceTotal = $packageprice * $data['visitors'];
@@ -25,8 +25,8 @@ $packagepriceTotal = $packageprice * $data['visitors'];
 <p><h3>Hallo <?= $data['firstname'] . ' ' . $data['lastname']?>, Ihre Buchung im Überblick</h3></p>
 
     <p><?php echo $data['salutation'] . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
-        <?php echo $data['street']; ?><br/>
-        <?php echo $data['zipcode'] . ' ' . $data['city']; ?>
+        <?php echo $data['address']; ?><br/>
+        <?php echo $data['zip'] . ' ' . $data['city']; ?>
     </p>
     <p>
         <?php echo $data['email']; ?><br/>
@@ -85,4 +85,8 @@ $packagepriceTotal = $packageprice * $data['visitors'];
 			<?php echo $data['comments']; ?>
         </p>
     </div>
+
+
+    <button type="submit" class="uk-button uk-button-primary"><?php echo JText::_('COM_DNBOOKING_SEND_RESERVATION'); ?></button>
+
 </div>

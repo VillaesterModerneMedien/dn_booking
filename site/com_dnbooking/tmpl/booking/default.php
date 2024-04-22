@@ -31,9 +31,10 @@ $priceCustom = $params->get('packagepricecustom');
 
 <form class="uk-form-stacked"
          action="/index.php?option=com_dnbooking&task=booking.sendForm"
-         name="adminForm"
-         id="adminForm"
+         name="bookingForm"
+         id="bookingForm"
          method="POST">
+
     <section id="bookingTimes" class="booking uk-section uk-section-default" data-step="1">
         <h2><?php echo JText::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
 	    <?php echo LayoutHelper::render('booking.reservationdata', $this->form); ?>
@@ -43,25 +44,32 @@ $priceCustom = $params->get('packagepricecustom');
         </div>
 
     </section>
+
     <section id="rooms" class="rooms uk-section uk-section-default" data-step="2">
         <h2><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></h2>
 		<?php echo LayoutHelper::render('booking.roomlist', $this->form); ?>
     </section>
+
     <section id="extras" class="rooms uk-section uk-section-default" data-step="3">
         <h2><?php echo JText::_('COM_DNBOOKING_ADD_EXTRAS'); ?></h2>
 		<?php echo LayoutHelper::render('booking.extraslist',$this->form); ?>
     </section>
+
     <section id="customer" class="customer uk-section uk-section-default" data-step="4">
         <h2><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></h2>
 		<?php echo LayoutHelper::render('booking.customer',  $this->form); ?>
+    </section>
+
+    <section id="sendButton" class="customer uk-section uk-section-default" data-step="4">
         <button type="button" id="checkBooking" class="uk-button uk-button-default"><?php echo JText::_('COM_DNBOOKING_CHECKBOOKING_LABEL'); ?></button>
     </section>
-    <!-- <section data-step="2" class="stickyBottom uk-section uk-section-default">
+
+    <section class="stickyBottom uk-section uk-section-default">
         <div class="uk-grid uk-grid-small uk-child-width-1-3@m " uk-grid>
             <div>
-                <button class="uk-button uk-button-primary" dnprev>
+                <a href="#" class="uk-button uk-button-primary" dnprev>
                     zurück
-                </button>
+                </a>
             </div>
             <div>
 
@@ -72,9 +80,8 @@ $priceCustom = $params->get('packagepricecustom');
                 </button>
             </div>
         </div>
-    </section> -->
+    </section>
 
-    <button type="submit" class="uk-button uk-button-primary"><?php echo JText::_('COM_DNBOOKING_SEND_RESERVATION'); ?></button>
     <?= $form->renderFieldset('hiddenFields'); ?>
     <input type="hidden" name="option" value="com_dnbooking" />
 	<?php echo HTMLHelper::_('form.token'); ?>

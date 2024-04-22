@@ -46,6 +46,7 @@
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
+    background: transparent;
     width:100%;
     max-width:1230px;
     padding:20px 15px;
@@ -54,4 +55,7 @@
         display: flex;
         justify-content: flex-end;
     }
+}
+#sendButton{
+    margin-bottom: 100px;
 }

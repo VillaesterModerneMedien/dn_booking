@@ -16,6 +16,7 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Controller\ReservationC
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Controller\FormController;
@@ -61,9 +62,9 @@ class BookingController extends ReservationController
 	}
 	protected function _checkTime($time, $startTime, $endTime)
 	{
-		$timeObj = DateTime::createFromFormat('H:i', $time);
-		$startTimeObj = DateTime::createFromFormat('H:i', $startTime);
-		$endTimeObj = DateTime::createFromFormat('H:i', $endTime);
+		$timeObj = DateTime::createFromFormat('H:i:s', $time);
+		$startTimeObj = DateTime::createFromFormat('H:i:s', $startTime);
+		$endTimeObj = DateTime::createFromFormat('H:i:s', $endTime);
 
 		$isOpen = false;
 		if ($timeObj >= $startTimeObj && $timeObj <= $endTimeObj)
@@ -139,9 +140,12 @@ class BookingController extends ReservationController
 		header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Erlaubte Methoden
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
-		$date         = $this->input->get('date', null, 'string');
+		//$date         = $this->input->get('date', null, 'string');
+		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
 		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
-		$time         = $this->input->get('time', null, 'string');
+
+		$time           = $this->input->get('time', null, 'string');
+		//$time         = HTMLHelper::_('date', $this->input->get('time', null, 'string'), 'H:i');
 		$personscount = $this->input->get('visitors', null, 'int');
 		$model        = $this->getModel();
 		$rooms        = $model->updateRooms();
@@ -165,8 +169,8 @@ class BookingController extends ReservationController
 			if ($customOpeningHour) {
 				$a = $customOpeningHour['opening_time'];
 				$b = $regularOpeningHour['regular_opening_hours' . $a];
-				$startTime = $b['starttime'];
-				$endTime = $b['endtime'];
+				$startTime = $b['starttime'] . ':00';
+				$endTime = $b['endtime'] . ':00';
 				$isOpen = $this->_checkTime($time, $startTime, $endTime);
 				$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
 				$blockedRooms['start'] = $startTime;
@@ -186,8 +190,8 @@ class BookingController extends ReservationController
 				else
 				{
 					$d = $regularOpeningHour[$openingTime];
-					$startTime = $d['starttime'];
-					$endTime = $d['endtime'];
+					$startTime = $d['starttime'] . ':00';
+					$endTime = $d['endtime'] . ':00';
 					$isOpen = $this->_checkTime($time, $startTime, $endTime);
 					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
 					$blockedRooms['start'] = $startTime;

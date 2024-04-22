@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const weekdays = [text.monday, text.tuesday, text.wednesday, text.thursday, text.friday, text.saturday, text.sunday];
         const months = [text.january, text.february, text.march, text.april, text.may, text.june, text.july, text.august, text.september, text.october, text.november, text.december];
-  
+
         let details = {
             totalDays: monthDays(d),
             weekDays: weekdays,

@@ -33,18 +33,17 @@
                multiple="true"
                layout="joomla.form.field.subform.repeatable-table">
             <form>
-                <field name="starttime" type="time"
+                <field name="starttime"
+                       type="time"
                        label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_START_LABEL"
                        description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_START_DESC"
-                       format="%H:%M"
-                       showtime="true"
-                       filter="server_utc"/>
-                <field name="endtime" type="time"
+                       step="1800"
+                />
+                <field name="endtime"
+                       type="time"
                        label="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_LABEL"
                        description="COM_DNBOOKING_CONFIG_REGULAR_OPENINGHOUR_END_DESC"
-                       format="%H:%M"
-                       showtime="true"
-                       filter="server_utc"/>
+                />
                 <field name="openinghour_color" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL"
                        description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
             </form>
@@ -126,7 +125,7 @@
 
         <field type="spacer" name="myspacer" label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS_HINT"/>
 
-       <field
+        <field
                 name="additional_info_form"
                 type="subform"
                 hiddenLabel="true"

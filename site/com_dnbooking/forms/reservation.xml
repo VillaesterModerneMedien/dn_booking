@@ -18,15 +18,6 @@
         />
 
         <field
-                name="persons_count"
-                type="text"
-                label="COM_DNBOOKING_FIELD_PERSONS_COUNT_LABEL"
-                description="COM_DNBOOKING_FIELD_PERSONS_COUNT_DESC"
-                default="0"
-                required="true"
-        />
-
-        <field
                 name="additional_info"
                 type="AdditionalInfos"
                 label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
@@ -161,6 +152,15 @@
                 label="COM_DNBOOKING_FIELD_RESERVATION_PRICE_LABEL"
                 default="0"
                 disabled="true"
+        />
+
+        <field
+                name="persons_count"
+                type="text"
+                label="COM_DNBOOKING_FIELD_PERSONS_COUNT_LABEL"
+                description="COM_DNBOOKING_FIELD_PERSONS_COUNT_DESC"
+                default="0"
+                required="true"
         />
 
         <field

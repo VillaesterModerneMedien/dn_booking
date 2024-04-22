@@ -100,10 +100,12 @@ function updateRoomStatus(date, visitors){
                         let roomid = parseInt(room.getAttribute('data-room-id'));
                         if (blocked.rooms.includes(roomid)) {
                             room.classList.add('disabled');
+                            //room.input.addAttribute('disabled');
                             room.removeEventListener('click', handleRoomClick);
                         }
                         else {
                             room.classList.remove('disabled');
+                            //room.input.removeAttribute('disabled');
                             room.removeEventListener('click', handleRoomClick);
                             room.addEventListener('click', handleRoomClick);
                         }
@@ -305,8 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     buttons.forEach(button => {
         button.addEventListener('click', function(event) {
-            // Verhindere die Standardaktion des Buttons
-            //event.preventDefault();
+            event.preventDefault();
         });
     });
     document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
