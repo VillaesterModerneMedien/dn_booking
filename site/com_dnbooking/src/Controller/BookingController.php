@@ -44,35 +44,18 @@ class BookingController extends ReservationController
 	 * @since  1.0.0
 	 */
 	protected $view_item = 'booking';
+
+	/**
+	 * @var string $input
+	 * Description: This variable stores an empty string.
+	 */
 	protected $input = '';
 
 	/**
-	 * Method to get the weekday number of a date.
-	 *
-	 * @param $date
-	 *
-	 * @return int
-	 *
-	 * @since version
+	 * @var array $params
+	 * Description: This variable stores an associative array of input parameters.
 	 */
-	protected function _getWeekdayNumber($date)
-	{
-		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
-		return $weekdayNumber;
-	}
-	protected function _checkTime($time, $startTime, $endTime)
-	{
-		$timeObj = DateTime::createFromFormat('H:i:s', $time);
-		$startTimeObj = DateTime::createFromFormat('H:i:s', $startTime);
-		$endTimeObj = DateTime::createFromFormat('H:i:s', $endTime);
-
-		$isOpen = false;
-		if ($timeObj >= $startTimeObj && $timeObj <= $endTimeObj)
-		{
-			$isOpen = true;
-		}
-		return $isOpen;
-	}
+	protected $params;
 
 	/**
 	 * Constructor.
@@ -89,20 +72,10 @@ class BookingController extends ReservationController
 	public function __construct($config = [], MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
 		$this->input = Factory::getApplication()->input;
+		$this->params = $this->_getComponentParams();
 		parent::__construct($config, $factory, $app, $input);
 	}
 
-	/**
-	 *
-	 * @return Registry
-	 *
-	 * @since version
-	 */
-	private function _getComponentParams()
-	{
-		$params = ComponentHelper::getParams('com_dnbooking');
-		return $params;
-	}
 
 	/**
 	 * Method to get a model object, loading it if required.
@@ -119,8 +92,6 @@ class BookingController extends ReservationController
 	{
 		return parent::getModel($name, $prefix, ['ignore_request' => false]);
 	}
-
-
 
 
 	/**
@@ -140,19 +111,18 @@ class BookingController extends ReservationController
 		header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Erlaubte Methoden
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
-		//$date         = $this->input->get('date', null, 'string');
 		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
 		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
+		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
 
 		$time           = $this->input->get('time', null, 'string');
-		//$time         = HTMLHelper::_('date', $this->input->get('time', null, 'string'), 'H:i');
+
 		$personscount = $this->input->get('visitors', null, 'int');
 		$model        = $this->getModel();
 		$rooms        = $model->updateRooms();
 		$reservations = $model->getReservations();
 		$openingHours = $model->getOpeningHours($date, $time);
 		$isOpen = true;
-		//$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : null;
 
 		$customOpeningHour = isset($openingHours['opening_hours'][0]) ? $openingHours['opening_hours'][0] : false;
 		$regularOpeningHour = $openingHours['regular_opening_hours'];
@@ -225,6 +195,8 @@ class BookingController extends ReservationController
 		if (empty($blockedRooms['rooms'])) {
 			$blockedRooms['rooms'][] = 'all available';
 		}
+
+		$blockedRooms['isHolidayOrWeekend'] = $isHolidayOrWeekend;
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
 		$app->close();
@@ -234,6 +206,10 @@ class BookingController extends ReservationController
 	public function getOrderHTML(){
 		header('Content-Type: text/html');
 
+		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
+		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
+		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
+
 		$formFields = $this->input->post->getArray();
 		$orderData = [];
 
@@ -241,8 +217,7 @@ class BookingController extends ReservationController
 		$input = $app->input;
 		$model = $this->getModel();
 		$layout = new FileLayout('booking.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
-		$component = $this->_getComponentParams();
-
+		$component = $this->params;
 
 		foreach ($formFields as $key => $value){
 			if($key == "room"){
@@ -300,5 +275,74 @@ class BookingController extends ReservationController
 				'error'
 			);
 		}
+	}
+
+
+	private function _checkHolidays($date, $weekdayNumber)
+	{
+		// Check if the date is a holiday or weekend
+		// Sa = 5, So = 6
+
+		if($weekdayNumber == 5 || $weekdayNumber == 6){
+			return true;
+		}
+		$params = $this->params;
+
+		foreach ($params->get('holidays') as $holiday) {
+			// Extract the start and end dates of the holiday
+			$startDate = date('Y-m-d', strtotime($holiday->startDate));
+			$endDate = date('Y-m-d', strtotime($holiday->endDate));
+
+			// Check if the date is within the start and end dates of the holiday
+			if ($date >= $startDate && $date <= $endDate) {
+				// If it is, return true
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Method to get the weekday number of a date.
+	 *
+	 * @param $date
+	 *
+	 * @return int
+	 *
+	 * @since version
+	 */
+	protected function _getWeekdayNumber($date)
+	{
+		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
+		return $weekdayNumber;
+	}
+
+
+	protected function _checkTime($time, $startTime, $endTime)
+	{
+		$timeObj = DateTime::createFromFormat('H:i:s', $time);
+		$startTimeObj = DateTime::createFromFormat('H:i:s', $startTime);
+		$endTimeObj = DateTime::createFromFormat('H:i:s', $endTime);
+
+		$isOpen = false;
+		if ($timeObj >= $startTimeObj && $timeObj <= $endTimeObj)
+		{
+			$isOpen = true;
+		}
+		return $isOpen;
+	}
+
+
+	/**
+	 *
+	 * @return Registry
+	 *
+	 * @since version
+	 */
+	private function _getComponentParams()
+	{
+		$params = ComponentHelper::getParams('com_dnbooking');
+		return $params;
 	}
 }

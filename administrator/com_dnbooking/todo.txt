@@ -1,0 +1,8 @@
+- Stati anpassen (annulliert)
+- Resveration Table
+- JavaScript fixen ##
+- Raumname in Reservation Listing ausgeben
+- Personenzahl in Reservation Listing ausgeben
+- extras / räume filter dazu
+- Tagesansicht Backend
+- Feiertage LayoutPath

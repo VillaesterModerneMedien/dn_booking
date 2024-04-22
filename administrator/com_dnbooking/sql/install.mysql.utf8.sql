@@ -8,7 +8,7 @@ CREATE TABLE if not exists `#__dnbooking_reservations`
     `customer_notes`     mediumtext COLLATE utf8mb4_unicode_ci,
     `general_notes`      mediumtext COLLATE utf8mb4_unicode_ci,
     `reservation_price`  varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `reservation_status` int(11)                                 NOT NULL DEFAULT '0',
+    `holiday`            int(1)                                  NOT NULL DEFAULT '0',
     `customer_id`        int(11)                                 NOT NULL DEFAULT '0',
     `room_id`            int(11)                                 NOT NULL DEFAULT '0',
     `persons_count`      int(11)                                 NOT NULL DEFAULT '0',

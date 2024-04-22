@@ -98,7 +98,24 @@
     <fieldset
             name="pricesettings"
             label="COM_DNBOOKING_CONFIG_PRICESETTINGS_LABEL"
+            addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\"
     >
+        <field
+                name="admissionpriceregular"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_PRICESETTINGS_ADMISSIONPRICEREGULAR_LABEL"
+                description="COM_DNBOOKING_CONFIG_PRICESETTINGS_ADMISSIONPRICEREGULAR_DESC"
+                size="10"
+                default="0"
+        />
+        <field
+                name="admissionpricecustom"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_PRICESETTINGS_ADMISSIONPRICECUSTOM_LABEL"
+                description="COM_DNBOOKING_CONFIG_PRICESETTINGS_ADMISSIONPRICECUSTOM_DESC"
+                size="10"
+                default="0"
+        />
         <field
                 name="packagepriceregular"
                 type="text"
@@ -115,6 +132,77 @@
                 size="10"
                 default="0"
         />
+
+        <field type="note" name="myspacer" label="COM_DNBOOKING_SELECT_REGION_HINT"/>
+
+
+        <field name="region"
+               type="list"
+               default=""
+               label="COM_DNBOOKING_SELECT_REGION_LABEL"
+               description="COM_DNBOOKING_SELECT_REGION_DESC"
+        >
+            <option value="BW">COM_DNBOOKING_REGION_LABEL_BW</option>
+            <option value="BY">COM_DNBOOKING_REGION_LABEL_BY</option>
+            <option value="BE">COM_DNBOOKING_REGION_LABEL_BE</option>
+            <option value="BB">COM_DNBOOKING_REGION_LABEL_BB</option>
+            <option value="HB">COM_DNBOOKING_REGION_LABEL_HB</option>
+            <option value="HH">COM_DNBOOKING_REGION_LABEL_HH</option>
+            <option value="HE">COM_DNBOOKING_REGION_LABEL_HE</option>
+            <option value="MV">COM_DNBOOKING_REGION_LABEL_MV</option>
+            <option value="NI">COM_DNBOOKING_REGION_LABEL_NI</option>
+            <option value="NW">COM_DNBOOKING_REGION_LABEL_NW</option>
+            <option value="RP">COM_DNBOOKING_REGION_LABEL_RP</option>
+            <option value="SL">COM_DNBOOKING_REGION_LABEL_SL</option>
+            <option value="SN">COM_DNBOOKING_REGION_LABEL_SN</option>
+            <option value="ST">COM_DNBOOKING_REGION_LABEL_ST</option>
+            <option value="SH">COM_DNBOOKING_REGION_LABEL_SH</option>
+            <option value="TH">COM_DNBOOKING_REGION_LABEL_TH</option>
+        </field>
+
+        <field
+                name="holidays"
+                type="Holidays"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.holidays-list"
+                description=""
+                multiple="true"
+                min="1"
+                max="1000"
+        >
+            <form>
+                <field
+                        name="startDate"
+                        type="calendar"
+                        label="COM_DNBOOKING_FIELD_HOLIDAYS_STARTDATE_LABEL"
+                        translateformat="true"
+                        showtime="false"
+                        required="true"
+                        filter="server_utc"
+                        readonly="true"
+                />
+
+                <field
+                        name="endDate"
+                        type="calendar"
+                        label="COM_DNBOOKING_FIELD_HOLIDAYS_ENDDATE_LABEL"
+                        translateformat="true"
+                        showtime="false"
+                        required="true"
+                        filter="server_utc"
+                        readonly="true"
+                />
+
+                <field
+                        name="title"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_HOLIDAYS_TITLE_LABEL"
+                        readonly="true"
+                />
+
+
+            </form>
+        </field>
     </fieldset>
 
 

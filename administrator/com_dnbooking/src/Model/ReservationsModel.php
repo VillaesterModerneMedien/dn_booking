@@ -95,11 +95,13 @@ class ReservationsModel extends ListModel
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.*, c.id AS customer_id, c.firstname, c.lastname');
+		$query->select('a.*, c.id AS customer_id, c.firstname, c.lastname, d.title AS room_title');
 		$query->from($db->quoteName('#__dnbooking_reservations', 'a'));
 
 		// Join over the customers table.
 		$query->join('LEFT', $db->quoteName('#__dnbooking_customers', 'c') . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.customer_id'));
+
+		$query->join('LEFT', $db->quoteName('#__dnbooking_rooms', 'd') . ' ON ' . $db->quoteName('a.room_id') . ' = ' . $db->quoteName('d.id'));
 
 		// Filter by published state
 		$published = (string) $this->getState('filter.published');
@@ -129,7 +131,7 @@ class ReservationsModel extends ListModel
 			{
 				$search = '%' . trim($search) . '%';
 				$query->where('(' .
-					'CONCAT(DATE_FORMAT(' . $db->quoteName('a.reservation_date') . ', "%d.%m.%Y"), ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ') LIKE :combined' .
+					'CONCAT(DATE_FORMAT(' . $db->quoteName('a.reservation_date') . ', "%d.%m.%Y"), ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ', ' . $db->quoteName('d.room_title') . ') LIKE :combined' .
 					' OR ' . $db->quoteName('a.admin_notes') . ' LIKE :admin_notes' .
 					')');
 				$query->bind(':combined', $search);

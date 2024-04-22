@@ -17,20 +17,13 @@
 
 		<field
 				name="published"
-				type="list"
-				label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
-				description="COM_DNBOOKING_FIELD_RESERVATION_STATUS_DESC"
-				default="1"
+				type="status"
+				label="JOPTION_SELECT_PUBLISHED"
 				class="js-select-submit-on-change"
+				extension="com_content"
 		>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
-			<option value="1">JPUBLISHED</option>
-			<option value="0">JUNPUBLISHED</option>
-			<option value="2">JARCHIVED</option>
-			<option value="3">COM_DNBOOKING_FIELD_RESERVATION_STATUS_CANCELLED</option>
-			<option value="-2">JTRASHED</option>
 		</field>
-
 
 	</fields>
 
@@ -46,12 +39,10 @@
 				onchange="this.form.submit();"
 		>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
-			<option value="ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
-			<option value="a.reservation_date ASC">DATE_ASC</option>
-			<option value="a.reservation_date DESC">DATE_DESC</option>
-			<option value="a.title ASC">JGLOBAL_TITLE_ASC</option>
-			<option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
+			<option value="a.title ASC">COM_DNBOOKING_SEARCH_CUSTOMER_NAME_ASC</option>
+			<option value="a.title DESC">COM_DNBOOKING_SEARCH_CUSTOMER_NAME_DESC</option>
+			<option value="a.email ASC">COM_DNBOOKING_SEARCH_CUSTOMER_EMAIL_ASC</option>
+			<option value="a.email DESC">COM_DNBOOKING_SEARCH_CUSTOMER_EMAIL_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
@@ -65,7 +56,5 @@
 			default="25"
 			onchange="this.form.submit();"
 		/>
-
 	</fields>
-
 </form>

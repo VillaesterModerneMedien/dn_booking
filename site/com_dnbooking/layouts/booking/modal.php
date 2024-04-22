@@ -17,20 +17,30 @@ use Joomla\Input\Input;
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
 $data = $displayData['jform'];
+
+/**
+ * siehe Settings in der Konfiguration
+ * visitors, visitorsPackage, birthdayChild
+ */
+foreach ($data['additional_info'] as $key => $value) {
+    $data[$key] = $value;
+}
+
 $params = $displayData['params'];
 $packageprice = $params['packagepriceregular'];
-$packagepriceTotal = $packageprice * $data['visitors'];
+$packagepriceTotal = $packageprice * (int) $data['visitors'];
 ?>
 <div id="summary">
-<p><h3>Hallo <?= $data['firstname'] . ' ' . $data['lastname']?>, Ihre Buchung im Überblick</h3></p>
 
-    <p><?php echo $data['salutation'] . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
-        <?php echo $data['address']; ?><br/>
-        <?php echo $data['zip'] . ' ' . $data['city']; ?>
+<p><h3><?= Text::sprintf('COM_DNBOKING_BOOKING_SUMMARY_HEADLINE', $data['firstname'] . ' ' . $data['lastname']) ?></h3></p>
+
+    <p><?= Text::_($data['salutation']) . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
+        <?= $data['address']; ?><br/>
+        <?= $data['zip'] . ' ' . $data['city']; ?>
     </p>
     <p>
-        <?php echo $data['email']; ?><br/>
-        <?php echo $data['phone']; ?>
+        <?= $data['email']; ?><br/>
+        <?= $data['phone']; ?>
     </p>
 
     <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
@@ -42,7 +52,7 @@ $packagepriceTotal = $packageprice * $data['visitors'];
         </tr>
         </thead>
         <tr>
-			 <td><?= $data['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . date('d.m.Y', strtotime($data['date'])) . ' - ' . $data['time'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
+			 <td><?= $data['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . date('d.m.Y', strtotime($data['reservation_date'])) . ' - ' . $data['reservation_date'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
         </tr>
     </table>
 <?php foreach ($data as $key => $value): ?>
@@ -79,14 +89,14 @@ $packagepriceTotal = $packageprice * $data['visitors'];
     <?php endif; ?>
 
 <?php endforeach; ?>
-    <h4><?php echo JText::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
+    <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
     <div class="uk-card uk-card-default uk-card-body">
         <p>
-			<?php echo $data['comments']; ?>
+			<?= $data['customer_notes']; ?>
         </p>
     </div>
 
 
-    <button type="submit" class="uk-button uk-button-primary"><?php echo JText::_('COM_DNBOOKING_SEND_RESERVATION'); ?></button>
+    <a href="" class="uk-button uk-button-primary" id="submitBooking"><?= Text::_('COM_DNBOOKING_SEND_RESERVATION'); ?></a>
 
 </div>

@@ -209,10 +209,16 @@ function renderOrderHTML() {
     xhr.onload = function() {
         if (this.status === 200) {
             let response = this.responseText;
-            UIkit.modal.confirm(response).then(function() {
+
+            let responseWithId = `<div id='my-modal-id'>${response}</div>`;
+
+            UIkit.modal.confirm(responseWithId).then(function() {
                 console.log('Confirmed.')
             }, function () {
                 console.log('Rejected.')
+            }).then(function(){
+                // Adding id to the created modal after it's shown
+                document.querySelector('.uk-modal').setAttribute('id', 'my-modal-id');
             });
         }
     };
@@ -324,4 +330,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     setStep(step);
+
+    document.getElementById('submitBooking').addEventListener('click', function(event) {
+        event.preventDefault();  // Verhindert das normale Verhalten des Buttons
+        document.getElementById('bookingForm').submit(); // Sendet das Formular
+
+        // Schließt das Modal
+        // Hier nehmen wir an, dass "myModal" Ihr Modal-Element ist. Bitte ersetzen Sie es entsprechend.
+        let modal = document.getElementById('myModal');
+        modal.style.display = "none";
+    });
 });

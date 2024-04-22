@@ -124,6 +124,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			}
 		}
 
+
 		$this->extras_ids         = json_encode($this->extras_ids);
 
 		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
