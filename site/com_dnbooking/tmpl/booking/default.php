@@ -22,6 +22,16 @@ $wa->useScript('com_dnbooking.script');
 $wa->useStyle('com_dnbooking.booking');
 // $wa->useAsset('script', 'jquery');
 
+$translations = [
+	'timeclosed' => Text::_('COM_DNBOOKING_TIME_CLOSED'),
+	'dayclosed' => Text::_('COM_DNBOOKING_DAY_CLOSED'),
+    'enterdate' => Text::_('COM_DNBOOKING_ENTER_DATE'),
+    'opened' => Text::_('COM_DNBOOKING_OPENED'),
+    'till' => Text::_('COM_DNBOOKING_TILL'),
+];
+
+Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.translations', $translations);
+
 $dateformat = 'Y-m-d';
 $params = ComponentHelper::getParams('com_dnbooking');
 $priceRegular = $params->get('packagepriceregular');
