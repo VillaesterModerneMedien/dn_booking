@@ -232,6 +232,18 @@
                         size="10"
                         default=""
                 />
+                <field name="fieldName"
+                       type="list"
+                       default=""
+                       required="true"
+                       label="COM_DNBOOKING_FIELD_NAME_LABEL"
+                       description=""
+                >
+                    <option value="">COM_DNBOOKING_LABEL_CHOOSE</option>
+                    <option value="visitors">visitors</option>
+                    <option value="visitorsPackage">visitorsPackage</option>
+                    <option value="birthdaychildren">birthdaychildren</option>
+                </field>
                 <field
                         name="fieldLabel"
                         type="text"
