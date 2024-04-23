@@ -142,22 +142,22 @@
                label="COM_DNBOOKING_SELECT_REGION_LABEL"
                description="COM_DNBOOKING_SELECT_REGION_DESC"
         >
-            <option value="BW">COM_DNBOOKING_REGION_LABEL_BW</option>
-            <option value="BY">COM_DNBOOKING_REGION_LABEL_BY</option>
-            <option value="BE">COM_DNBOOKING_REGION_LABEL_BE</option>
-            <option value="BB">COM_DNBOOKING_REGION_LABEL_BB</option>
-            <option value="HB">COM_DNBOOKING_REGION_LABEL_HB</option>
-            <option value="HH">COM_DNBOOKING_REGION_LABEL_HH</option>
-            <option value="HE">COM_DNBOOKING_REGION_LABEL_HE</option>
-            <option value="MV">COM_DNBOOKING_REGION_LABEL_MV</option>
-            <option value="NI">COM_DNBOOKING_REGION_LABEL_NI</option>
-            <option value="NW">COM_DNBOOKING_REGION_LABEL_NW</option>
-            <option value="RP">COM_DNBOOKING_REGION_LABEL_RP</option>
-            <option value="SL">COM_DNBOOKING_REGION_LABEL_SL</option>
-            <option value="SN">COM_DNBOOKING_REGION_LABEL_SN</option>
-            <option value="ST">COM_DNBOOKING_REGION_LABEL_ST</option>
-            <option value="SH">COM_DNBOOKING_REGION_LABEL_SH</option>
-            <option value="TH">COM_DNBOOKING_REGION_LABEL_TH</option>
+            <option value="DE-BW">COM_DNBOOKING_REGION_LABEL_BW</option>
+            <option value="DE-BY">COM_DNBOOKING_REGION_LABEL_BY</option>
+            <option value="DE-BE">COM_DNBOOKING_REGION_LABEL_BE</option>
+            <option value="DE-BB">COM_DNBOOKING_REGION_LABEL_BB</option>
+            <option value="DE-HB">COM_DNBOOKING_REGION_LABEL_HB</option>
+            <option value="DE-HH">COM_DNBOOKING_REGION_LABEL_HH</option>
+            <option value="DE-HE">COM_DNBOOKING_REGION_LABEL_HE</option>
+            <option value="DE-MV">COM_DNBOOKING_REGION_LABEL_MV</option>
+            <option value="DE-NI">COM_DNBOOKING_REGION_LABEL_NI</option>
+            <option value="DE-NW">COM_DNBOOKING_REGION_LABEL_NW</option>
+            <option value="DE-RP">COM_DNBOOKING_REGION_LABEL_RP</option>
+            <option value="DE-SL">COM_DNBOOKING_REGION_LABEL_SL</option>
+            <option value="DE-SN">COM_DNBOOKING_REGION_LABEL_SN</option>
+            <option value="DE-ST">COM_DNBOOKING_REGION_LABEL_ST</option>
+            <option value="DE-SH">COM_DNBOOKING_REGION_LABEL_SH</option>
+            <option value="DE-TH">COM_DNBOOKING_REGION_LABEL_TH</option>
         </field>
 
         <field

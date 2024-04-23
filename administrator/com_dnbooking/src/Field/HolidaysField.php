@@ -13,6 +13,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\Filesystem\Path;
 use Joomla\Registry\Registry;
 
@@ -69,6 +70,31 @@ class HolidaysField extends SubformField
      */
     protected $buttons = ['add' => true, 'remove' => true, 'move' => true];
 
+	/**
+	 * Get the renderer
+	 *
+	 * @param   string  $layoutId  Id to load
+	 *
+	 * @return  FileLayout
+	 *
+	 * @since   3.5
+	 */
+	protected function getRenderer($layoutId = 'default')
+	{
+		$renderer = new FileLayout($layoutId);
+
+		$renderer->setDebug($this->isDebugEnabled());
+
+		$layoutPaths = $this->getLayoutPaths();
+		array_unshift($layoutPaths, JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+
+		if ($layoutPaths) {
+			$renderer->setIncludePaths($layoutPaths);
+		}
+
+		return $renderer;
+	}
+
     /**
      * Loads the form instance for the holidays.
      *
@@ -94,6 +120,11 @@ class HolidaysField extends SubformField
         return $tmpl;
     }
 
+	// Funktion zum Sortieren des Arrays nach dem Startdatum
+	public function compareStartDate($a, $b) {
+		return strtotime($a['startDate']) - strtotime($b['startDate']);
+	}
+
     /**
      * Binds given data to the holidays and its elements.
      *
@@ -107,38 +138,32 @@ class HolidaysField extends SubformField
     {
        // $value = $this->value ? (array) $this->value : [];
 	    $params = ComponentHelper::getParams('com_dnbooking');
-		$year = date('Y');
+	    (int) $year = date('Y');
 		$region = $params->get('region');
-	    $years = $year . ',' . ($year + 1);
-	    $yearsHolidays = explode(',', $years);
+	    $region = strtoupper($region);
 
 		$holidays = [];
 
-		$holidaysCelebration = json_decode($this->_getHolidaysCelebration(strtolower($region), $years), true);
-		foreach ($holidaysCelebration['feiertage'] as $holiday)
+		$holidaysCelebration = json_decode($this->_getHolidaysCelebration($region, $year), true);
+		foreach ($holidaysCelebration as $holiday)
 		{
 			$holidays[] = [
-				'start' => $holiday['date'],
-				'end' => $holiday['date'],
-				'name' => $holiday['fname'],
+				'start' => $holiday['startDate'],
+				'end' => $holiday['endDate'],
+				'name' => $holiday['name'][0]['text'],
 			];
 		}
 
-		foreach ($yearsHolidays as $year)
+		$yearDataHoliday = json_decode($this->_getHolidays($region, $year), true);
+		foreach ($yearDataHoliday as $holiday)
 		{
-			$region = strtoupper($region);
-
-			$yearDataHoliday = json_decode($this->_getHolidays($region, $year), true);
-			foreach ($yearDataHoliday as $holiday)
-			{
-				$holidays[] = [
-					'start' => $holiday['start'],
-					'end' => $holiday['end'],
-					'name' => $holiday['name'],
-				];
-			}
-
+			$holidays[] = [
+				'start' => $holiday['startDate'],
+				'end' => $holiday['endDate'],
+				'name' => $holiday['name'][0]['text'],
+			];
 		}
+
 
 		$value = [];
 		foreach ($holidays as $holiday)
@@ -149,6 +174,8 @@ class HolidaysField extends SubformField
 				'title' => $holiday['name'],
 			];
 		}
+
+	    usort($value, array($this,'compareStartDate'));
 
         // Simple form, just bind the data and return one row.
         if (!$this->multiple) {
@@ -181,9 +208,10 @@ class HolidaysField extends SubformField
 	protected function _getHolidays($region, $year)
 	{
 		$curl = curl_init();
-
+		$curlURL = 'https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom='. $year .'-01-01&validTo='. $year+1 . '-12-31&subdivisionCode='. $region;
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://ferien-api.de/api/v1/holidays/' . $region . '/' . $year,
+
+			CURLOPT_URL => $curlURL,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -199,12 +227,13 @@ class HolidaysField extends SubformField
 		return $response;
 	}
 
-	protected function _getHolidaysCelebration($region, $years)
+	protected function _getHolidaysCelebration($region, $year)
 	{
 		$curl = curl_init();
+		$curlURL = 'https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom=' . $year . '-01-01&validTo=' . $year+1 . '-12-31&subdivisionCode='. $region;
 
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => 'https://get.api-feiertage.de?years=' . $years . '&states=' . $region ,
+			CURLOPT_URL => $curlURL,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
@@ -219,5 +248,7 @@ class HolidaysField extends SubformField
 		curl_close($curl);
 		return $response;
 	}
+
+
 
 }
