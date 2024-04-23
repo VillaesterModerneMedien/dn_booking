@@ -128,6 +128,10 @@ class BookingModel extends ReservationModel
 	 */
 	public function getRoom($id): array
 	{
+		if(!empty(static::$instances['rooms'])){
+			return static::$instances['rooms'];
+		}
+
 		$query = $this->db->getQuery(true);
 		$id    = $this->db->escape($id);
 
@@ -137,7 +141,14 @@ class BookingModel extends ReservationModel
 
 		$this->db->setQuery($query);
 
-		return $this->db->loadAssoc();
+		try{
+			static::$instances['room'] = $this->db->loadAssoc();
+		}
+		catch(\Exception $e){
+			static::$instances['room'] = [];
+		}
+
+		return static::$instances['room'];
 	}
 
 	public function updateRooms(): array
@@ -253,9 +264,7 @@ class BookingModel extends ReservationModel
 		if ($inputData)
 		{
 			$query     = $this->db->getQuery(true);
-			$inputData = $this->db->escape($inputData);
-			$extra     = explode('-', $inputData);
-			$id        = $extra[1];
+			$id = (int) $this->db->escape($inputData);
 
 			$query->select('title, price')
 				->from($this->db->quoteName('#__dnbooking_extras'))

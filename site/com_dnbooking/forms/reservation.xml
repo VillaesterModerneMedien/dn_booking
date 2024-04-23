@@ -147,12 +147,6 @@
     <fieldset name="hiddenFields">
 
         <field
-                name="holiday"
-                type="hidden"
-                label="COM_DNBOOKING_FIELD_RESERVATION_HOLIDAY_LABEL"
-        />
-
-        <field
                 name="reservation_price"
                 type="hidden"
                 label="COM_DNBOOKING_FIELD_RESERVATION_PRICE_LABEL"
@@ -171,11 +165,6 @@
 
         <field
                 name="customer_id"
-                type="hidden"
-        />
-
-        <field
-                name="isHoliday"
                 type="hidden"
         />
 

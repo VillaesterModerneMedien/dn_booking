@@ -115,6 +115,8 @@ class BookingController extends ReservationController
 		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
 		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
 
+		//$this->input->set('isHoliday') = $isHolidayOrWeekend;
+
 		$time           = $this->input->get('time', null, 'string');
 
 		$personscount = $this->input->get('visitors', null, 'int');
@@ -206,31 +208,34 @@ class BookingController extends ReservationController
 	public function getOrderHTML(){
 		header('Content-Type: text/html');
 
-		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
+		$formFields = $this->input->post->getArray();
+		$date         = HTMLHelper::_('date', $formFields['jform']['reservation_date'], 'Y-m-d');
 		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
 		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
-
-		$formFields = $this->input->post->getArray();
 		$orderData = [];
 
 		$app = Factory::getApplication();
 		$input = $app->input;
 		$model = $this->getModel();
+
 		$layout = new FileLayout('booking.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
 		$component = $this->params;
 
-		foreach ($formFields as $key => $value){
-			if($key == "room"){
+		foreach ($formFields['jform'] as $key => $value){
+			if($key == "room_id"){
 				$orderData[$key] = $model->getRoom($value);
 			}
 			else if(str_contains($key, 'extra')){
-				if($value > 0){
-					$extras = $model->getExtra($key);
-
-					$orderData['extras'][$extras['title']]['name'] = $extras['title'];
-					$orderData['extras'][$extras['title']]['price_single'] = $extras['price'];
-					$orderData['extras'][$extras['title']]['amount'] = $value;
-					$orderData['extras'][$extras['title']]['price_total'] = $extras['price'] * $value;
+				if(is_array($value)){
+					foreach ($value as $key => $value){
+						if($value['extra_count'] > 0){
+							$extras = $model->getExtra($value['extra_id']);
+							$orderData['extras'][$extras['title']]['name'] = $extras['title'];
+							$orderData['extras'][$extras['title']]['price_single'] = $extras['price'];
+							$orderData['extras'][$extras['title']]['amount'] =  (int) $value['extra_count'];
+							$orderData['extras'][$extras['title']]['price_total'] = $extras['price'] * $value['extra_count'];
+						}
+					}
 				}
 			}
 			else {
@@ -238,6 +243,9 @@ class BookingController extends ReservationController
 			}
 
 		}
+		$orderData[$key] = $value;
+		$orderData['isHolidayOrWeekend'] = $isHolidayOrWeekend;
+
 		foreach ($component as $key => $value){
 			$orderData['params'][$key] = $component->get($key);
 		}
@@ -246,6 +254,7 @@ class BookingController extends ReservationController
 		echo $html;
 
 		$app->close();
+
 	}
 
 

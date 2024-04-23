@@ -96,20 +96,20 @@ function updateRoomStatus(date, visitors){
                 else{
                     let blockedRooms = ['all available'];
                 }
-                    rooms.forEach(function(room) {
-                        let roomid = parseInt(room.getAttribute('data-room-id'));
-                        if (blocked.rooms.includes(roomid)) {
-                            room.classList.add('disabled');
-                            //room.input.addAttribute('disabled');
-                            room.removeEventListener('click', handleRoomClick);
-                        }
-                        else {
-                            room.classList.remove('disabled');
-                            //room.input.removeAttribute('disabled');
-                            room.removeEventListener('click', handleRoomClick);
-                            room.addEventListener('click', handleRoomClick);
-                        }
-                    });
+                rooms.forEach(function(room) {
+                    let roomid = parseInt(room.getAttribute('data-room-id'));
+                    if (blocked.rooms.includes(roomid)) {
+                        room.classList.add('disabled');
+                        //room.input.addAttribute('disabled');
+                        room.removeEventListener('click', handleRoomClick);
+                    }
+                    else {
+                        room.classList.remove('disabled');
+                        //room.input.removeAttribute('disabled');
+                        room.removeEventListener('click', handleRoomClick);
+                        room.addEventListener('click', handleRoomClick);
+                    }
+                });
         }
     };
 
@@ -210,15 +210,15 @@ function renderOrderHTML() {
         if (this.status === 200) {
             let response = this.responseText;
 
-            let responseWithId = `<div id='my-modal-id'>${response}</div>`;
-
-            UIkit.modal.confirm(responseWithId).then(function() {
+            UIkit.modal.confirm(response, {
+                i18n: {
+                    ok: 'Okay',
+                    cancel: 'Abbrechen'
+                }
+            }).then(function() {
                 console.log('Confirmed.')
             }, function () {
                 console.log('Rejected.')
-            }).then(function(){
-                // Adding id to the created modal after it's shown
-                document.querySelector('.uk-modal').setAttribute('id', 'my-modal-id');
             });
         }
     };
@@ -330,14 +330,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     setStep(step);
-
-    document.getElementById('submitBooking').addEventListener('click', function(event) {
-        event.preventDefault();  // Verhindert das normale Verhalten des Buttons
-        document.getElementById('bookingForm').submit(); // Sendet das Formular
-
-        // Schließt das Modal
-        // Hier nehmen wir an, dass "myModal" Ihr Modal-Element ist. Bitte ersetzen Sie es entsprechend.
-        let modal = document.getElementById('myModal');
-        modal.style.display = "none";
-    });
 });

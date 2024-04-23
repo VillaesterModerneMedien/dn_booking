@@ -16,7 +16,7 @@ use Joomla\Input\Input;
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
-$data = $displayData['jform'];
+$data = $displayData;
 
 /**
  * siehe Settings in der Konfiguration
@@ -28,7 +28,17 @@ foreach ($data['additional_info'] as $key => $value) {
 
 $params = $displayData['params'];
 $packageprice = $params['packagepriceregular'];
-$packagepriceTotal = $packageprice * (int) $data['visitors'];
+if($data['isHolidayOrWeekend']) {
+    $packageprice = $params['packagepricecustom'];
+}
+$packagepriceTotal = $packageprice * (int) $data['visitorsPackage'];
+
+$admissionprice = $params['admissionpriceregular'];
+if($data['isHolidayOrWeekend']) {
+	$packageprice = $params['admissionpricecustom'];
+}
+$admissionpriceTotal = $admissionprice * (int) $data['visitors'];
+
 ?>
 <div id="summary">
 
@@ -52,8 +62,14 @@ $packagepriceTotal = $packageprice * (int) $data['visitors'];
         </tr>
         </thead>
         <tr>
-			 <td><?= $data['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . date('d.m.Y', strtotime($data['reservation_date'])) . ' - ' . $data['reservation_date'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
+			 <td><?= $data['visitorsPackage'] . ' x </td><td>' . Text::_('COM_DNBOOKING_PACKAGE_TEXT') . ' <strong>' . $data['reservation_date'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
         </tr>
+        <?php if($data['visitors'] > 0): ?>
+            <tr>
+        <tr>
+			 <td><?= $data['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . $data['reservation_date'] . '</strong><td> ' . number_format($admissionpriceTotal, 2, ",", ".") . ' €</td>'?>
+        </tr>
+        <?php endif; ?>
     </table>
 <?php foreach ($data as $key => $value): ?>
     <?php if ($key == 'room'): ?>
@@ -97,6 +113,6 @@ $packagepriceTotal = $packageprice * (int) $data['visitors'];
     </div>
 
 
-    <a href="" class="uk-button uk-button-primary" id="submitBooking"><?= Text::_('COM_DNBOOKING_SEND_RESERVATION'); ?></a>
+    <button type="submit" class="uk-button uk-button-primary"><?= Text::_('COM_DNBOOKING_SEND_RESERVATION'); ?></button>
 
 </div>
