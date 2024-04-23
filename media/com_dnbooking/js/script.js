@@ -130,6 +130,7 @@ function checkDate(date, visitors){
     let xhr = new XMLHttpRequest();
 
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
+    let translation = Joomla.getOptions('com_dnbooking.translations');
     const time = extractTimeFromDateTime();
 
     xhr.open('POST', url, true);
@@ -146,13 +147,13 @@ function checkDate(date, visitors){
                 updateRoomStatus(date, visitors);
             }
             else if(blocked.times === 'timeclosed'){
-                setMessage('Bitte wählen Sie eine andere Uhrzeit, an diesem Tag haben wir von: ' + blocked.start + ' bis ' + blocked.end + ' Uhr geöffnet');
+                setMessage(translation.timeclosed + blocked.start + translation.till + blocked.end + translation.opened);
             }
             else if(blocked.times === 'dayclosed'){
-                setMessage('An diesem Tag haben wir leider nicht geöffnet, bitte versuchen Sie es mit einem anderen Datum');
+                setMessage(translation.dayxclosed );
             }
             else if(date === '' || time === '') {
-                setMessage('Bitte geben Sie ein Datum und eine Uhrzeit ein');
+                setMessage(translation.enterdate);
             }
         }
     };
