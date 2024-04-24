@@ -37,7 +37,7 @@ class Router extends RouterView
 	 */
 	protected $noIDs = false;
 
-    
+
 	/**
 	 * The db
 	 *
@@ -62,10 +62,10 @@ class Router extends RouterView
 		$this->db = $db;
 
 		$params = ComponentHelper::getParams('com_dnbooking');
-        
+
 		$this->noIDs = (bool) $params->get('sef_ids');
 
-		$this->registerView(new RouterViewConfiguration('booking'));
+		$this->registerView(new RouterViewConfiguration('reservation'));
 
 		parent::__construct($app, $menu);
 

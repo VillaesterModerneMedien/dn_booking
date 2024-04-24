@@ -25,7 +25,7 @@ if($id) {
     </tr>
     <tr>
         <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_RESERVATION_STATUS'); ?></td>
-        <td><?= $item->reservation_status; ?></td>
+        <td><?= $item->published; ?></td>
     </tr>
     <tr>
         <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_CUSTOMER_ID'); ?></td>
@@ -47,10 +47,7 @@ if($id) {
         <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_RESERVATION_DATE'); ?></td>
         <td><?php echo HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5')); ?></td>
     </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_PUBLISHED'); ?></td>
-        <td><?= $item->published; ?></td>
-    </tr>
+
     <tr>
         <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_CREATED'); ?></td>
         <td>

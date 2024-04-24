@@ -40,17 +40,16 @@ if ($multiple)
 	Factory::getApplication()
 		->getDocument()
 		->getWebAssetManager();
-		//->useScript('webcomponent.field-subform');
+	//->useScript('webcomponent.field-subform');
 }
 
 $class = $class ? ' ' . $class : '';
 
 $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
 
+$model  = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Site');
+$extras = $model->getOrderFeatures('Extras');
 
-$factory       = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
-$extrasModel   = $factory->createModel('Booking', 'Site');
-$extras        = $extrasModel->getExtras();
 $class         = $class ? ' ' . $class : '';
 $columns       = 3;
 $counter       = 0;
@@ -62,16 +61,16 @@ foreach ($extras as $key => $extra)
 
 	$subformValues['extras_ids' . $key] = [
 		'extra_count' => 0,
-		'extra_id'    => $extra['id'],
+		'extra_id'    => $extra->id,
 	];
 
 	$subformItems['extras_ids' . $key] = [
-		'id'          => $extra['id'],
-		'title'       => $extra['title'],
-		'description' => $extra['description'],
-		'price'       => $extra['price'],
-		'image'       => $extra['image'],
-		'published'   => $extra['published'],
+		'id'          => $extra->id,
+		'title'       => $extra->title,
+		'description' => $extra->description,
+		'price'       => $extra->price,
+		'image'       => $extra->image,
+		'published'   => $extra->published,
 	];
 
 }
@@ -80,14 +79,14 @@ foreach ($extras as $key => $extra)
     <joomla-field-subform class="subform-repeatable<?php echo $class; ?>" name="<?php echo $name; ?>">
         <ul class="extraList uk-grid uk-child-width-1-1 uk-child-width-1-<?= $columns; ?>@s uk-child-width-1-<?= $columns; ?>@m uk-grid-match"
             uk-grid="">
-                <?php
-                foreach ($forms as $k => $form) :
-                    /** @var Form $form */
-                    $form->bind($subformValues[$fieldname . $k]);
+			<?php
+			foreach ($forms as $k => $form) :
+				/** @var Form $form */
+				$form->bind($subformValues[$fieldname . $k]);
 
-                    echo $this->sublayout($sublayout, ['subformItem' => $subformItems[$fieldname . $k], 'form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
-                endforeach;
-		?>
+				echo $this->sublayout($sublayout, ['subformItem' => $subformItems[$fieldname . $k], 'form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
+			endforeach;
+			?>
         </ul>
     </joomla-field-subform>
 </div>

@@ -37,51 +37,6 @@ class ReservationController extends FormController
 	 */
 	protected $text_prefix = 'COM_DNBOOKING_RESERVATION';
 
-	/**
-	 * Method to add a new record.
-	 *
-	 * @return  boolean  True if the record can be added, false if not.
-	 *
-	 * @since   1.6
-	 */
-
-	/*
-	public function add()
-	{
-		$context = "$this->option.details.$this->context";
-
-		// Access check.
-		if (!$this->allowAdd()) {
-			// Set the internal error and also the redirect error.
-			$this->setMessage(Text::_('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'), 'error');
-
-			$this->setRedirect(
-				Route::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_list
-					. $this->getRedirectToListAppend(),
-					false
-				)
-			);
-
-			return false;
-		}
-
-		// Clear the record edit information from the session.
-		$this->app->setUserState($context . '.data', null);
-
-		// Redirect to the edit screen.
-		$this->setRedirect(
-			Route::_(
-				'index.php?option=' . $this->option . '&view=' . $this->view_item
-				. $this->getRedirectToItemAppend(),
-				false
-			)
-		);
-
-		return true;
-	}
-
-	*/
 
 	/**
 	 * Method to save a record.
@@ -322,45 +277,4 @@ class ReservationController extends FormController
 		return true;
 	}
 
-
-
-	/**
-	 * Gets the URL arguments to append to an item redirect.
-	 *
-	 * @param   integer  $recordId  The primary key id for the item.
-	 * @param   string   $urlVar    The name of the URL variable for the id.
-	 *
-	 * @return  string  The arguments to append to the redirect URL.
-	 *
-	 * @since   1.6
-	 */
-	protected function getRedirectToItemAppend($recordId = null, $urlVar = 'id')
-	{
-		$append = '';
-
-		// Setup redirect info.
-		if ($tmpl = $this->input->get('tmpl', '', 'string')) {
-			$append .= '&tmpl=' . $tmpl;
-		}
-
-		if ($layout = $this->input->get('layout', 'details', 'string')) {
-			$append .= '&layout=' . $layout;
-		}
-
-		if ($forcedLanguage = $this->input->get('forcedLanguage', '', 'cmd')) {
-			$append .= '&forcedLanguage=' . $forcedLanguage;
-		}
-
-		if ($recordId) {
-			$append .= '&' . $urlVar . '=' . $recordId;
-		}
-
-		$return = $this->input->get('return', null, 'base64');
-
-		if ($return) {
-			$append .= '&return=' . $return;
-		}
-
-		return $append;
-	}
 }

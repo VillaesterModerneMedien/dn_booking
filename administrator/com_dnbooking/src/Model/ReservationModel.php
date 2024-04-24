@@ -10,6 +10,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Model;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\ReservationSoldTrait;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -23,6 +24,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
 
 use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\Utilities\ArrayHelper;
 
 
 /**
@@ -33,6 +35,9 @@ use Joomla\CMS\Versioning\VersionableModelTrait;
 class ReservationModel extends AdminModel
 {
 	use VersionableModelTrait;
+	use ReservationSoldTrait;
+
+	protected static $orderFeatures;
 
 	/**
 	 * The type alias for this content type.
@@ -184,12 +189,37 @@ class ReservationModel extends AdminModel
 		}
 
 		$reservation = $table;
-		if ($this->factory) {
-			$roomModel = $this->getMVCFactory()->createModel('Room', 'Administrator', ['ignore_request' => true]);
-			$reservation->room = $roomModel->getReservationRoom($reservation->room_id);
-		}
+		$formData['jform'] = ArrayHelper::fromObject($table);
+		$orderFeatures = $this->getReservationSoldData($formData, $table->holiday);
+		$reservation->room = ArrayHelper::fromObject($orderFeatures['room_id']);
+		$reservation->extras = $orderFeatures['extras'];
 
 		return $reservation;
+
+	}
+
+	public function getOrderFeatures($model, $id = null)
+	{
+		if(!empty(self::$orderFeatures[$model])) {
+			if(!empty($id) && !empty(self::$orderFeatures[$model][$id])){
+				return self::$orderFeatures[$model][$id];
+			}
+
+			if(empty($id)){
+				return self::$orderFeatures[$model];
+			}
+
+		}
+
+		$adminModel = $this->getMVCFactory()->createModel($model, 'Administrator', ['ignore_request' => true]);
+		if($id){
+			self::$orderFeatures[$model][$id] = $adminModel->getItem($id);
+			return self::$orderFeatures[$model][$id];
+		}
+		else{
+			self::$orderFeatures[$model] = $adminModel->getItems();
+			return self::$orderFeatures[$model];
+		}
 
 	}
 
@@ -274,5 +304,9 @@ class ReservationModel extends AdminModel
 
         return $table;
     }
+
+	public function getModel() {
+		return $this;
+	}
 
 }

@@ -40,9 +40,9 @@ extract($displayData);
  */
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
-$factory = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
-$extrasModel = $factory->createModel('Booking', 'Site');
-$extras = $extrasModel->getExtras();
+
+$model = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Site');
+$extras = $model->getOrderFeatures('Extras');
 $class = $class ? ' ' . $class : '';
 $columns=3;
 $counter=0;

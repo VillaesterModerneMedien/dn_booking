@@ -9,7 +9,7 @@
 
 namespace DnbookingNamespace\Component\Dnbooking\Site\Field;
 
-use DnbookingNamespace\Component\Dnbooking\Site\Model\BookingModel;
+use DnbookingNamespace\Component\Dnbooking\Site\Model\ReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\SubformField;
 
@@ -56,11 +56,10 @@ class ExtrasField extends SubformField
 	 */
 	public function setup(\SimpleXMLElement $element, $value, $group = null)
 	{
-		$factory = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
 
-		/** @var  BookingModel $bookingModel */
-		$bookingModel = $factory->createModel('Booking', 'Site');
-		$min       = count($bookingModel->getExtras());
+		$model = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Site');
+		$extras = $model->getOrderFeatures('Extras');
+		$min = count($extras);
 
 		if (!parent::setup($element, $value, $group))
 		{

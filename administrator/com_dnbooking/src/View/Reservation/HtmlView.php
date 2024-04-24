@@ -11,12 +11,10 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\View\Reservation;
 
 \defined('_JEXEC') or die;
 
-use Joomla\CMS\Helper\ContentHelper;
-use Joomla\CMS\Component\ComponentHelper;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -26,6 +24,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
  */
 class HtmlView extends BaseHtmlView
 {
+
 	/**
 	 * The \JForm object
 	 *
@@ -61,6 +60,8 @@ class HtmlView extends BaseHtmlView
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
         $this->customer = $this->get('Customer');
+
+
 
 		$this->addToolbar($this->item);
 

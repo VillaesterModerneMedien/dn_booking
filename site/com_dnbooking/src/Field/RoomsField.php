@@ -10,7 +10,6 @@
 namespace DnbookingNamespace\Component\Dnbooking\Site\Field;
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\Field\RadiobasicField;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -54,9 +53,8 @@ class RoomsField extends RadiobasicField
 	{
 		$options = parent::getOptions();
 
-		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
-		$roomModel = $factory->createModel('Booking', 'Site');
-		$rooms     = $roomModel->getRooms();
+		$model = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Site');
+		$rooms = $model->getOrderFeatures('Rooms');
 
 		$roomOptions = [];
 

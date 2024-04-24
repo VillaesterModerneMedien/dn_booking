@@ -186,49 +186,6 @@ class RoomModel extends AdminModel
 		return $item;
 	}
 
-	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return  CMSObject|boolean  Object on success, false on failure.
-	 *
-	 * @since   1.6
-	 */
-	public function getReservationRoom($pk = null)
-	{
-		$pk    = (!empty($pk)) ? $pk : (int) $this->getState($this->getName() . '.id');
-		$table = $this->getTable();
-
-		if ($pk > 0) {
-			// Attempt to load the row.
-			$return = $table->load($pk);
-
-			// Check for a table object error.
-			if ($return === false) {
-				// If there was no underlying error, then the false means there simply was not a row in the db for this $pk.
-				if (!$table->getError()) {
-					$this->setError(Text::_('JLIB_APPLICATION_ERROR_NOT_EXIST'));
-				} else {
-					$this->setError($table->getError());
-				}
-
-				return false;
-			}
-		}
-
-		$room =  [
-			'id' => $table->id,
-			'title' => $table->title,
-			'personsmin' => $table->personsmin,
-			'personsmax' => $table->personsmax,
-			'pricecustom' => $table->pricecustom,
-			'priceregular' =>  $table->priceregular,
-		];
-
-		return $room;
-
-	}
 
 	/**
 	 * Preprocess the form.

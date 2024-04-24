@@ -80,7 +80,7 @@ function updateRoomStatus(date, visitors){
     let xhr = new XMLHttpRequest();
 
     const time = extractTimeFromDateTime();
-    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
+    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getBlockedRooms';
 
     xhr.open('POST', url, true);
 
@@ -129,7 +129,7 @@ function checkDate(date, visitors){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
 
-    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getBlockedRooms';
+    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getBlockedRooms';
     let translation = Joomla.getOptions('com_dnbooking.translations');
     const time = extractTimeFromDateTime();
 
@@ -198,10 +198,10 @@ function handleRoomClick() {
  * Renders the order HTML and displays it in a modal.
  */
 function renderOrderHTML() {
-    const form = document.getElementById('bookingForm');
+    const form = document.getElementById('reservationForm');
     let formData = new FormData(form);
     let xhr = new XMLHttpRequest();
-    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getOrderHTML';
+    let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getOrderHTML';
     let translation = Joomla.getOptions('com_dnbooking.translations');
 
 
@@ -268,7 +268,7 @@ function extractTimeFromDateTime() {
 }
 
 /**
- * Initializes the booking process when the DOM is ready.
+ * Initializes the reservation process when the DOM is ready.
  */
 document.addEventListener('DOMContentLoaded', function () {
 

@@ -116,6 +116,7 @@ class ConfigController extends FormController
 
 		$html .= '</tbody>';
 		echo $html;
+
 		$app->close();
 	}
 
