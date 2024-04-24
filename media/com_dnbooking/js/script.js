@@ -202,6 +202,8 @@ function renderOrderHTML() {
     let formData = new FormData(form);
     let xhr = new XMLHttpRequest();
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=booking.getOrderHTML';
+    let translation = Joomla.getOptions('com_dnbooking.translations');
+
 
     xhr.open('POST', url, true);
 
@@ -213,11 +215,11 @@ function renderOrderHTML() {
 
             UIkit.modal.confirm(response, {
                 i18n: {
-                    ok: 'Okay',
-                    cancel: 'Abbrechen'
+                    ok: translation.btn_ok,
+                    cancel: translation.btn_cancel
                 }
             }).then(function() {
-                console.log('Confirmed.')
+                form.submit();
             }, function () {
                 console.log('Rejected.')
             });
@@ -271,8 +273,6 @@ function extractTimeFromDateTime() {
 document.addEventListener('DOMContentLoaded', function () {
 
     const dateInput = document.getElementById('jform_reservation_date');
-    //const timeInput = document.getElementById('time');
-    //const personsInput = document.getElementById('visitors');
     const personsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
     const birthdaychildrenInput = document.getElementById('jform_additional_info__birthdaychildren-lbl');
     const checkBooking = document.getElementById('checkBooking');
@@ -296,12 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setStep(step);
     });
 
-    /*
-    timeInput.addEventListener('change', function() {
-        step = 1;
-        setStep(step);
-    });
-    */
     personsPackageInput.addEventListener('change', function() {
         updateRoomStatus(dateInput.value, personsPackageInput.value)
     });

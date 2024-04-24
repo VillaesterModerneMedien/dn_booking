@@ -4,9 +4,9 @@
 CREATE TABLE if not exists `#__dnbooking_reservations`
 (
     `id`                 int(11) unsigned                        NOT NULL AUTO_INCREMENT,
-    `admin_notes`        mediumtext COLLATE utf8mb4_unicode_ci,
-    `customer_notes`     mediumtext COLLATE utf8mb4_unicode_ci,
-    `general_notes`      mediumtext COLLATE utf8mb4_unicode_ci,
+    `admin_notes`        mediumtext COLLATE utf8mb4_unicode_ci   DEFAULT NULL,
+    `customer_notes`     mediumtext COLLATE utf8mb4_unicode_ci   DEFAULT NULL,
+    `general_notes`      mediumtext COLLATE utf8mb4_unicode_ci   DEFAULT NULL,
     `reservation_price`  varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
     `holiday`            int(1)                                  NOT NULL DEFAULT '0',
     `customer_id`        int(11)                                 NOT NULL DEFAULT '0',

@@ -11,6 +11,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Table;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -103,6 +104,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		$date   = Factory::getDate()->toSql();
 		$userId = Factory::getApplication()->getIdentity()->id;
 
+
 		$db = $this->getDbo();
 
 		// Set created date if not set.
@@ -116,6 +118,7 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		$this->additional_info   = json_encode($this->additional_info);
 		$this->additional_infos2 = json_encode($this->additional_infos2);
 
+
 		foreach ($this->extras_ids as $key => $value)
 		{
 			if (empty($value['extra_count']))
@@ -124,10 +127,11 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			}
 		}
 
-
 		$this->extras_ids         = json_encode($this->extras_ids);
 
 		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
+
+		$this->reservation_price = $this->_calcPrice($this->additional_info, $this->room_id, $this->extras_ids);
 
 		if ($this->id)
 		{
@@ -160,6 +164,40 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	public function getTypeAlias()
 	{
 		return $this->typeAlias;
+	}
+
+	protected function _calcPrice($infos, $room, $extras)
+	{
+		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
+		$roomModel = $factory->createModel('Room', 'Administrator');
+		$roomParams     = $roomModel->getItem($room);
+		$extrasModel = $factory->createModel('Extras', 'Administrator');
+		$extrasParams     =  $extrasModel->getItems();
+		$extraInfos = [];
+		$totalCosts = 0;
+		//FEIERTAG???
+
+		foreach ($extrasParams as $extra) {
+			$extraInfos[$extra->id]['price'] = $extra->price;
+		}
+
+		foreach (json_decode($extras) as $extra) {
+			$totalCosts += $extraInfos[$extra->extra_id]['price'] * $extra->extra_count;
+		}
+
+		$params = ComponentHelper::getParams('com_dnbooking');
+
+		$roomPriceRegular = $roomParams->priceregular;
+		$roomPriceCustom = $roomParams->pricecustom;
+
+		$packagePriceRegular = $params->get('packagepriceregular');
+		$packagePriceCustom = $params->get('packagepricecustom');
+
+		$admissionPriceRegular = $params->get('admissionpriceregular');
+		$admissionPriceCustom = $params->get('admissionpricecustom');
+
+		$packagePriceCustom = $params->get('package_price_custom');
+
 	}
 
 }

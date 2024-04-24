@@ -111,8 +111,4 @@ $admissionpriceTotal = $admissionprice * (int) $data['visitors'];
 			<?= $data['customer_notes']; ?>
         </p>
     </div>
-
-
-    <button type="submit" class="uk-button uk-button-primary"><?= Text::_('COM_DNBOOKING_SEND_RESERVATION'); ?></button>
-
 </div>

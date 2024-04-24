@@ -28,6 +28,8 @@ $translations = [
     'enterdate' => Text::_('COM_DNBOOKING_ENTER_DATE'),
     'opened' => Text::_('COM_DNBOOKING_OPENED'),
     'till' => Text::_('COM_DNBOOKING_TILL'),
+    'btn_ok' => Text::_('COM_DNBOOKING_BTN_OK'),
+    'btn_cancel' => Text::_('COM_DNBOOKING_BTN_CANCEL'),
 ];
 
 Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.translations', $translations);
@@ -72,11 +74,6 @@ $priceCustom = $params->get('packagepricecustom');
 
     <section id="sendButton" class="customer uk-section uk-section-default" data-step="4">
         <button type="button" id="checkBooking" class="uk-button uk-button-default"><?php echo JText::_('COM_DNBOOKING_CHECKBOOKING_LABEL'); ?></button>
-    </section>
-
-    <section id="customer" class="customer uk-section uk-section-default" data-step="4">
-        <h2><?php echo JText::_('COM_DNBOOKING_ENTER_DETAILS'); ?></h2>
-		<?php //echo LayoutHelper::render('booking.modal',  $this->form); ?>
     </section>
 
     <section class="stickyBottom uk-section uk-section-default">
