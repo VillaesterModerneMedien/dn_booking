@@ -42,6 +42,7 @@ if ($multiple) {
 		->useScript('webcomponent.field-subform');
 }
 
+$test = json_encode($forms);
 $class = $class ? ' ' . $class : '';
 
 // Build heading
@@ -77,7 +78,55 @@ if (!empty($groupByFieldset)) {
 		->getDocument()
 		->addStyleDeclaration('.subform-table-sublayout-section .controls { margin-left: 0px }');
 }
+
+
 ?>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.querySelector('#subfieldList_jform_holidays .subform-repeatable-container');
+        // Spinner-Code mit Text, transparentem Hintergrund und voller Breite
+        const spinnerHtml = `
+            <div style="color: #FFF; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; width: 100%; background-color: transparent; position: absolute;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Laden...</span>
+                </div>
+                <p>Feiertaqe und Ferien werden geladen...</p>
+            </div>`;
+
+        document.getElementById('jform_region').addEventListener('change', function() {
+            // Die URL, an die die Anfrage gesendet wird
+            var url = 'index.php?option=com_dnbooking&task=config.generateHolidayTableHTML';
+            // Die Daten, die an den Server gesendet werden
+            var data = {
+                region: this.value
+            };
+            // Die Optionen für die Fetch-Anfrage
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest' // Wichtig für Joomla, um zu erkennen, dass es sich um eine AJAX-Anfrage handelt
+                },
+                body: new URLSearchParams(data).toString()
+            };
+
+            container.innerHTML = spinnerHtml; // Spinner und Text anzeigen
+
+            // Senden der Fetch-Anfrage
+            fetch(url, options)
+                .then(response => response.text())
+                .then(html => {
+                    container.innerHTML = html; // Antwortinhalt einfügen und Spinner ausblenden
+                })
+                .catch(error => {
+                    container.innerHTML = '<div>Error loading data</div>'; // Fehlerbehandlung
+                    console.error('Error:', error);
+                });
+        });
+    });
+</script>
+
 
 <div class="subform-repeatable-wrapper subform-table-layout subform-table-sublayout-<?php echo $sublayout; ?>">
     <joomla-field-subform class="subform-repeatable<?php echo $class; ?>" name="<?php echo $name; ?>">
