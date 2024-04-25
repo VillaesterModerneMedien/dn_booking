@@ -191,8 +191,12 @@ class ReservationModel extends AdminModel
 		$reservation = $table;
 		$formData['jform'] = ArrayHelper::fromObject($table);
 		$orderFeatures = $this->getReservationSoldData($formData, $table->holiday);
-		$reservation->room = ArrayHelper::fromObject($orderFeatures['room_id']);
-		$reservation->extras = $orderFeatures['extras'];
+		if(isset($orderFeatures['room_id'])){
+			$reservation->room = ArrayHelper::fromObject($orderFeatures['room_id']);
+		}
+		if(isset($orderFeatures['extras'])){
+			$reservation->extras = $orderFeatures['extras'];
+		}
 
 		return $reservation;
 
@@ -212,7 +216,7 @@ class ReservationModel extends AdminModel
 		}
 
 		$adminModel = $this->getMVCFactory()->createModel($model, 'Administrator', ['ignore_request' => true]);
-		if($id){
+		if($id || $model == 'Room' || $model == 'Extra'){
 			self::$orderFeatures[$model][$id] = $adminModel->getItem($id);
 			return self::$orderFeatures[$model][$id];
 		}

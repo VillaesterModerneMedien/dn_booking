@@ -61,8 +61,6 @@ class HtmlView extends BaseHtmlView
         $this->state = $this->get('State');
         $this->customer = $this->get('Customer');
 
-
-
 		$this->addToolbar($this->item);
 
 		return parent::display($tpl);

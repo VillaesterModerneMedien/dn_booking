@@ -30,28 +30,31 @@ trait ReservationSoldTrait
 		$component = ComponentHelper::getParams('com_dnbooking');
 		$model = $this->getModel();
 		$orderData = [];
-		foreach ($formFields['jform'] as $key => $value){
-			if($key == "room_id"){
-				$orderData[$key] = $model->getOrderFeatures('Room', $value);
-			}
-			else if(str_contains($key, 'extra')){
-				if(!is_array($value)){
-					$value = json_decode($value, true);
+		foreach ($formFields['jform'] as $key => $value)
+		{
+			if (!empty($value)){
+				if($key == "room_id"){
+					$orderData[$key] = $model->getOrderFeatures('Room', $value);
 				}
-				if(is_array($value)){
-					foreach ($value as $key => $extra){
-						if($extra['extra_count'] > 0){
-							$extras = (array) $model->getOrderFeatures('Extra', $extra['extra_id']);
-							$orderData['extras'][$extras['alias']]['name'] = $extras['title'];
-							$orderData['extras'][$extras['alias']]['price_single'] = $extras['price'];
-							$orderData['extras'][$extras['alias']]['amount'] =  (int) $extra['extra_count'];
-							$orderData['extras'][$extras['alias']]['price_total'] = $extras['price'] * $extra['extra_count'];
+				else if(str_contains($key, 'extra')){
+					if(!is_array($value)){
+						$value = json_decode($value, true);
+					}
+					if(is_array($value)){
+						foreach ($value as $key => $extra){
+							if($extra['extra_count'] > 0){
+								$extras = (array) $model->getOrderFeatures('Extra', $extra['extra_id']);
+								$orderData['extras'][$extras['alias']]['name'] = $extras['title'];
+								$orderData['extras'][$extras['alias']]['price_single'] = $extras['price'];
+								$orderData['extras'][$extras['alias']]['amount'] =  (int) $extra['extra_count'];
+								$orderData['extras'][$extras['alias']]['price_total'] = $extras['price'] * $extra['extra_count'];
+							}
 						}
 					}
 				}
-			}
-			else {
-				$orderData[$key] = $value;
+				else {
+					$orderData[$key] = $value;
+				}
 			}
 
 		}
