@@ -99,7 +99,7 @@ $tableHead = "
 	    <?= $tableHead ?>
 
         <tr>
-			<?= '<td>1 x</td><td>' . $room['title'] . '<td> ' . number_format($room['priceregular'], 2, ",", ".") . ' €</td>'?>
+			<?= '<td>1 x</td><td>' . $room['title'] . '<td> ' . number_format((float) $room['priceregular'], 2, ",", ".") . ' €</td>'?>
         </tr>
     </table>
     <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>

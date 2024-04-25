@@ -12,10 +12,12 @@ $fieldsets = $form->getFieldsets();
 	    <?php echo $form->renderField('reservation_date'); ?>
     </div>
     <div class="uk-width-1-2@m uk-flex-bottom uk-grid-item-match">
-        <div class="uk-margin">
-            <button id="checkStatus" class="uk-button uk-button-default uk-width-1-1">
-               <?= Text::_('COM_DNBOOKING_CHECK_AVAILABILITY_LABEL') ?>
-            </button>
+        <div>
+            <div class="uk-padding-small">
+                <button id="checkStatus" class="uk-button uk-button-default uk-width-1-1">
+                   <?= Text::_('COM_DNBOOKING_CHECK_AVAILABILITY_LABEL') ?>
+                </button>
+            </div>
         </div>
     </div>
 </div>

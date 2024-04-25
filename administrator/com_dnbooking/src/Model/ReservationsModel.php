@@ -42,11 +42,27 @@ class ReservationsModel extends ListModel
 				'title', 'a.title',
                 'published', 'a.published',
                 'created', 'a.created',
-                'created_by', 'a.created_by',
 			);
 		}
 
 		parent::__construct($config);
+	}
+
+	public function getOrderFeatures($model, $id = null)
+	{
+		if (!empty(self::$orderFeatures[$model]))
+		{
+			if (!empty($id) && !empty(self::$orderFeatures[$model][$id]))
+			{
+				return self::$orderFeatures[$model][$id];
+			}
+
+			if (empty($id))
+			{
+				return self::$orderFeatures[$model];
+			}
+
+		}
 	}
 
 
@@ -214,6 +230,10 @@ class ReservationsModel extends ListModel
 		$id .= ':' . $this->getState('filter.published');
 
 		return parent::getStoreId($id);
+	}
+
+	public function getModel() {
+		return $this;
 	}
 
 }

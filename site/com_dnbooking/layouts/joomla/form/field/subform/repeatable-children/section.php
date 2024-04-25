@@ -24,14 +24,10 @@ extract($displayData);
  * @var   array   $buttons    Array of the buttons that will be rendered
  */
 
-$fields = $form->getGroup('');
-$fieldsCount = count($fields);
-$class = 'uk-width-1-' . $fieldsCount . '@m uk-flex-bottom uk-grid-item-match';
 ?>
-AAA
+
+<div class="subform-repeatable-group uk-child-width-1-3" uk-grid data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
 <?php foreach ($form->getGroup('') as $field) : ?>
-    <div class="<?= $class; ?>">
-        <?php echo $field->renderField(); ?>
-    </div>
+    <?php echo $field->renderField(); ?>
 <?php endforeach; ?>
-BB
+</div>

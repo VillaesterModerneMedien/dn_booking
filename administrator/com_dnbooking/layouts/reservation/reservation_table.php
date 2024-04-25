@@ -14,7 +14,6 @@ $id = $item['id'];
 $params = ComponentHelper::getParams('com_dnbooking');
 $bookingHelper = new DnbookingHelper();
 
-
 if($id) {
     $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
 }

@@ -326,55 +326,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     setStep(step);
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
 
-/*
-document.addEventListener('DOMContentLoaded', function () {
-    const input = document.getElementById('jform_additional_info__birthdaychildren');
-    const container = document.querySelector('#subfieldList_jform_additional_infos2__addinfos2_subform .subform-repeatable-container');
-
-    // Funktion, die die aktuelle Anzahl der Subform-Zeilen zurückgibt
-    function getCurrentRowCount() {
-        return container.querySelectorAll('.subform-repeatable-group').length;
+    if (!birthdayChildrenInput) {
+        console.error('Das Eingabefeld für Geburtstagskinder wurde nicht gefunden.');
+        return;
     }
 
-    // Funktion zum Hinzufügen neuer Zeilen
-    function addRow() {
-        const newRow = container.firstElementChild.cloneNode(true);
-        const newIndex = getCurrentRowCount();
-
-        // Aktualisieren Sie die IDs und Namen in der neuen Zeile
-        newRow.querySelectorAll('input, select').forEach((element) => {
-            element.name = element.name.replace(/\d+/, newIndex);
-            element.id = element.id.replace(/\d+/, newIndex);
-            if (element.tagName === 'INPUT' && element.type === 'text') {
-                element.value = ''; // Setzen Sie Textfelder zurück
-            }
-        });
-
-        container.appendChild(newRow);
-    }
-
-    // Funktion zum Entfernen der letzten Zeile
-    function removeRow() {
-        if (getCurrentRowCount() > 1) {
-            container.removeChild(container.lastElementChild);
+    birthdayChildrenInput.addEventListener('change', function() {
+        const numberOfChildren = parseInt(this.value, 10);
+        if (isNaN(numberOfChildren)) {
+            console.error('Die Eingabe ist keine gültige Zahl.');
+            return;
         }
-    }
 
-    // Event-Handler für das Input-Feld
-    input.addEventListener('change', function () {
-        const targetCount = parseInt(input.value, 10) || 0;
-        const currentCount = getCurrentRowCount();
+        const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
+        const subformTemplateContent = document.querySelector('.subform-repeatable-template-section').content;
+        const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
+        const currentCount = currentGroups.length;
 
-        if (targetCount > currentCount) {
-            for (let i = currentCount; i < targetCount; i++) {
-                addRow();
+        // Sicherstellen, dass das Template-Element als Referenzpunkt dient
+        const templateElement = document.querySelector('.subform-repeatable-template-section');
+
+        // Gruppen hinzufügen, falls mehr Kinder hinzugefügt werden sollen
+        if (numberOfChildren > currentCount) {
+            for (let i = currentCount; i < numberOfChildren; i++) {
+                let newGroup = document.importNode(subformTemplateContent, true);
+                newGroup.querySelector('[data-group]').setAttribute('data-group', `addinfos2_subform${i}`);
+                newGroup.querySelectorAll('input, select, label').forEach(element => {
+                    const baseName = 'addinfos2_subformX';
+                    if (element.id) element.id = element.id.replace(baseName, `addinfos2_subform${i}`);
+                    if (element.htmlFor) element.htmlFor = element.htmlFor.replace(baseName, `addinfos2_subform${i}`);
+                    if (element.name) element.name = element.name.replace(baseName, `addinfos2_subform${i}`);
+                });
+
+                subformElement.insertBefore(newGroup, templateElement);
             }
-        } else if (targetCount < currentCount) {
-            for (let i = currentCount; i > targetCount; i--) {
-                removeRow();
+        }
+        // Gruppen entfernen, falls weniger Kinder angezeigt werden sollen
+        else if (numberOfChildren < currentCount) {
+            for (let i = currentCount; i > numberOfChildren; i--) {
+                currentGroups[i - 1].remove();
             }
         }
     });
 });
-*/

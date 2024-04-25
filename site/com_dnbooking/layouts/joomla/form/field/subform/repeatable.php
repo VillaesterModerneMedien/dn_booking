@@ -38,8 +38,8 @@ if ($multiple) {
     // Add script
     Factory::getApplication()
         ->getDocument()
-        ->getWebAssetManager()
-        ->useScript('webcomponent.field-subform');
+        ->getWebAssetManager();
+        //->useScript('webcomponent.field-subform');
 }
 
 $class = $class ? ' ' . $class : '';

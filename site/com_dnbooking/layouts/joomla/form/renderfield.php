@@ -46,15 +46,15 @@ if (!empty($parentclass)) {
 <?php if($field->name == 'jform[additional_info]' || $field->name == 'jform[additional_infos2]'): ?>
 	<?php echo $input; ?>
 <?php else: ?>
-    <div class="uk-margin">
         <div>
-            <?php if ($hideLabel) : ?>
-            <?php else : ?>
-                <?php echo $label; ?>
-            <?php endif; ?>
-            <div class="uk-form-controls">
-                <?php echo $input; ?>
+            <div class="uk-padding-small">
+                <?php if ($hideLabel) : ?>
+                <?php else : ?>
+                    <?php echo $label; ?>
+                <?php endif; ?>
+                <div class="uk-form-controls">
+                    <?php echo $input; ?>
+                </div>
             </div>
         </div>
-    </div>
 <?php endif; ?>

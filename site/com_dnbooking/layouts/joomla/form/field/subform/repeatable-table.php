@@ -58,7 +58,6 @@ foreach ($tmpl->getGroup('') as $field) {
 	$table_head .= '</div>';
 }
 $table_head .= '</div>';
-
 $sublayout = 'section';
 
 // Label will not be shown for sections layout, so reset the margin left
@@ -68,21 +67,30 @@ Factory::getApplication()
 
 
 ?>
-<div class="TABLE subform-repeatable-wrapper subform-table-layout subform-table-sublayout-<?php echo $sublayout; ?>">
+AABBB
+<div class="TABLE table-responsive subform-repeatable-wrapper subform-table-layout subform-table-sublayout-<?php echo $sublayout; ?>">
     <joomla-field-subform class="subform-repeatable<?php echo $class; ?>" name="<?php echo $name; ?>"
         button-add=".group-add" button-remove=".group-remove" button-move="<?php echo empty($buttons['move']) ? '' : '.group-move' ?>"
         repeatable-element=".subform-repeatable-group"
         rows-container="tbody.subform-repeatable-container" minimum="<?php echo $min; ?>" maximum="<?php echo $max; ?>">
+        <div class="table-responsive">
+            <table class="table table-responsive" id="subfieldList_<?php echo $fieldId; ?>">
 
-        <?php echo $table_head; ?>
+                <?php echo $table_head; ?>
 
-        <div class="uk-grid">
-            <?php
+                <tbody class="subform-repeatable-container">
+                <?php
                 foreach ($forms as $k => $form) :
                     echo $this->sublayout($sublayout, ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
                 endforeach;
-            ?>
+                ?>
+                </tbody>
+            </table>
         </div>
-
+        <?php if ($multiple) : ?>
+        <template class="subform-repeatable-template-section hidden">
+            <?php echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons])); ?>
+        </template>
+        <?php endif; ?>
     </joomla-field-subform>
 </div>

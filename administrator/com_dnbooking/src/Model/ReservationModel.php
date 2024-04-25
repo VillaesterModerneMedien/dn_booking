@@ -205,30 +205,6 @@ class ReservationModel extends AdminModel
 
 	}
 
-	public function getOrderFeatures($model, $id = null)
-	{
-		if(!empty(self::$orderFeatures[$model])) {
-			if(!empty($id) && !empty(self::$orderFeatures[$model][$id])){
-				return self::$orderFeatures[$model][$id];
-			}
-
-			if(empty($id)){
-				return self::$orderFeatures[$model];
-			}
-
-		}
-
-		$adminModel = $this->getMVCFactory()->createModel($model, 'Administrator', ['ignore_request' => true]);
-		if($id || $model == 'Room' || $model == 'Extra'){
-			self::$orderFeatures[$model][$id] = $adminModel->getItem($id);
-			return self::$orderFeatures[$model][$id];
-		}
-		else{
-			self::$orderFeatures[$model] = $adminModel->getItems();
-			return self::$orderFeatures[$model];
-		}
-
-	}
 
 	/**
 	 * Preprocess the form.
