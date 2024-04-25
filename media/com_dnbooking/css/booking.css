@@ -57,4 +57,11 @@
   margin-bottom: 100px;
 }
 
+#summary th, #summary td {
+  text-align: left;
+}
+#summary th:last-child, #summary td:last-child {
+  text-align: right;
+}
+
 /*# sourceMappingURL=booking.css.map */

@@ -61,7 +61,7 @@
     <form action="<?php echo Route::_('index.php?option=com_dnbooking&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
         <div class="row">
 
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-header"><h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_EDIT_HEADLINE'); ?></h3>
                     </div>
@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-header">
                         <h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_SUMMARY_HEADLINE'); ?></h3>
@@ -132,7 +132,7 @@
 
         </div>
 
-        <div>
+        <div hidden>
 
 	        <?php echo $this->form->renderFieldset('mybasic'); ?>
 

@@ -25,18 +25,14 @@ class DnbookingHelper extends ContentHelper
 	public function calcPrice($infos, $room, $extras, $holiday)
 	{
 		$isHolidayOrWeekend = $holiday;
-
-		//TODO: Guido anpassen
-
-		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
-		$roomModel = $factory->createModel('Room', 'Administrator');
 		$roomParams     = $room;
 		$extrasParams     =  $extras;
-		$infos = json_decode($infos);
-		$visitorsPackage = (int) $infos->visitorsPackage;
-		$visitorsAdmission = (int) $infos->visitors;
+		if(!is_array($infos)){
+			$infos = json_decode($infos, true);
+		}
+		$visitorsPackage = (int) $infos['visitorsPackage'];
+		$visitorsAdmission = (int) $infos['visitors'];
 
-		$extraInfos = [];
 		$totalCosts = 0;
 
 		foreach ($extrasParams as $extra) {
