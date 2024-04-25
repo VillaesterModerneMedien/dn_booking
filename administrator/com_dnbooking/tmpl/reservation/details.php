@@ -99,6 +99,12 @@
                                                     data-bs-target="#tab4" type="button" role="tab" aria-controls="tab4"
                                                     aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_ADDINFOS2_HEADLINE'); ?></button>
                                         </li>
+
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab5-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab5" type="button" role="tab" aria-controls="tab4"
+                                                    aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_EMAILS_HEADLINE'); ?></button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -109,6 +115,7 @@
 	                        <?php echo LayoutHelper::render('reservation.reservation_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.customer_tab', $customer); ?>
 	                        <?php echo LayoutHelper::render('reservation.extras_tab', $this); ?>
+	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
 
 

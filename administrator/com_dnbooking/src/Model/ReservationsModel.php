@@ -48,23 +48,6 @@ class ReservationsModel extends ListModel
 		parent::__construct($config);
 	}
 
-	public function getOrderFeatures($model, $id = null)
-	{
-		if (!empty(self::$orderFeatures[$model]))
-		{
-			if (!empty($id) && !empty(self::$orderFeatures[$model][$id]))
-			{
-				return self::$orderFeatures[$model][$id];
-			}
-
-			if (empty($id))
-			{
-				return self::$orderFeatures[$model];
-			}
-
-		}
-	}
-
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.

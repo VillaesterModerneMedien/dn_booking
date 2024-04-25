@@ -153,6 +153,11 @@ class HtmlView extends BaseHtmlView
 				->listCheck(true);
 		}
 
+		$childBar->popupButton('sendMail', 'COM_DNBOOKING_SENDMAIL_LABEL')
+			->selector('sendMailModal')
+			->icon('icon-mail')
+			->listCheck(true);
+
 		if ($user->authorise('core.admin', 'com_dnbooking') || $user->authorise('core.options', 'com_dnbooking'))
 		{
 			$toolbar->preferences('com_dnbooking');

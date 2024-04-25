@@ -9,12 +9,8 @@
 
 \defined('_JEXEC') or die;
 
-use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Layout\LayoutHelper;
+
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
@@ -23,8 +19,6 @@ $wa->useScript('multiselect');
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
 
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
 $items = $this->items;
 /*
 $helper = new DnbookingHelper();

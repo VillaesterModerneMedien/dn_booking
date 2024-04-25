@@ -37,7 +37,6 @@ class ReservationModel extends AdminModel
 	use VersionableModelTrait;
 	use ReservationSoldTrait;
 
-	protected static $orderFeatures;
 
 	/**
 	 * The type alias for this content type.
