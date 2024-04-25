@@ -118,7 +118,7 @@
 
         <field
                 name="priceregular"
-                type="text"
+                type="number"
                 label="COM_DNBOOKING_FIELD_ROOM_PRICEREGULAR_LABEL"
                 description="COM_DNBOOKING_FIELD_ROOM_PRICEREGULAR_DESC"
                 default="0"
@@ -127,7 +127,7 @@
 
         <field
                 name="pricecustom"
-                type="text"
+                type="number"
                 label="COM_DNBOOKING_FIELD_ROOM_PRICECUSTOM_LABEL"
                 description="COM_DNBOOKING_FIELD_ROOM_PRICECUSTOM_DESC"
                 default="0"
