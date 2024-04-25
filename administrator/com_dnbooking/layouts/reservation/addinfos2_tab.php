@@ -11,7 +11,9 @@
         </div>
 
         <div class="card-body">
+
             <div class="row">
+
                 <div class="col-12">
 	                <?php if($reservationItem->additional_infos2 == 'null'): ?>
                         <div class="alert alert-dismissible alert-warning">
@@ -19,10 +21,12 @@
                         </div>
 
 	                <?php endif; ?>
-					<?php echo $form->renderFieldset('reservationfieldset_data3'); ?>
 
+					<?php echo $form->renderFieldset('reservationfieldset_data3'); ?>
                 </div>
+
             </div>
+
         </div>
 
     </div>
