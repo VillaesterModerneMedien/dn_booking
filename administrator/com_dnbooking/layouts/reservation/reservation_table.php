@@ -1,5 +1,6 @@
 <?php
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -11,6 +12,8 @@ $item = ArrayHelper::fromObject($displayData);
 $customer = $item['customer'];
 $id = $item['id'];
 $params = ComponentHelper::getParams('com_dnbooking');
+$bookingHelper = new DnbookingHelper();
+
 
 if($id) {
     $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
@@ -36,6 +39,7 @@ if($item['holiday']) {
 }
 $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
+$totalPrice = $bookingHelper->calcPrice($item['additional_info'], $item['room'], $item['extras'], $item['holiday']);
 ?>
 <div id="summary">
 
@@ -81,7 +85,7 @@ $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
                 </tr>
                 </thead>
                 <tr>
-					<?= '<td>1 x</td><td>' . $value['title'] . '<td> ' . number_format($value['priceregular'], 2, ",", ".") . ' €</td>'?>
+					<?= '<td>1 x</td><td>' . $value['title'] . '<td> ' . number_format((float) $value['priceregular'], 2, ",", ".") . ' €</td>'?>
                 </tr>
             </table>
 		<?php elseif ($key == 'extras'): ?>
@@ -96,7 +100,7 @@ $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
                 </thead>
 				<?php foreach ($value as $extra => $value): ?>
                     <tr>
-						<?= '<td>' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format($value['price_total'], 2, ",", ".") . ' €</td>'?>
+						<?= '<td>aa' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format((float) $value['price_total'], 2, ",", ".") . ' €</td>'?>
                     </tr>
 				<?php endforeach; ?>
             </table>

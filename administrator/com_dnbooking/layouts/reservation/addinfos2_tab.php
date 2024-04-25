@@ -20,6 +20,7 @@
 
 	                <?php endif; ?>
 					<?php echo $form->renderFieldset('reservationfieldset_data3'); ?>
+
                 </div>
             </div>
         </div>

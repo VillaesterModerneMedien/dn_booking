@@ -150,7 +150,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 									<?= $reservationDate; ?>
                                 </td>
                                 <td class="w-10">
-									<?= number_format((float) $item->reservation_price, 2, ',', '.') . ' €';; ?>
+									<?= number_format((float) $item->reservation_price, 2, ',', '.') . ' €'; ?>
                                 </td>
                                 <td class="w-10">
 									<?= $item->room_title . '<br> (ID: ' . $item->room_id . ')' ?>
