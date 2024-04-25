@@ -1,12 +1,9 @@
-/administrator/com_dnbooking/vendor/mpdf/mpdf/tmp/.gitignore
+/administrator/com_dnbooking/vendor/
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.gitignore
 /administrator/com_dnbooking/vendor/mpdf/psr-log-aware-trait/.gitignore
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.github/ISSUE_TEMPLATE/01_bug_report.yml
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.github/ISSUE_TEMPLATE/02_feature_request.yml
-/.idea/sonarlint/issuestore/6/8/68f421457282cfd7d6e61773630499e8f289f119
-/.idea/sonarlint/securityhotspotstore/6/8/68f421457282cfd7d6e61773630499e8f289f119
-/.idea/sonarlint/issuestore/7/3/73966b4fdf2e05e60a58d9998504f8f63a2c305d
-/.idea/sonarlint/securityhotspotstore/7/3/73966b4fdf2e05e60a58d9998504f8f63a2c305d
+/.idea/
 /administrator/com_dnbooking/vendor/mpdf/mpdf/src/Tag/A.php
 /administrator/com_dnbooking/vendor/mpdf/mpdf/ttfonts/AboriginalSansREGULAR.ttf
 /administrator/com_dnbooking/vendor/mpdf/mpdf/src/Barcode/AbstractBarcode.php
