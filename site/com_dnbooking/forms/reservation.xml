@@ -38,7 +38,7 @@
                 max="1"
                 multiple="false"
                 hiddenLabel="true"
-                layout="joomla.form.field.subform.repeatable-children"
+                layout="joomla.form.field.subform.repeatable-table"
         />
 
         <field

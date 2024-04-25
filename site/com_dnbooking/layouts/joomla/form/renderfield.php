@@ -43,7 +43,7 @@ if (!empty($parentclass)) {
     $class .= ' ' . $parentclass;
 }
 ?>
-<?php if($field->name == 'jform[additional_info]'): ?>
+<?php if($field->name == 'jform[additional_info]' || $field->name == 'jform[additional_infos2]'): ?>
 	<?php echo $input; ?>
 <?php else: ?>
     <div class="uk-margin">

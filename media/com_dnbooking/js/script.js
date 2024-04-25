@@ -326,3 +326,55 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     setStep(step);
 });
+
+/*
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('jform_additional_info__birthdaychildren');
+    const container = document.querySelector('#subfieldList_jform_additional_infos2__addinfos2_subform .subform-repeatable-container');
+
+    // Funktion, die die aktuelle Anzahl der Subform-Zeilen zurückgibt
+    function getCurrentRowCount() {
+        return container.querySelectorAll('.subform-repeatable-group').length;
+    }
+
+    // Funktion zum Hinzufügen neuer Zeilen
+    function addRow() {
+        const newRow = container.firstElementChild.cloneNode(true);
+        const newIndex = getCurrentRowCount();
+
+        // Aktualisieren Sie die IDs und Namen in der neuen Zeile
+        newRow.querySelectorAll('input, select').forEach((element) => {
+            element.name = element.name.replace(/\d+/, newIndex);
+            element.id = element.id.replace(/\d+/, newIndex);
+            if (element.tagName === 'INPUT' && element.type === 'text') {
+                element.value = ''; // Setzen Sie Textfelder zurück
+            }
+        });
+
+        container.appendChild(newRow);
+    }
+
+    // Funktion zum Entfernen der letzten Zeile
+    function removeRow() {
+        if (getCurrentRowCount() > 1) {
+            container.removeChild(container.lastElementChild);
+        }
+    }
+
+    // Event-Handler für das Input-Feld
+    input.addEventListener('change', function () {
+        const targetCount = parseInt(input.value, 10) || 0;
+        const currentCount = getCurrentRowCount();
+
+        if (targetCount > currentCount) {
+            for (let i = currentCount; i < targetCount; i++) {
+                addRow();
+            }
+        } else if (targetCount < currentCount) {
+            for (let i = currentCount; i > targetCount; i--) {
+                removeRow();
+            }
+        }
+    });
+});
+*/
