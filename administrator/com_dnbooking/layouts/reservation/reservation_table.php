@@ -1,68 +1,112 @@
 <?php
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
 
 $app = Factory::getApplication();
-$item = $displayData;
-$id = $item->id;
+$item = ArrayHelper::fromObject($displayData);
+$customer = $item['customer'];
+$id = $item['id'];
+$params = ComponentHelper::getParams('com_dnbooking');
+
 if($id) {
-    $createdHeadline = HTMLHelper::_('date', $item->created, Text::_('DATE_FORMAT_LC5'));
+    $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
 }
+
+/**
+ * siehe Settings in der Konfiguration
+ * visitors, visitorsPackage, birthdayChild
+ */
+foreach (json_decode($item['additional_info']) as $key => $value) {
+	$item[$key] = $value;
+}
+
+$packageprice = $params->get('packagepriceregular');
+if($item['holiday']) {
+	$packageprice = $params->get('packagepricecustom');
+}
+$packagepriceTotal = $packageprice * (int) $item['visitorsPackage'];
+
+$admissionprice = $params->get('admissionpriceregular');
+if($item['holiday']) {
+	$packageprice = $params->get('admissionpricecustom');
+}
+$admissionpriceTotal = $admissionprice * (int) $item['visitors'];
+
 ?>
-<?php if($id): ?>
+<div id="summary">
 
-<table>
-    <tr colspan="2">
-        <h2><?=  Text::sprintf('COM_DNBOOKING_TABLE_HEADING', $id, $createdHeadline); ?></h2>
-        <td><?= $item->id; ?></td>
-    </tr>
+    <p><h3><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $item['reservation_date'], $customer['firstname'] . ' ' . $customer['lastname']) ?></h3></p>
+    <h4><?= Text::_('COM_DNBOOKING_RESERVATION_DATE_LABEL') . $item['reservation_date']; ?></h4>
 
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_RESERVATION_PRICE'); ?></td>
-        <td><?= $item->reservation_price; ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_RESERVATION_STATUS'); ?></td>
-        <td><?= $item->published; ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_CUSTOMER_ID'); ?></td>
-        <td><?= $item->customer_id; ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_ROOM_ID'); ?></td>
-        <td><?= $item->room_id; ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_PERSONS_COUNT'); ?></td>
-        <td><?= $item->persons_count; ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_ADDITIONAL_INFO'); ?></td>
-        <td><?= htmlspecialchars($item->additional_info); ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_RESERVATION_DATE'); ?></td>
-        <td><?php echo HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5')); ?></td>
-    </tr>
+    <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
+		<?= $customer['address']; ?><br/>
+		<?= $customer['zip'] . ' ' . $customer['city']; ?>
+    </p>
+    <p>
+		<?= $customer['email']; ?><br/>
+		<?= $customer['phone']; ?>
+    </p>
 
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_CREATED'); ?></td>
-        <td>
-	        <?php echo HTMLHelper::_('date', $item->created, Text::_('DATE_FORMAT_LC5')); ?>
-        </td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_MODIFIED'); ?></td>
-        <td><?php echo HTMLHelper::_('date', $item->modified, Text::_('DATE_FORMAT_LC5')); ?></td>
-    </tr>
-    <tr>
-        <td><?= Text::_('COM_DNBOOKING_TABLE_LABEL_EXTRAS_IDS'); ?></td>
-        <td><?= htmlspecialchars($item->extras_ids); ?></td>
-    </tr>
-</table>
-<?php else: ?>
-    <h2><?=  Text::_('COM_DNBOOKING_TABLE_ADD_RESERVATION'); ?></h2>
-<?php endif; ?>
+    <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+        <thead>
+        <tr>
+            <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+            <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+            <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+        </tr>
+        </thead>
+        <tr>
+            <td><?= $item['visitorsPackage'] . ' x </td><td>' . Text::_('COM_DNBOOKING_PACKAGE_TEXT') . ' <strong>' . $item['reservation_date'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
+        </tr>
+		<?php if($item['visitors'] > 0): ?>
+            <tr>
+            <tr>
+                <td><?= $item['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . $item['reservation_date'] . '</strong><td> ' . number_format($admissionpriceTotal, 2, ",", ".") . ' €</td>'?>
+            </tr>
+		<?php endif; ?>
+    </table>
+	<?php foreach ($item as $key => $value): ?>
+		<?php if ($key == 'room'): ?>
+            <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
+            <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+                <thead>
+                <tr>
+                    <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                    <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                    <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                </tr>
+                </thead>
+                <tr>
+					<?= '<td>1 x</td><td>' . $value['title'] . '<td> ' . number_format($value['priceregular'], 2, ",", ".") . ' €</td>'?>
+                </tr>
+            </table>
+		<?php elseif ($key == 'extras'): ?>
+            <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
+            <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+                <thead>
+                <tr>
+                    <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                    <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                    <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                </tr>
+                </thead>
+				<?php foreach ($value as $extra => $value): ?>
+                    <tr>
+						<?= '<td>' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format($value['price_total'], 2, ",", ".") . ' €</td>'?>
+                    </tr>
+				<?php endforeach; ?>
+            </table>
+		<?php endif; ?>
+
+	<?php endforeach; ?>
+    <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
+    <div class="uk-card uk-card-default uk-card-body">
+        <p>
+			<?= $item['customer_notes']; ?>
+        </p>
+    </div>
+</div>

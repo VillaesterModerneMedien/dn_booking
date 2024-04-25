@@ -194,6 +194,9 @@ class ReservationModel extends AdminModel
 		if(isset($orderFeatures['room_id'])){
 			$reservation->room = ArrayHelper::fromObject($orderFeatures['room_id']);
 		}
+		if(isset($orderFeatures['customer_id'])){
+			$reservation->customer = ArrayHelper::fromObject($orderFeatures['customer_id']);
+		}
 		if(isset($orderFeatures['extras'])){
 			$reservation->extras = $orderFeatures['extras'];
 		}

@@ -16,6 +16,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * View to edit a Reservation.
@@ -81,9 +82,10 @@ class HtmlView extends BaseHtmlView
 		$headline = Text::_('COM_DNBOOKING_HEADLINE_NEW_RESERVATION');
 
 		if(!empty($item->id)){
-		    $customer = $this->customer->firstname . ' ' . $this->customer->lastname;
-	        $created = \date("d.m.Y | H:i", \strtotime($item->created));
-            $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $created, $customer) ;
+			$customer = ArrayHelper::fromObject($this->customer);
+		    $customer = $customer['firstname'] . ' ' . $customer['lastname'];
+	        $reservationDate= \date("d.m.Y | H:i", \strtotime($item->reservation_date));
+            $headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $reservationDate, $customer) ;
 		}
 
         ToolbarHelper::title($headline);

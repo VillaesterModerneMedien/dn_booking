@@ -168,14 +168,25 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 	protected function _calcPrice($infos, $room, $extras)
 	{
+		$isHolidayOrWeekend = false;
+		if($this->holiday == '1')
+		{
+			$isHolidayOrWeekend = true;
+		}
+
+		//TODO: Guido anpassen
+
 		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
 		$roomModel = $factory->createModel('Room', 'Administrator');
 		$roomParams     = $roomModel->getItem($room);
 		$extrasModel = $factory->createModel('Extras', 'Administrator');
 		$extrasParams     =  $extrasModel->getItems();
+		$infos = json_decode($infos);
+		$visitorsPackage = (int) $infos->visitorsPackage;
+		$visitorsAdmission = (int) $infos->visitors;
+
 		$extraInfos = [];
 		$totalCosts = 0;
-		//FEIERTAG???
 
 		foreach ($extrasParams as $extra) {
 			$extraInfos[$extra->id]['price'] = $extra->price;
@@ -187,16 +198,29 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		$params = ComponentHelper::getParams('com_dnbooking');
 
-		$roomPriceRegular = $roomParams->priceregular;
-		$roomPriceCustom = $roomParams->pricecustom;
+		if(!$isHolidayOrWeekend)
+		{
+			$roomPriceRegular      = $roomParams->priceregular;
+			$totalCosts += $roomPriceRegular;
 
-		$packagePriceRegular = $params->get('packagepriceregular');
-		$packagePriceCustom = $params->get('packagepricecustom');
+			$packagePriceRegular   = $params->get('packagepriceregular');
+			$totalCosts += $packagePriceRegular * $visitorsPackage;
 
-		$admissionPriceRegular = $params->get('admissionpriceregular');
-		$admissionPriceCustom = $params->get('admissionpricecustom');
+			$admissionPriceRegular = $params->get('admissionpriceregular');
+			$totalCosts += $admissionPriceRegular * $visitorsAdmission;
+		}
+		else{
+			$roomPriceCustom = $roomParams->pricecustom;
+			$totalCosts += $roomPriceCustom;
 
-		$packagePriceCustom = $params->get('package_price_custom');
+			$packagePriceCustom = $params->get('packagepricecustom');
+			$totalCosts += $packagePriceCustom * $visitorsPackage;
+
+			$admissionPriceCustom = $params->get('admissionpricecustom');
+			$totalCosts += $admissionPriceCustom * $visitorsAdmission;
+		}
+
+		return $totalCosts;
 
 	}
 

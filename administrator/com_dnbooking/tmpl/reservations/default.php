@@ -61,6 +61,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'), 'a.reservation_date', $listDirn, $listOrder); ?>
                             </th>
                             <th scope="col">
+								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_PRICE'), 'a.reservation_price', $listDirn, $listOrder); ?>
+                            </th>
+                            <th scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_ROOM_ID'), 'a.room_id', $listDirn, $listOrder); ?>
                             </th>
                             <th scope="col" class="w-1 text-center">
@@ -111,7 +114,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								$admin_notes_without_html = strip_tags($admin_notes);
 								$short_admin_notes        = substr($admin_notes_without_html, 0, 150);
 							}
-							$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id, $customer);
+							$reservationDate = HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5'));
+							$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_LISTING', $id, $customer);
 
 							$canCreate  = $user->authorise('core.create', 'com_dnbooking.reservation.' . $item->id);
 							$canEdit    = $user->authorise('core.edit', 'com_dnbooking.reservation.' . $item->id);
@@ -140,11 +144,13 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 												<?php echo Text::_('COM_DNBOOKING_RESERVATION_INTERNAL_NOTICE') . ' ' . $this->escape($short_admin_notes); ?>
                                             </div>
 										<?php endif; ?>
-
                                     </div>
                                 </td>
                                 <td class="w-10">
 									<?= $reservationDate; ?>
+                                </td>
+                                <td class="w-10">
+									<?= number_format((float) $item->reservation_price, 2, ',', '.') . ' €';; ?>
                                 </td>
                                 <td class="w-10">
 									<?= $item->room_title . '<br> (ID: ' . $item->room_id . ')' ?>

@@ -14,7 +14,7 @@
                 showtime="true"
                 required="true"
                 filter="server_utc"
-                default="NOW-2"
+                default="NOW"
         />
 
         <field

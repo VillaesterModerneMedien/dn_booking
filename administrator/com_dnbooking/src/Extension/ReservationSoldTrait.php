@@ -36,6 +36,9 @@ trait ReservationSoldTrait
 				if($key == "room_id"){
 					$orderData[$key] = $model->getOrderFeatures('Room', $value);
 				}
+				else if($key == "customer_id"){
+					$orderData[$key] = $model->getOrderFeatures('Customer', $value);
+				}
 				else if(str_contains($key, 'extra')){
 					if(!is_array($value)){
 						$value = json_decode($value, true);
