@@ -1,7 +1,9 @@
 <?php
 	use Joomla\CMS\Language\Text;
 	$reservation = $displayData;
-    $form = $displayData->get('form');
+    $reservationItem = $reservation->get('item');
+    $form = $reservation->get('form');
+
 ?>
 <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
     <div class="firstCard card text-white bg-secondary mb-3">
@@ -11,6 +13,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
+	                <?php if($reservationItem->additional_info == 'null'): ?>
+                        <div class="alert alert-dismissible alert-warning">
+			                <?= Text::_('COM_DNBOOKING_NO_EXTRAS'); ?>
+                        </div>
+
+	                <?php endif; ?>
 					<?php echo $form->renderFieldset('reservationfieldset_extras'); ?>
                 </div>
             </div>
