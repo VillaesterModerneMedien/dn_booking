@@ -33,75 +33,6 @@ class AdditionalInfosField extends SubformField
 	 */
 	public $type = 'AdditionalInfos';
 
-	/**
-	 * Layout to render the form
-	 * @var  string
-	 */
-	protected $layout = 'joomla.form.field.subform.repeatable';
-
-	/**
-	 * Method to get the field input markup.
-	 *
-	 * @return  string  The field input markup.
-	 *
-	 * @since   3.6
-	 */
-	protected function getInput()
-	{
-		// Prepare data for renderer
-		$data    = $this->getLayoutData();
-		$tmpl    = null;
-		$control = $this->name;
-
-		try {
-			$tmpl  = $this->loadSubForm();
-			$forms = $this->loadSubFormData($tmpl);
-		} catch (\Exception $e) {
-			return $e->getMessage();
-		}
-
-		$data['tmpl']            = $tmpl;
-		$data['forms']           = $forms;
-		$data['min']             = $this->min;
-		$data['max']             = $this->max;
-		$data['control']         = $control;
-		$data['buttons']         = $this->buttons;
-		$data['fieldname']       = $this->fieldname;
-		$data['fieldId']         = $this->id;
-		$data['groupByFieldset'] = $this->groupByFieldset;
-
-		/**
-		 * For each rendering process of a subform element, we want to have a
-		 * separate unique subform id present to could distinguish the eventhandlers
-		 * regarding adding/moving/removing rows from nested subforms from their parents.
-		 */
-		static $unique_subform_id  = 0;
-		$data['unique_subform_id'] = ('sr-' . ($unique_subform_id++));
-
-		// Prepare renderer
-		$renderer = $this->getRenderer($this->layout);
-
-		// Allow to define some Layout options as attribute of the element
-		if ($this->element['component']) {
-			$renderer->setComponent((string) $this->element['component']);
-		}
-
-		if ($this->element['client']) {
-			$renderer->setClient((string) $this->element['client']);
-		}
-
-		// Render
-		$html = $renderer->render($data);
-
-		// Add hidden input on front of the subform inputs, in multiple mode
-		// for allow to submit an empty value
-		if ($this->multiple) {
-			$html = '<input name="' . $this->name . '" type="hidden" value="">' . $html;
-		}
-
-		return $html;
-	}
-
 
 	/**
 	 * Loads the form instance for the subform.
@@ -127,7 +58,7 @@ class AdditionalInfosField extends SubformField
 			$formDataJSON = $params->get('additional_info_form2');
 			$formXML .= '<form>';
 			if ($app->isClient('site')) {
-				$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
+				$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-children" hiddenLabel="true" >';
 			} else if ($app->isClient('administrator')) {
 				$formXML .= '<field name="addinfos2_subform" type="subform" multiple="true" min="1" max="10" layout="joomla.form.field.subform.repeatable-table" hiddenLabel="true" >';
 			}

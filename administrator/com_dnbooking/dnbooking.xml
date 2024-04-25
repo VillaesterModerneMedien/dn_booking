@@ -64,6 +64,9 @@
 			</params>
 		</menu>
 		<submenu>
+			<menu view="daydashboards">
+                COM_DNBOOKING_SUBMENU_DAYDASHBOARD
+            </menu>
 			<menu view="reservations">
                 COM_DNBOOKING_SUBMENU_RESERVATIONS
                 <params>

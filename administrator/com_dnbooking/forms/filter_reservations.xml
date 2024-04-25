@@ -20,7 +20,7 @@
 				type="list"
 				label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
 				description="COM_DNBOOKING_FIELD_RESERVATION_STATUS_DESC"
-				default="1"
+				default=""
 				class="js-select-submit-on-change"
 		>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>

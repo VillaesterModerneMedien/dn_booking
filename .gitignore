@@ -1,9 +1,9 @@
-/administrator/com_dnbooking/vendor/
+/administrator/com_dnbooking/vendor
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.gitignore
 /administrator/com_dnbooking/vendor/mpdf/psr-log-aware-trait/.gitignore
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.github/ISSUE_TEMPLATE/01_bug_report.yml
 /administrator/com_dnbooking/vendor/mpdf/mpdf/.github/ISSUE_TEMPLATE/02_feature_request.yml
-/.idea/
+/.idea
 /administrator/com_dnbooking/vendor/mpdf/mpdf/src/Tag/A.php
 /administrator/com_dnbooking/vendor/mpdf/mpdf/ttfonts/AboriginalSansREGULAR.ttf
 /administrator/com_dnbooking/vendor/mpdf/mpdf/src/Barcode/AbstractBarcode.php
