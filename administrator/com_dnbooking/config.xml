@@ -224,14 +224,6 @@
                 max="10"
         >
             <form>
-                <field
-                        name="fieldName"
-                        type="text"
-                        label="COM_DNBOOKING_FIELD_NAME_LABEL"
-                        description=""
-                        size="10"
-                        default=""
-                />
                 <field name="fieldName"
                        type="list"
                        default=""

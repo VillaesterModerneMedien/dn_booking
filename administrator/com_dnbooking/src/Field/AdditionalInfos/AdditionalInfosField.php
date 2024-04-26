@@ -90,6 +90,9 @@ class AdditionalInfosField extends SubformField
 	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y" format="%d.%m.%Y"   class="' . $firstClass . '" />';
 
 					break;
+				case 'number':
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '"  default="0" min="0"/>';
+					break;
 				default:
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '" />';
 			}

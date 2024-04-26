@@ -37,7 +37,7 @@
   width: 80px;
 }
 
-.stickyBottom {
+.stickyBottom.uk-section-default {
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -47,10 +47,22 @@
   max-width: 1230px;
   padding: 20px 15px;
   z-index: 1000;
+  padding-top: 0;
 }
-.stickyBottom > div > div:last-child {
+.stickyBottom.uk-section-default > div > div:last-child {
   display: flex;
   justify-content: flex-end;
+}
+
+.uk-alert p {
+  margin: 0;
+}
+
+.subform-wrapper .btn-toolbar {
+  display: none;
+}
+.subform-wrapper .uk-padding-small .uk-padding-small {
+  padding: 0;
 }
 
 #sendButton {
@@ -62,6 +74,10 @@
 }
 #summary th:last-child, #summary td:last-child {
   text-align: right;
+}
+
+.uk-grid-margin:not(#bookingTimes .uk-grid-margin) {
+  margin-top: 20px !important;
 }
 
 /*# sourceMappingURL=booking.css.map */

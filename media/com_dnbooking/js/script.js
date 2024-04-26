@@ -100,7 +100,6 @@ function updateRoomStatus(date, visitors){
                     let roomid = parseInt(room.getAttribute('data-room-id'));
                     if (blocked.rooms.includes(roomid)) {
                         room.classList.add('disabled');
-                        //room.input.addAttribute('disabled');
                         room.removeEventListener('click', handleRoomClick);
                     }
                     else {
@@ -262,8 +261,8 @@ function setStep(newStep) {
  */
 function extractTimeFromDateTime() {
     const dateTimeInput = document.getElementById('jform_reservation_date');
-    const dateTimeString = dateTimeInput.getAttribute('data-alt-value'); // Get the full date and time string
-    const timeString = dateTimeString.split(' ')[1]; // Split the string and get the time part
+    const dateTimeString = dateTimeInput.getAttribute('data-alt-value');
+    const timeString = dateTimeString.split(' ')[1];
     return timeString;
 }
 
@@ -327,50 +326,61 @@ document.addEventListener('DOMContentLoaded', function () {
     setStep(step);
 });
 
+function setSubforms() {
+    const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
+
+    const numberOfChildren = parseInt(birthdayChildrenInput.value, 10);
+    if (isNaN(numberOfChildren)) {
+        console.error('Die Eingabe ist keine gültige Zahl.');
+        return;
+    }
+
+    const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
+    const subformTemplateContent = document.querySelector('.subform-repeatable-template-section').content;
+    const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
+    const currentCount = currentGroups.length;
+
+    // Sicherstellen, dass das Template-Element als Referenzpunkt dient
+    const templateElement = document.querySelector('.subform-repeatable-template-section');
+
+    // Gruppen hinzufügen, falls mehr Kinder hinzugefügt werden sollen
+    if (numberOfChildren > currentCount) {
+        for (let i = currentCount; i < numberOfChildren; i++) {
+            let newGroup = document.importNode(subformTemplateContent, true);
+            newGroup.querySelector('[data-group]').setAttribute('data-group', `addinfos2_subform${i}`);
+            newGroup.querySelectorAll('input, select, label').forEach(element => {
+                const baseName = 'addinfos2_subformX';
+                if (element.id) element.id = element.id.replace(baseName, `addinfos2_subform${i}`);
+                if (element.htmlFor) element.htmlFor = element.htmlFor.replace(baseName, `addinfos2_subform${i}`);
+                if (element.name) element.name = element.name.replace(baseName, `addinfos2_subform${i}`);
+            });
+
+            subformElement.insertBefore(newGroup, templateElement);
+        }
+    }
+    // Gruppen entfernen, falls weniger Kinder angezeigt werden sollen
+    else if (numberOfChildren < currentCount) {
+        for (let i = currentCount; i > numberOfChildren; i--) {
+            currentGroups[i - 1].remove();
+        }
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
+    birthdayChildrenInput.setAttribute('max',0);
+    const visitorsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
 
     if (!birthdayChildrenInput) {
         console.error('Das Eingabefeld für Geburtstagskinder wurde nicht gefunden.');
         return;
     }
 
-    birthdayChildrenInput.addEventListener('change', function() {
-        const numberOfChildren = parseInt(this.value, 10);
-        if (isNaN(numberOfChildren)) {
-            console.error('Die Eingabe ist keine gültige Zahl.');
-            return;
-        }
-
-        const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
-        const subformTemplateContent = document.querySelector('.subform-repeatable-template-section').content;
-        const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
-        const currentCount = currentGroups.length;
-
-        // Sicherstellen, dass das Template-Element als Referenzpunkt dient
-        const templateElement = document.querySelector('.subform-repeatable-template-section');
-
-        // Gruppen hinzufügen, falls mehr Kinder hinzugefügt werden sollen
-        if (numberOfChildren > currentCount) {
-            for (let i = currentCount; i < numberOfChildren; i++) {
-                let newGroup = document.importNode(subformTemplateContent, true);
-                newGroup.querySelector('[data-group]').setAttribute('data-group', `addinfos2_subform${i}`);
-                newGroup.querySelectorAll('input, select, label').forEach(element => {
-                    const baseName = 'addinfos2_subformX';
-                    if (element.id) element.id = element.id.replace(baseName, `addinfos2_subform${i}`);
-                    if (element.htmlFor) element.htmlFor = element.htmlFor.replace(baseName, `addinfos2_subform${i}`);
-                    if (element.name) element.name = element.name.replace(baseName, `addinfos2_subform${i}`);
-                });
-
-                subformElement.insertBefore(newGroup, templateElement);
-            }
-        }
-        // Gruppen entfernen, falls weniger Kinder angezeigt werden sollen
-        else if (numberOfChildren < currentCount) {
-            for (let i = currentCount; i > numberOfChildren; i--) {
-                currentGroups[i - 1].remove();
-            }
-        }
+    visitorsPackageInput.addEventListener('change', function() {
+        birthdayChildrenInput.setAttribute('max',this.value);
     });
+    birthdayChildrenInput.addEventListener('change', function() {
+       setSubforms();
+    });
+    setSubforms();
 });

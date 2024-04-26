@@ -48,7 +48,8 @@ $priceCustom = $params->get('packagepricecustom');
          method="POST">
 
     <section id="bookingTimes" class="booking uk-section uk-section-default" data-step="1">
-        <h2><?php echo JText::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
+        <h2><?php echo Text::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
+
 	    <?php echo LayoutHelper::render('reservation.reservationdata', $this->form); ?>
 
         <div id="childrenContainer" class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
@@ -58,7 +59,7 @@ $priceCustom = $params->get('packagepricecustom');
     </section>
 
     <section id="rooms" class="rooms uk-section uk-section-default" data-step="2">
-        <h2><?php echo JText::_('COM_DNBOOKING_SELECT_ROOM'); ?></h2>
+        <h2><?php echo Text::_('COM_DNBOOKING_SELECT_ROOM'); ?></h2>
 		<?php echo LayoutHelper::render('reservation.roomlist', $this->form); ?>
     </section>
 
@@ -72,7 +73,7 @@ $priceCustom = $params->get('packagepricecustom');
 		<?php echo LayoutHelper::render('reservation.customer',  $this->form); ?>
     </section>
 
-    <section id="sendButton" class="customer uk-section uk-section-default" data-step="4">
+    <section id="sendButton" class="customer uk-section uk-section-default" data-step="5">
         <button type="button" id="checkBooking" class="uk-button uk-button-default"><?php echo JText::_('COM_DNBOOKING_CHECKBOOKING_LABEL'); ?></button>
     </section>
 

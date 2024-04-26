@@ -76,7 +76,6 @@ CREATE TABLE if not exists `#__dnbooking_extras`
     `created`       datetime                                               NOT NULL,
     `modified`      datetime                                               NOT NULL,
     PRIMARY KEY (`id`),
-    KEY `idx_createdby` (`created_by`),
     KEY `published` (`published`),
     KEY `idx_alias` (`alias`)
 

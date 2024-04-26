@@ -14,7 +14,7 @@
                 showtime="true"
                 required="true"
                 filter="server_utc"
-                default="NOW"
+                default="NOW-2"
         />
 
         <field
@@ -114,6 +114,7 @@
                 default="0"
                 required="true"
                 header="COM_DNBOOKING_FIELD_SELECT_ROOM"
+                hiddenLabel="true"
         />
     </fieldset>
 
@@ -124,14 +125,16 @@
                 label="COM_DNBOOKING_FIELD_EXTRAS_LABEL"
                 multiple="true"
                 min="1"
-                max="50"
+                max="99"
                 hiddenLabel="true"
                 layout="joomla.form.field.subform.extras"
         >
             <form>
                 <field
                         name="extra_count"
-                        type="text"
+                        type="number"
+                        min="0"
+                        default="0"
                         label="COM_DNBOOKING_FIELD_EXTRA_COUNT_LABEL"
                 />
                 <field
