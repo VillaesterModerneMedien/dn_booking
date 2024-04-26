@@ -326,6 +326,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     setStep(step);
 });
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
 

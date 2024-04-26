@@ -122,7 +122,7 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 
 		$orderData = ArrayHelper::fromObject($item);
 		$orderDataFlattened = ArrayHelper::flatten($orderData, '_');
-		$orderData['customer_firstname'] = ArrayHelper::fromObject($item->customer);
+		//$orderData['customer_firstname'] = ArrayHelper::fromObject($item->customer);
 
 		$mail = $this->getMailerFactory()->createMailer();
 		$mail->setSender($app->get('mailfrom'), $app->get('fromname'));
