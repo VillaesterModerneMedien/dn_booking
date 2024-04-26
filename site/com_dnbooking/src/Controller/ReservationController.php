@@ -14,6 +14,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Controller;
 use DateTime;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Controller\ReservationController as AdminReservationController;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\ReservationSoldTrait;
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -207,16 +208,14 @@ class ReservationController extends AdminReservationController
 	public function getOrderHTML(){
 		header('Content-Type: text/html');
 
-		$formFields = $this->input->post->getArray();
-		$date         = HTMLHelper::_('date', $formFields['jform']['reservation_date'], 'Y-m-d');
+		$formFields = $this->input->get('jform', null, 'array');
+		$date         = HTMLHelper::_('date', $formFields['reservation_date'], 'Y-m-d');
 		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
 		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
-		$orderData = [];
 
 		$app = Factory::getApplication();
 
 		$layout = new FileLayout('reservation.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
-		$component = $this->params;
 
 		$orderData = $this->getReservationSoldData($formFields, $isHolidayOrWeekend);
 
@@ -248,6 +247,11 @@ class ReservationController extends AdminReservationController
 		{
 			$params = ComponentHelper::getParams('com_dnbooking');
 			$menuItem    = $params->get('returnurl');
+
+
+			$helper = new DnbookingHelper();
+			$helper->sendMail($formData, true);
+
 			if(!isset($menuItem)){
 				$this->setRedirect("/");
 			}
@@ -273,6 +277,7 @@ class ReservationController extends AdminReservationController
 		if($weekdayNumber == 5 || $weekdayNumber == 6){
 			return true;
 		}
+
 		$params = $this->params;
 
 		foreach ($params->get('holidays') as $holiday) {

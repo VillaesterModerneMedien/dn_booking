@@ -1,0 +1,129 @@
+array (
+  'typeAlias' => 'com_dnbooking.reservation',
+  'tagsHelper_typeAlias' => 'com_dnbooking.reservation',
+  'tagsHelper_itemTags' => NULL,
+  'tagsHelper_tags' => NULL,
+  'tagsHelper_newTags' => NULL,
+  'tagsHelper_oldTags' => NULL,
+  'id' => 63,
+  'admin_notes' => NULL,
+  'customer_notes' => '',
+  'general_notes' => NULL,
+  'reservation_price' => '',
+  'holiday' => NULL,
+  'customer_id' => 113,
+  'room_id' => 1,
+  'persons_count' => 0,
+  'additional_info' => '{"visitorsPackage":"2","visitors":"2","birthdaychildren":""}',
+  'additional_infos2' => 'null',
+  'reservation_date' => '2024-04-24 11:43:08',
+  'published' => 0,
+  'created' => '2024-04-24 16:43:42',
+  'modified' => '2024-04-24 16:43:42',
+  'extras_ids' => '{"extras_ids1":{"extra_count":"2","extra_id":"3"}}',
+  'room_typeAlias' => 'com_dnbooking.room',
+  'room_tagsHelper_typeAlias' => 'com_dnbooking.room',
+  'room_tagsHelper_itemTags' => NULL,
+  'room_tagsHelper_tags' => NULL,
+  'room_tagsHelper_newTags' => NULL,
+  'room_tagsHelper_oldTags' => NULL,
+  'room_alias' => 'room101',
+  'room_title' => 'Standardzimmer',
+  'room_description' => 'Dies ist ein Standardzimmer',
+  'room_images' => '[]',
+  'room_personsmin' => 5,
+  'room_personsmax' => 12,
+  'room_priceregular' => '11',
+  'room_pricecustom' => '12',
+  'room_published' => 1,
+  'room_created' => '2023-04-01 10:00:00',
+  'room_modified' => '2024-04-22 15:05:14',
+  'customer_typeAlias' => 'com_dnbooking.customer',
+  'customer_tagsHelper_typeAlias' => 'com_dnbooking.customer',
+  'customer_tagsHelper_itemTags' => NULL,
+  'customer_tagsHelper_tags' => NULL,
+  'customer_tagsHelper_newTags' => NULL,
+  'customer_tagsHelper_oldTags' => NULL,
+  'customer_salutation' => 'Christian',
+  'customer_firstname' => 'Christian',
+  'customer_lastname' => 'Schuelling',
+  'customer_email' => 'info@whykiki.de',
+  'customer_phone' => '015140417282',
+  'customer_address' => 'Annastr.',
+  'customer_city' => 'Nordrhein-Westfalen - Moers',
+  'customer_zip' => '47441',
+  'customer_country' => '',
+  'customer_published' => 0,
+  'customer_created' => '2024-04-24 16:43:42',
+  'customer_modified' => '2024-04-24 16:43:42',
+  'extras_beispielextra3_name' => 'Beispielextra3',
+  'extras_beispielextra3_price_single' => 25.5,
+  'extras_beispielextra3_amount' => 2,
+  'extras_beispielextra3_price_total' => 51.0,
+  'vendor_email' => 'info@whykiki.de',
+  'vendor_from' => NULL,
+  'vendor_phone' => '015140417282',
+  'vendor_address' => 'Sensapolis Test
+Annastr. 8
+47441 MOers',
+  'vendor_accountdata' => 'Kto-Nummer: 12345678
+DE 345 678 192
+',
+  'html_ordertable_simple' => '<div id="orderTableSimple">
+	<table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+		<thead>
+            <tr>
+                <th class="uk-table-small">Menge</th>
+                <th class="uk-table-expand">Bezeichnung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2 x </td>
+                <td>Geburtstagspaket                    <strong>2024-04-24 11:43:08</strong>
+                </td>
+            </tr>
+					<tr>
+				<td>2 x </td>
+                <td>Eintritt                    <strong>2024-04-24 11:43:08</strong>
+                <td>
+			</tr>
+		        </tbody>
+        <tfoot></tfoot>
+	</table>
+																																																												<p><strong>Raum:</strong></p>
+			<table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+				<thead>
+                    <tr>
+                        <th class="uk-table-small">Menge</th>
+                        <th class="uk-table-expand">Bezeichnung</th>
+                    </tr>
+				</thead>
+                <tbody>
+                    <tr>
+                        <td>1 x</td>
+                        <td>Standardzimmer<td>
+                    </tr>
+                </tbody>
+                <tfoot></tfoot>
+			</table>
+											<p><strong>Extras:</strong></p>
+			<table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+				<thead>
+                    <tr>
+                        <th class="uk-table-small">Menge</th>
+                        <th class="uk-table-expand">Bezeichnung</th>
+                    </tr>
+				</thead>
+                <tbody>
+                                            <tr>
+                            <td>2 x </td>
+                            <td>Beispielextra3</td>
+                        </tr>
+                                    </tbody>
+                <tfoot></tfoot>
+			</table>
+
+    </div>
+',
+)

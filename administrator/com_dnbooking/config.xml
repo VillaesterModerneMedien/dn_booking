@@ -224,6 +224,14 @@
                 max="10"
         >
             <form>
+                <field
+                        name="fieldName"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_NAME_LABEL"
+                        description=""
+                        size="10"
+                        default=""
+                />
                 <field name="fieldName"
                        type="list"
                        default=""
@@ -349,6 +357,15 @@
         />
 
         <field
+                name="vendor_from"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_FROM_LABEL"
+                description=""
+                size="10"
+                default=""
+        />
+
+        <field
                 name="vendor_phone"
                 type="text"
                 label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_PHONE_LABEL"
@@ -364,6 +381,7 @@
                 rows="5"
                 default=""
         />
+
     </fieldset>
 
 

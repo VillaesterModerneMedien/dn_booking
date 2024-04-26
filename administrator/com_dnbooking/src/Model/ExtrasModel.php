@@ -17,6 +17,7 @@ use Joomla\CMS\Factory;
 use Joomla\Database\ParameterType;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\Table\Table;
+use phpseclib3\Common\Functions\Strings;
 
 /**
  * Methods supporting a list of extras records.
@@ -24,7 +25,7 @@ use Joomla\CMS\Table\Table;
  * @since  1.0.0
  */
 class ExtrasModel extends ListModel
-{	
+{
 	/**
 	 * Constructor.
 	 *
@@ -48,7 +49,7 @@ class ExtrasModel extends ListModel
 
 		parent::__construct($config);
 	}
-	
+
 
 	/**
 	 * Returns a reference to the a Table object, always creating it.
@@ -65,7 +66,7 @@ class ExtrasModel extends ListModel
 	{
 		return parent::getTable($type, $prefix, $config);
 	}
-	
+
 	/**
 	 * Returns an object list
 	 *
@@ -79,15 +80,15 @@ class ExtrasModel extends ListModel
 	{
 		$listOrder = $this->getState('list.ordering', 'a.id');
 		$listDirn  = $this->getState('list.direction', 'asc');
-		
+
 		$query->order($this->_db->quoteName($listOrder) . ' ' . $this->_db->escape($listDirn));
 
 		// Process pagination.
 		$result = parent::_getList($query, $limitstart, $limit);
 		return $result;
 	}
-	
-	
+
+
 	/**
 	 * Build an SQL query to load the list data.
 	 *
@@ -104,7 +105,7 @@ class ExtrasModel extends ListModel
 		// Select the required fields from the table.
 		$query->select('a.*');
 		$query->from($db->quoteName('#__dnbooking_extras', 'a'));
-		
+
         // Filter by published state
 		$published = (string) $this->getState('filter.published');
 
@@ -117,10 +118,10 @@ class ExtrasModel extends ListModel
 		{
 			$query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
 		}
-        
+
 		// Filter by search in title or note or id:.
 		$search = $this->getState('filter.search');
-        
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -171,6 +172,25 @@ class ExtrasModel extends ListModel
         return $form;
     }
 
+
+	public function getItems($pk = []) {
+		$items = parent::getItems();
+
+		if (empty($pk)) {
+			return $items;
+		}
+
+		$selectedItems = [];
+
+		foreach ($items as $item) {
+			if(in_array($item->id, $pk))
+			{
+				$selectedItems[] = $item;
+			}
+		}
+
+		return $selectedItems;
+	}
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -187,11 +207,11 @@ class ExtrasModel extends ListModel
 	{
 		// Load the filter state.
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
-		
+
 		// List state information.
 		parent::populateState($ordering, $direction);
 	}
-    
+
 	/**
 	 * Method to get a store id based on model configuration state.
 	 *
@@ -213,5 +233,5 @@ class ExtrasModel extends ListModel
 
 		return parent::getStoreId($id);
 	}
-    
+
 }

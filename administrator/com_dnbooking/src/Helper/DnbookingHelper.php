@@ -11,15 +11,26 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Helper;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\DnbookingMailTemplate;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Mail\Exception\MailDisabledException;
+use Joomla\CMS\Mail\Mail;
+use Joomla\CMS\Mail\MailerFactoryInterface;
+use Joomla\CMS\Mail\MailTemplate;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+use PHPMailer\PHPMailer\Exception as phpMailerException;
+
 
 /**
  * Dnbooking component helper.
  *
  * @since  1.0.0
  */
-class DnbookingHelper extends ContentHelper
+class DnbookingHelper
 {
 
 	/**
@@ -28,38 +39,30 @@ class DnbookingHelper extends ContentHelper
 	 * This function takes the booking information, room details, extras, and a flag indicating whether it's a holiday or weekend,
 	 * and calculates the total cost of the booking.
 	 *
-	 * @param   mixed  $infos    Information about the booking. This can be an array or a JSON string. It should have 'visitorsPackage' and 'visitors' properties.
-	 * @param   array  $room     An array containing the room details. It should have 'priceregular' and 'pricecustom' properties.
-	 * @param   array  $extras   An array of extras. Each extra should be an array with a 'price_total' property.
-	 * @param   bool   $holiday  A flag indicating whether the booking is for a holiday or weekend.
+	 * @param   array  $infos               Information about the booking. This can be an array or a JSON string. It should have 'visitorsPackage' and 'visitors' properties.
+	 * @param   array  $roomParams          An array containing the room details. It should have 'priceregular' and 'pricecustom' properties.
+	 * @param   float  $extrasTotal         Total extras cost
+	 * @param   int    $isHolidayOrWeekend  A flag indicating whether the booking is for a holiday or weekend.
 	 *
 	 * @return float The total cost of the booking.
 	 */
-	public function calcPrice($infos, $room, $extras, $holiday)
+	public static function calcPrice($infos, $roomParams, $extrasTotal, $isHolidayOrWeekend)
 	{
-		$isHolidayOrWeekend = $holiday;
-		$roomParams         = $room;
-		$extrasParams       = $extras;
 		if (!is_array($infos))
 		{
 			$infos = json_decode($infos, true);
 		}
+
 		$visitorsPackage   = (int) $infos['visitorsPackage'];
 		$visitorsAdmission = (int) $infos['visitors'];
 
-		$totalCosts = 0;
-
-		foreach ($extrasParams as $extra)
-		{
-			$totalCosts += $extra['price_total'];
-		}
+		$totalCosts = $extrasTotal;
 
 		$params = ComponentHelper::getParams('com_dnbooking');
 
 		if (!$isHolidayOrWeekend)
 		{
-			$roomPriceRegular = (float) $roomParams['priceregular'];
-			$totalCosts       += $roomPriceRegular;
+			$totalCosts       += (float) $roomParams['priceregular'];
 
 			$packagePriceRegular = $params->get('packagepriceregular');
 			$totalCosts          += $packagePriceRegular * $visitorsPackage;
@@ -69,8 +72,7 @@ class DnbookingHelper extends ContentHelper
 		}
 		else
 		{
-			$roomPriceCustom = (float) $roomParams['pricecustom'];
-			$totalCosts      += $roomPriceCustom;
+			$totalCosts      += (float) $roomParams['pricecustom'];
 
 			$packagePriceCustom = $params->get('packagepricecustom');
 			$totalCosts         += $packagePriceCustom * $visitorsPackage;
@@ -92,7 +94,7 @@ class DnbookingHelper extends ContentHelper
 	 *
 	 * @return array An array of reservation objects for today.
 	 */
-	function filterReservationsToday($reservations)
+	public static function filterReservationsToday($reservations)
 	{
 		// Get today's date in 'Y-m-d' format
 		$today = date('Y-m-d');
@@ -113,6 +115,90 @@ class DnbookingHelper extends ContentHelper
 
 		// Return the list of reservations for today
 		return $reservationsToday;
+	}
+
+
+	public static function sendMail($item, $isFrontend = false)
+	{
+		// Get the application instance
+		$app = Factory::getApplication();
+
+		// Get the current user
+		$user = $app->getIdentity();
+
+		// Get the input object
+		$input = $app->getInput();
+
+		// Get the values from the sendMails form
+		$sendMailFormValues = $input->get('sendMails', [], 'ARRAY');
+
+		// Get the component parameters
+		$componentParams = ComponentHelper::getParams('com_dnbooking');
+
+		// Convert the order object to an array and add the vendor's information
+		$orderData                       = ArrayHelper::fromObject($item);
+		$orderData['vendor_email']       = $componentParams['vendor_email'];
+		$orderData['vendor_from']        = $componentParams['vendor_from'];
+		$orderData['vendor_phone']       = $componentParams['vendor_phone'];
+		$orderData['vendor_address']     = $componentParams['vendor_address'];
+		$orderData['vendor_accountdata'] = $componentParams['vendor_accountdata'];
+
+
+		$layout                              = new FileLayout('mail.html_ordertable_simple', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+		$htmlOrderTableSimple                = $layout->render($orderData);
+		$orderData['html_ordertable_simple'] = $htmlOrderTableSimple;
+
+		// Flatten the order data array
+		$orderDataFlattened = ArrayHelper::flatten($orderData, '_');
+
+		/** @var Mail $mail */
+		$mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+
+		// Set the sender of the email
+		$mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+
+		// Create a new mail template
+		$mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
+
+		// Add the order data to the mail template
+		$mailer->addTemplateData($orderDataFlattened);
+		$mailTemplate = MailTemplate::getTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE');
+		//$html = $mailer->replaceTags($htmlEmailHeader . Text::_($mailTemplate->htmlbody) . $htmlEmailFooter, $orderDataFlattened);
+
+
+		// Add the customer as the recipient of the email
+		$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+
+		try
+		{
+			// Try to send the email
+			$mailSent = $mailer->send();
+		}
+		catch (MailDisabledException|phpMailerException $e)
+		{
+			// If an error occurs while sending the email, enqueue a message and return false
+			$app->enqueueMessage($e->getMessage(), 'error');
+
+			return false;
+		}
+
+		// If the email was sent successfully, enqueue a success message
+		if ($mailSent === true)
+		{
+			$methodName = Text::_('COM_DNBOOKING_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
+
+			// If JMail send the mail using PHP Mail as fallback.
+			if ($mail->Mailer !== $app->get('mailer'))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS_FALLBACK', $app->get('mailfrom'), $methodName), 'warning');
+			}
+			else
+			{
+				$app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
+			}
+
+			return true;
+		}
 	}
 
 }

@@ -18,6 +18,7 @@ use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\Toolbar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  *  * View class for a list of rooms.
@@ -56,7 +57,23 @@ class HtmlView extends BaseHtmlView
 		$this->items         = $this->get('Items');
 		$this->state         = $this->get('State');
 
+		$this->addToolbar();
+
 		parent::display($tpl);
+	}
+
+	/**
+	 * Displays a toolbar for a specific page.
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0.0
+	 */
+	private function addToolbar()
+	{
+		$date = Factory::getDate()->format('d.m.Y');
+		$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_DAYDASHBOARDS', $date);
+		ToolbarHelper::title($headline, 'calendar');
 	}
 
 }

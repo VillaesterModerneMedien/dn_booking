@@ -57,19 +57,28 @@ trait ReservationSoldTrait
 		$component = ComponentHelper::getParams('com_dnbooking');
 		$model = $this->getModel();
 		$orderData = [];
-		foreach ($formFields['jform'] as $key => $value)
+		$orderData['extras_price_total'] = 0;
+
+		foreach ($formFields as $key => $value)
 		{
 			if (!empty($value)){
 				if($key == "room_id"){
 					$orderData[$key] = $model->getOrderFeatures('Room', $value);
+
+					continue;
 				}
-				else if($key == "customer_id"){
+
+				if($key == "customer_id"){
 					$orderData[$key] = $model->getOrderFeatures('Customer', $value);
+
+					continue;
 				}
-				else if(str_contains($key, 'extra')){
+
+				if(str_contains($key, 'extra')){
 					if(!is_array($value)){
 						$value = json_decode($value, true);
 					}
+
 					if(is_array($value)){
 						foreach ($value as $key => $extra){
 							if($extra['extra_count'] > 0){
@@ -78,17 +87,18 @@ trait ReservationSoldTrait
 								$orderData['extras'][$extras['alias']]['price_single'] = $extras['price'];
 								$orderData['extras'][$extras['alias']]['amount'] =  (int) $extra['extra_count'];
 								$orderData['extras'][$extras['alias']]['price_total'] = $extras['price'] * $extra['extra_count'];
+								$orderData['extras_price_total'] += $extras['price'] * $extra['extra_count'];
 							}
 						}
 					}
-				}
-				else {
-					$orderData[$key] = $value;
-				}
-			}
 
+					continue;
+				}
+
+				$orderData[$key] = $value;
+			}
 		}
-		$orderData[$key] = $value;
+
 		$orderData['isHolidayOrWeekend'] = $isHolidayOrWeekend;
 
 		foreach ($component as $key => $value){

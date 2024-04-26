@@ -12,7 +12,6 @@ $item = ArrayHelper::fromObject($displayData);
 $customer = $item['customer'];
 $id = $item['id'];
 $params = ComponentHelper::getParams('com_dnbooking');
-$bookingHelper = new DnbookingHelper();
 
 if($id) {
     $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
@@ -38,7 +37,7 @@ if($item['holiday']) {
 }
 $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
-$totalPrice = $bookingHelper->calcPrice($item['additional_info'], $item['room'], $item['extras'], $item['holiday']);
+$totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $item['extras_price_total'], $item['holiday']);
 ?>
 <div id="summary">
 

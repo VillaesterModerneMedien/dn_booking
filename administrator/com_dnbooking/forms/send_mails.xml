@@ -9,9 +9,11 @@
                default="0"
         >
             <option value="0">COM_DNBOOKING_MAILTYPE_OPTION0</option>
-            <option value="statusMail">COM_DNBOOKING_MAILTYPE_OPTION1</option>
-            <option value="test">COM_DNBOOKING_MAILTYPE_OPTION2</option>
-            <option value="customMail">COM_DNBOOKING_MAILTYPE_OPTION3</option>
+            <option value="reservation_statuschange">COM_DNBOOKING_MAILTYPE_OPTION1</option>
+            <option value="reservation_pending">COM_DNBOOKING_MAILTYPE_OPTION2</option>
+            <option value="reservation_confirmed">COM_DNBOOKING_MAILTYPE_OPTION3</option>
+            <option value="reservation_cancelled">COM_DNBOOKING_MAILTYPE_OPTION4</option>
+            <option value="customMail">COM_DNBOOKING_MAILTYPE_OPTION5</option>
         </field>
 
         <field name="sendMailCustomText"

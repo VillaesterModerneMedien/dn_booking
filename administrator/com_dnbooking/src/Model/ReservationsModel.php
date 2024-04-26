@@ -39,7 +39,6 @@ class ReservationsModel extends ListModel
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
-				'title', 'a.title',
                 'published', 'a.published',
                 'created', 'a.created',
 			);
@@ -77,7 +76,7 @@ class ReservationsModel extends ListModel
 	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
 		$listOrder = $this->getState('list.ordering', 'a.id');
-		$listDirn  = $this->getState('list.direction', 'asc');
+		$listDirn  = $this->getState('list.direction', 'desc');
 
 		$query->order($this->_db->quoteName($listOrder) . ' ' . $this->_db->escape($listDirn));
 
@@ -130,7 +129,7 @@ class ReservationsModel extends ListModel
 			{
 				$search = '%' . trim($search) . '%';
 				$query->where('(' .
-					'CONCAT(DATE_FORMAT(' . $db->quoteName('a.reservation_date') . ', "%d.%m.%Y"), ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ', ' . $db->quoteName('d.room_title') . ') LIKE :combined' .
+					'CONCAT(DATE_FORMAT(' . $db->quoteName('a.reservation_date') . ', "%d.%m.%Y"), ' . $db->quoteName('c.firstname') . ', ' . $db->quoteName('c.lastname') . ', ' . $db->quoteName('a.id') . ', ' . $db->quoteName('d.title') . ') LIKE :combined' .
 					' OR ' . $db->quoteName('a.admin_notes') . ' LIKE :admin_notes' .
 					')');
 				$query->bind(':combined', $search);
@@ -138,36 +137,12 @@ class ReservationsModel extends ListModel
 			}
 		}
 		$test = (string) $query;
+		$test2 = str_replace('#__', 'tvo5l_', $test);
+
 		return $query;
 	}
 
-    /**
-     * Get the filter form
-     *
-     * @param   array    $data      data
-     * @param   boolean  $loadData  load current data
-     *
-     * @return  \Joomla\CMS\Form\Form|null  The Form object or null if the form can't be found
-     *
-     * @since   1.0.0
-     */
-    public function getFilterForm($data = array(), $loadData = true)
-    {
-        $form = parent::getFilterForm($data, $loadData);
 
-        $params = ComponentHelper::getParams('com_dnbooking');
-
-        if (!$params->get('workflow_enabled')) {
-            $form->removeField('stage', 'filter');
-        } else {
-            $ordering = $form->getField('fullordering', 'list');
-
-            $ordering->addOption('JSTAGE_ASC', ['value' => 'ws.title ASC']);
-            $ordering->addOption('JSTAGE_DESC', ['value' => 'ws.title DESC']);
-        }
-
-        return $form;
-    }
 
 	/**
 	 * Method to auto-populate the model state.
@@ -181,10 +156,11 @@ class ReservationsModel extends ListModel
 	 *
 	 * @since   1.0.0
 	 */
-	protected function populateState($ordering = 'a.id', $direction = 'asc')
+	protected function populateState($ordering = 'a.id', $direction = 'desc')
 	{
 		// Load the filter state.
-		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
 
 		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);

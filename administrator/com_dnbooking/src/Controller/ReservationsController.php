@@ -10,6 +10,8 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
@@ -93,6 +95,8 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 
 		$ids    = $this->input->get('cid', array(), 'array');
 
+		$helper = new DnbookingHelper();
+
 		if (empty($ids))
 		{
 			JError::raiseWarning(500, Text::_('COM_DNBOOKING_NO_ITEM_SELECTED'));
@@ -105,7 +109,7 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 			$items = [];
 			foreach ($ids as $id)
 			{
-				$this->sendMail($model->getItem($id));
+				$helper->sendMail($model->getItem($id));
 			}
 		}
 
@@ -113,26 +117,32 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 	}
 
 
+	/*
 	protected function sendMail($item){
 		// Set the new values to test with the current settings
 		$app      = Factory::getApplication();
 		$user     = $app->getIdentity();
 		$input    = $app->getInput();
 		$sendMailFormValues = $input->get('sendMails', [], 'ARRAY');
+		$componentParams = ComponentHelper::getParams('com_dnbooking');
 
 		$orderData = ArrayHelper::fromObject($item);
+		$orderData['vendor_email'] = $componentParams['vendor_email'];
+		$orderData['vendor_from'] = $componentParams['vendor_from'];
+		$orderData['vendor_phone'] = $componentParams['vendor_phone'];
+		$orderData['vendor_address'] = $componentParams['vendor_address'];
+		$orderData['vendor_accountdata'] = $componentParams['vendor_accountdata'];
+
 		$orderDataFlattened = ArrayHelper::flatten($orderData, '_');
-		//$orderData['customer_firstname'] = ArrayHelper::fromObject($item->customer);
 
 		$mail = $this->getMailerFactory()->createMailer();
-		$mail->setSender($app->get('mailfrom'), $app->get('fromname'));
+		$mail->setSender($orderData['vendor_email'], $orderData['vendor_from']);
 
-		$test = $app->get('fromname');
-
-		// Prepare email and try to send it
 		$mailer = new MailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
 		$mailer->addTemplateData($orderDataFlattened);
-		$mailer->addRecipient($app->get('mailfrom'), $app->get('fromname'));
+
+		//$mailer->addRecipient($vendorEmail, $vendorName);
+		$mailer->addRecipient($orderData['customer_email'], $orderData['customer_firstname'] . ' ' . $orderData['customer_lastname']);
 
 		try {
 			$mailSent = $mailer->send();
@@ -143,16 +153,18 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 		}
 
 		if ($mailSent === true) {
-			$methodName = Text::_('COM_CONFIG_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
+			$methodName = Text::_('COM_DNBOOKING_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
 
 			// If JMail send the mail using PHP Mail as fallback.
 			if ($mail->Mailer !== $app->get('mailer')) {
 				$app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS_FALLBACK', $app->get('mailfrom'), $methodName), 'warning');
 			} else {
-				$app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
+				$app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
 			}
 
 			return true;
 		}
 	}
+
+	*/
 }

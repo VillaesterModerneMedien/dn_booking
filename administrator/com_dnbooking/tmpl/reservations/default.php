@@ -17,7 +17,8 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useScript('multiselect');
+$wa->useScript('table.columns')
+	->useScript('multiselect');
 
 $user   = Factory::getApplication()->getIdentity();
 $userId = $user->get('id');
@@ -55,16 +56,16 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php echo HTMLHelper::_('grid.checkall'); ?>
                             </th>
                             <th scope="col">
-								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'), 'a.title', $listDirn, $listOrder); ?>
+								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'); ?>
                             </th>
                             <th scope="col">
 								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'), 'a.reservation_date', $listDirn, $listOrder); ?>
                             </th>
                             <th scope="col">
-								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_PRICE'), 'a.reservation_price', $listDirn, $listOrder); ?>
+								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_PRICE'); ?>
                             </th>
                             <th scope="col">
-								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_ROOM_ID'), 'a.room_id', $listDirn, $listOrder); ?>
+								<?php echo Text::_('COM_DNBOOKING_HEADING_ROOM_ID'); ?>
                             </th>
                             <th scope="col" class="w-1 text-center">
 								<?php echo HTMLHelper::_('searchtools.sort', Text::_('JSTATUS'), 'a.published', $listDirn, $listOrder); ?>
@@ -114,7 +115,6 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								$admin_notes_without_html = strip_tags($admin_notes);
 								$short_admin_notes        = substr($admin_notes_without_html, 0, 150);
 							}
-							$reservationDate = HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5'));
 							$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_LISTING', $id, $customer);
 
 							$canCreate  = $user->authorise('core.create', 'com_dnbooking.reservation.' . $item->id);

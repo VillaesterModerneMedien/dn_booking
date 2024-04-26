@@ -9,6 +9,7 @@
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Factory;
 
 
@@ -19,39 +20,14 @@ $wa->useScript('multiselect');
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
 
-$items = $this->items;
-/*
-$helper = new DnbookingHelper();
-$itemsToday = $helper->filterReservationsToday($items);
-*/
+$itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
-<div class="row">
-    <div class="col-sm-4">
-        <div class="card border-primary">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h4 class="card-title">Primary card title</h4>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="card border-primary">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h4 class="card-title">Primary card title</h4>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="card border-primary">
-            <div class="card-header">Header</div>
-            <div class="card-body">
-                <h4 class="card-title">Primary card title</h4>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
-    </div>
+<div class="card-columns">
+	<?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
+        <?php foreach ($items as $item) : ?>
+            <?php $this->item = $item; ?>
+            <?php echo $this->loadTemplate('item'); ?>
+        <?php endforeach; ?>
+<?php endforeach; ?>
 </div>

@@ -22,6 +22,7 @@ use Joomla\CMS\Versioning\VersionableTableInterface;
 use Joomla\Database\DatabaseDriver;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Reservation Table class.
@@ -115,10 +116,6 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		//$this->extras_ids = json_encode($this->extras_ids);
 
-		$this->additional_info   = json_encode($this->additional_info);
-		$this->additional_infos2 = json_encode($this->additional_infos2);
-
-
 		foreach ($this->extras_ids as $key => $value)
 		{
 			if (empty($value['extra_count']))
@@ -127,11 +124,13 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 			}
 		}
 
-		$this->extras_ids         = json_encode($this->extras_ids);
-
 		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
 
 		$this->reservation_price = $this->_calcPrice($this->additional_info, $this->room_id, $this->extras_ids);
+
+		$this->extras_ids         = json_encode($this->extras_ids);
+		$this->additional_info   = json_encode($this->additional_info);
+		$this->additional_infos2 = json_encode($this->additional_infos2);
 
 		if ($this->id)
 		{
@@ -176,24 +175,23 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		//TODO: Guido anpassen
 
+		$extrasIds = ArrayHelper::getColumn($extras, 'extra_id');
+		$extrasCount = ArrayHelper::getColumn($extras, 'extra_count');
+
 		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
 		$roomModel = $factory->createModel('Room', 'Administrator');
 		$roomParams     = $roomModel->getItem($room);
 		$extrasModel = $factory->createModel('Extras', 'Administrator');
-		$extrasParams     =  $extrasModel->getItems();
-		$infos = json_decode($infos);
+		$extrasParams     =  $extrasModel->getItems($extrasIds);
 		$visitorsPackage = (int) $infos->visitorsPackage;
 		$visitorsAdmission = (int) $infos->visitors;
 
 		$extraInfos = [];
 		$totalCosts = 0;
 
-		foreach ($extrasParams as $extra) {
+		foreach ($extrasParams as $key => $extra) {
 			$extraInfos[$extra->id]['price'] = $extra->price;
-		}
-
-		foreach (json_decode($extras) as $extra) {
-			$totalCosts += $extraInfos[$extra->extra_id]['price'] * $extra->extra_count;
+			$totalCosts += $extra->price * $extrasCount[$key];
 		}
 
 		$params = ComponentHelper::getParams('com_dnbooking');
