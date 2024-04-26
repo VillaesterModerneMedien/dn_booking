@@ -330,12 +330,48 @@
     </fieldset>
 
     <fieldset
-            name="emailsettings"
-            label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_LABEL"
+            name="vendorsettings"
+            label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_LABEL"
     >
+        <field
+                name="hint_vendor"
+                type="note"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_HINT"
+        />
 
-        <field type="spacer" name="myspacer" label="NUr Platzhalters"/>
+        <field
+                name="vendor_address"
+                type="textarea"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_ADDRESS_LABEL"
+                rows="5"
+                default=""
+        />
 
+        <field
+                name="vendor_email"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_EMAIL_LABEL"
+                description=""
+                size="10"
+                default=""
+        />
+
+        <field
+                name="vendor_phone"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_PHONE_LABEL"
+                description=""
+                size="10"
+                default=""
+        />
+
+        <field
+                name="vendor_accountdata"
+                type="textarea"
+                label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_ACCOUNTDATA_LABEL"
+                rows="5"
+                default=""
+        />
     </fieldset>
 
 
