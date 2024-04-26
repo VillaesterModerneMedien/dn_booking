@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="send_mails">
+
+        <field name="sendMailType"
+               type="list"
+               label="COM_DNBOOKING_FIELD_SEND_MAIL_TYPE_LABEL"
+               description="COM_DNBOOKING_FIELD_SEND_MAIL_TYPE_DESC"
+               default="0"
+        >
+            <option value="0">COM_DNBOOKING_MAILTYPE_OPTION0</option>
+            <option value="statusMail">COM_DNBOOKING_MAILTYPE_OPTION1</option>
+            <option value="test">COM_DNBOOKING_MAILTYPE_OPTION2</option>
+            <option value="customMail">COM_DNBOOKING_MAILTYPE_OPTION3</option>
+        </field>
+
+        <field name="sendMailCustomText"
+               type="editor"
+               label="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_LABEL"
+               description="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_DESC"
+               showon="sendMailType:customMail"
+               filter="safehtml"
+        />
+
+    </fieldset>
+</form>
