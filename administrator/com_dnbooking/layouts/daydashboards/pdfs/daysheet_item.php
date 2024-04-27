@@ -1,5 +1,12 @@
 <?php
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+
 defined('_JEXEC') or die;
 
 

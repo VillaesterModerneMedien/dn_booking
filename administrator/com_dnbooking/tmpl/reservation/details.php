@@ -131,8 +131,14 @@ if (empty($this->form->getValue('reservation_token')))
 
             <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
-                    <div class="card-header">
+                    <div class="card-header" style="display: flex; justify-content: space-between">
                         <h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_SUMMARY_HEADLINE'); ?></h3>
+                        <joomla-toolbar-button id="toolbar-print" task="reservation.printDaysheet">
+                            <button class="button-print btn btn-primary" type="button">
+                                <span class="icon-print" aria-hidden="true"></span>
+                                <?= Text::_('COM_DNBOOKING_PDF_RESERVATION') ?>
+                            </button>
+                        </joomla-toolbar-button>
                     </div>
                     <div class="card-body">
                         <div class="container">

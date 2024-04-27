@@ -20,7 +20,10 @@ use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use Mpdf\Mpdf;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
+
+require_once JPATH_ADMINISTRATOR . '/components/com_dnbooking/vendor/autoload.php';
 
 
 /**
@@ -254,6 +257,18 @@ class DnbookingHelper
 	{
 		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
 		return $weekdayNumber;
+	}
+
+	public static function printDaysheet($items)
+	{
+		$date = date('Y-m-d'); // Verwende das heutige Datum
+
+		$layout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+		$html = $layout->render($items);
+
+		$mpdf = new Mpdf(['orientation' => 'L']);
+		$mpdf->WriteHTML($html);
+		$mpdf->Output('daysheet-' . $date . '.pdf', 'D');
 	}
 
 }

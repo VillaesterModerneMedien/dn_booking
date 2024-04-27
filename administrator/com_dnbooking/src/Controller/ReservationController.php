@@ -10,7 +10,9 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Application\CMSWebApplicationInterface;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
@@ -275,6 +277,19 @@ class ReservationController extends FormController
 		$this->postSaveHook($model, $validData);
 
 		return true;
+	}
+
+	public function printDaysheet()
+	{
+		$app = Factory::getApplication();
+		$id = $this->input->getInt('id');
+
+		$model = $this->getModel();
+		$items = array($model->getItem($id));
+
+		DnbookingHelper::printDaysheet($items);
+
+		$app->close();
 	}
 
 }

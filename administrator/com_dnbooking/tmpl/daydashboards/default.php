@@ -11,20 +11,19 @@
 
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Router\Route;
 
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useStyle('com_dnbooking.daydashboards');
 
-$user      = Factory::getApplication()->getIdentity();
-$userId    = $user->get('id');
-
 $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
 
     <div class="card-columns daydashboardsContainer">
         <?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
@@ -36,6 +35,6 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
     </div>
 
     <input type="hidden" name="task" value="" />
-    <?php echo JHtml::_('form.token'); ?>
-    
+    <?php echo HTMLHelper::_('form.token'); ?>
+
 </form>
