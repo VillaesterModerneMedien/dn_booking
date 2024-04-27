@@ -12,10 +12,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Field;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Layout\FileLayout;
-use Joomla\Filesystem\Path;
-use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;

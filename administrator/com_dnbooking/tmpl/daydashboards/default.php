@@ -23,11 +23,19 @@ $userId    = $user->get('id');
 $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
-<div class="card-columns daydashboardsContainer">
-	<?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
-        <?php foreach ($items as $item) : ?>
-            <?php $this->item = $item; ?>
-            <?php echo $this->loadTemplate('item'); ?>
+
+<form action="<?php echo JRoute::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
+
+    <div class="card-columns daydashboardsContainer">
+        <?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
+            <?php foreach ($items as $item) : ?>
+                <?php $this->item = $item; ?>
+                <?php echo $this->loadTemplate('item'); ?>
+            <?php endforeach; ?>
         <?php endforeach; ?>
-<?php endforeach; ?>
-</div>
+    </div>
+
+    <input type="hidden" name="task" value="" />
+    <?php echo JHtml::_('form.token'); ?>
+    
+</form>

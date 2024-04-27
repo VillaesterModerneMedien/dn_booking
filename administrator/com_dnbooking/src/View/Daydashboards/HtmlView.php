@@ -76,6 +76,17 @@ class HtmlView extends BaseHtmlView
 
 		$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_DAYDASHBOARDS', $date);
 		ToolbarHelper::title($headline, 'calendar');
+	
+		// Füge den "Print Daysheet" Button hinzu
+		ToolbarHelper::custom(
+			'daydashboards.printDaysheet',
+			'print',
+			'print',
+			'COM_DNBOOKING_PRINT_DAYSHEET',
+			false
+		);
+
+
 	}
 
 }

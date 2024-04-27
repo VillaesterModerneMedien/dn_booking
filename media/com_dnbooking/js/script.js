@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setStep(step);
 });
 
-function setSubforms() {
+function setSubformsOLD() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
 
     const numberOfChildren = parseInt(birthdayChildrenInput.value, 10);
@@ -348,11 +348,15 @@ function setSubforms() {
         for (let i = currentCount; i < numberOfChildren; i++) {
             let newGroup = document.importNode(subformTemplateContent, true);
             newGroup.querySelector('[data-group]').setAttribute('data-group', `addinfos2_subform${i}`);
-            newGroup.querySelectorAll('input, select, label').forEach(element => {
+            newGroup.querySelectorAll('input, select, label, button').forEach(element => {
                 const baseName = 'addinfos2_subformX';
                 if (element.id) element.id = element.id.replace(baseName, `addinfos2_subform${i}`);
                 if (element.htmlFor) element.htmlFor = element.htmlFor.replace(baseName, `addinfos2_subform${i}`);
                 if (element.name) element.name = element.name.replace(baseName, `addinfos2_subform${i}`);
+
+                if (element.getAttribute('data-button')) element.setAttribute('data-button', element.getAttribute('data-button').replace(baseName, `addinfos2_subform${i}`));
+                if (element.getAttribute('data-inputfield')) element.setAttribute('data-inputfield', element.getAttribute('data-inputfield').replace(baseName, `addinfos2_subform${i}`));
+
             });
 
             subformElement.insertBefore(newGroup, templateElement);
@@ -362,6 +366,34 @@ function setSubforms() {
     else if (numberOfChildren < currentCount) {
         for (let i = currentCount; i > numberOfChildren; i--) {
             currentGroups[i - 1].remove();
+        }
+    }
+}
+
+function setSubforms() {
+    const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
+
+    const numberOfChildren = parseInt(birthdayChildrenInput.value, 10);
+    if (isNaN(numberOfChildren)) {
+        console.error('Die Eingabe ist keine gültige Zahl.');
+        return;
+    }
+
+    const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
+    const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
+    const currentCount = currentGroups.length;
+
+    // Gruppen hinzufügen, falls mehr Kinder hinzugefügt werden sollen
+    if (numberOfChildren > currentCount) {
+        for (let i = currentCount; i < numberOfChildren; i++) {
+            subformElement.addRow();
+        }
+    }
+    // Gruppen entfernen, falls weniger Kinder angezeigt werden sollen
+    else if (numberOfChildren < currentCount) {
+        for (let i = currentCount; i > numberOfChildren; i--) {
+            const row = currentGroups[i - 1];
+            subformElement.removeRow(row);
         }
     }
 }
@@ -383,4 +415,13 @@ document.addEventListener('DOMContentLoaded', function() {
        setSubforms();
     });
     setSubforms();
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('subform-row-add', function (event) {
+        var row = event.target;
+
+        console.log('Row',row);
+    });
 });

@@ -38,8 +38,8 @@ if ($multiple) {
     // Add script
     Factory::getApplication()
         ->getDocument()
-        ->getWebAssetManager()
-        ->useScript('webcomponent.field-subform');
+        ->getWebAssetManager();
+        //->useScript('webcomponent.field-subform');
 }
 
 $class = $class ? ' ' . $class : '';
@@ -87,10 +87,10 @@ AABBB
                 </tbody>
             </table>
         </div>
-        <?php if ($multiple) : ?>
+
         <template class="subform-repeatable-template-section hidden">
             <?php echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons])); ?>
         </template>
-        <?php endif; ?>
+
     </joomla-field-subform>
 </div>

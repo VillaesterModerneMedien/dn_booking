@@ -15,6 +15,7 @@ use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\User\UserHelper;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
@@ -37,8 +38,9 @@ Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.transl
 $dateformat = 'Y-m-d';
 $params = ComponentHelper::getParams('com_dnbooking');
 $priceRegular = $params->get('packagepriceregular');
-$form = $this->form;
 $priceCustom = $params->get('packagepricecustom');
+$reservationToken = UserHelper::genRandomPassword(32);
+$this->form->setValue('reservation_token', null, $reservationToken);
 ?>
 
 <form class="uk-form-stacked"
@@ -95,7 +97,7 @@ $priceCustom = $params->get('packagepricecustom');
         </div>
     </section>
 
-    <?= $form->renderFieldset('hiddenFields'); ?>
+    <?= $this->form->renderFieldset('hiddenFields'); ?>
     <input type="hidden" name="option" value="com_dnbooking" />
 	<?php echo HTMLHelper::_('form.token'); ?>
 

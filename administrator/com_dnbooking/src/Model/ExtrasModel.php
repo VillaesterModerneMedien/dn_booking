@@ -191,6 +191,7 @@ class ExtrasModel extends ListModel
 
 		return $selectedItems;
 	}
+
 	/**
 	 * Method to auto-populate the model state.
 	 *

@@ -31,15 +31,6 @@
         />
 
         <field
-                name="persons_count"
-                type="text"
-                label="COM_DNBOOKING_FIELD_PERSONS_COUNT_LABEL"
-                description="COM_DNBOOKING_FIELD_PERSONS_COUNT_DESC"
-                default="0"
-                required="true"
-        />
-
-        <field
                 name="additional_info"
                 type="AdditionalInfos"
                 label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
@@ -71,6 +62,7 @@
                 default="0"
                 required="true"
                 validate="options"
+                readonly="true"
         >
             <option value="0">JNO</option>
             <option value="1">JYES</option>
@@ -160,6 +152,35 @@
 
     </fieldset>
 
+    <fieldset name="reservationfieldset_notes">
+
+        <field
+                name="admin_notes"
+                type="textarea"
+                label="COM_DNBOOKING_FIELD_ADMIN_NOTES_LABEL"
+                rows="10"
+                cols="50"
+            />
+
+        <field
+                name="general_notes"
+                type="textarea"
+                label="COM_DNBOOKING_FIELD_GENERAL_NOTES_LABEL"
+                rows="10"
+                cols="50"
+            />
+
+        <field
+                name="customer_notes"
+                type="textarea"
+                label="COM_DNBOOKING_FIELD_CUSTOMER_NOTES_LABEL"
+                rows="10"
+                cols="50"
+                readonly="true"
+            />
+
+    </fieldset>
+
     <fieldset name="mybasic"
               addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
 
@@ -190,6 +211,11 @@
                 showtime="true"
                 readonly="true"
                 filter="user_utc"
+        />
+
+        <field
+                name="reservation_token"
+                type="hidden"
         />
 
     </fieldset>

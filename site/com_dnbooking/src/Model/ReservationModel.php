@@ -222,9 +222,8 @@ class ReservationModel extends AdminReservationModel
 
 	}
 
-	public function saveReservation($data)
+	public function saveReservationCustomer($data)
 	{
-
 		$customerID = $this->_saveCustomer($data);
 		$data['customer_id'] = $customerID;
 

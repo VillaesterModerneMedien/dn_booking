@@ -10,7 +10,12 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 
 \defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Mpdf\Mpdf; 
+
+require_once JPATH_ADMINISTRATOR . '/components/com_dnbooking/vendor/autoload.php';
 
 
 /**
@@ -44,6 +49,24 @@ class DaydashboardsController extends AdminController
 		return parent::getModel($name, $prefix, $config);
 	}
 
+
+	public function printDaysheet()
+	{
+		$app = Factory::getApplication();
+		$date = date('Y-m-d'); // Verwende das heutige Datum
+
+		$model = $this->getModel();
+		$items = $model->getItems($date);
+
+		$layout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+		$html = $layout->render(['items' => $items, 'date' => $date]);
+
+		$mpdf = new Mpdf(['orientation' => 'L']);
+		$mpdf->WriteHTML($html);
+		$mpdf->Output('daysheet-' . $date . '.pdf', 'D');
+
+		$app->close();
+	}
 
 
 }

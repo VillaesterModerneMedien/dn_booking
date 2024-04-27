@@ -1,15 +1,15 @@
 TODO:
 
 - Mailtemplates fertig machen (ggf Mario)
-- Email Frontend
+
+- Total in DayDashboards
 - Geburtstagskinder ausgeben / prüfen
+- Reservierung Neu aus Backend fixen
 - Email Header anpassen
 - Drucken Tagesansicht PDF
 - ggf. Rechnung PDF
 - Geburtstagsmail (Spassprojekt)
 
 Bugs:
-
 - Filtern Reservations geht nicht richtig (Backend)
-- Additional Infos2 wird nicht mehr korrekt gespeichert (Backend)
-- Mails aus Frontend landen nicht im Mailcatcher
+- Alertmessage Fronztnend is leer

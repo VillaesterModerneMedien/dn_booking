@@ -39,7 +39,7 @@ if ($multiple) {
 	Factory::getApplication()
 		->getDocument()
 		->getWebAssetManager()
-		->useScript('webcomponent.field-subform');
+        ->useScript('webcomponent.field-subform');
 }
 
 $class = $class ? ' ' . $class : '';
@@ -67,10 +67,11 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
 			echo $this->sublayout($sublayout, ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
 		endforeach;
 		?>
-		<?php if ($multiple) : ?>
-            <template class="subform-repeatable-template-section hidden"><?php
-				echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons]));
-				?></template>
-		<?php endif; ?>
+
+        <template class="subform-repeatable-template-section hidden"><?php
+            echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons]));
+            ?>
+        </template>
+
     </joomla-field-subform>
 </div>

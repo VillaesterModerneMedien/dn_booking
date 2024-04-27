@@ -183,8 +183,13 @@
                 label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
                 default="1"
                 required="true"
-        >
-        </field>
+        />
+
+        <field
+                name="reservation_token"
+                type="hidden"
+        />
+
 
     </fieldset>
 

@@ -88,5 +88,10 @@ foreach ($extras as $key => $extra)
 			endforeach;
 			?>
         </ul>
+
+        <template class="subform-repeatable-template-section hidden"><?php
+		    echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons]));
+		    ?>
+        </template>
     </joomla-field-subform>
 </div>

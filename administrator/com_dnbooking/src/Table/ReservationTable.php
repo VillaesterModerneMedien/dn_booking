@@ -11,6 +11,8 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Table;
 
 \defined('_JEXEC') or die;
 
+use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\ReservationSoldTrait;
+use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
@@ -101,12 +103,10 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	 */
 	public function store($updateNulls = false)
 	{
-		$app    = Factory::getApplication();
 		$date   = Factory::getDate()->toSql();
-		$userId = Factory::getApplication()->getIdentity()->id;
-
-
 		$db = $this->getDbo();
+
+		$this->holiday = DnbookingHelper::checkHolidays($this->reservation_date);
 
 		// Set created date if not set.
 		if (!(int) $this->created)
@@ -126,7 +126,9 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 		$this->reservation_date = Factory::getDate($this->reservation_date, 'UTC')->toSql();
 
-		$this->reservation_price = $this->_calcPrice($this->additional_info, $this->room_id, $this->extras_ids);
+		$reservation_price = $this->_calcPrice();
+
+		$this->reservation_price = $reservation_price;
 
 		$this->extras_ids         = json_encode($this->extras_ids);
 		$this->additional_info   = json_encode($this->additional_info);
@@ -165,61 +167,30 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		return $this->typeAlias;
 	}
 
-	protected function _calcPrice($infos, $room, $extras)
+	protected function _calcPrice()
 	{
-		$isHolidayOrWeekend = false;
-		if($this->holiday == '1')
-		{
-			$isHolidayOrWeekend = true;
-		}
-
 		//TODO: Guido anpassen
 
-		$extrasIds = ArrayHelper::getColumn($extras, 'extra_id');
-		$extrasCount = ArrayHelper::getColumn($extras, 'extra_count');
+		$extrasIds = ArrayHelper::getColumn($this->extras_ids, 'extra_id');
+		$extrasCount = ArrayHelper::getColumn($this->extras_ids, 'extra_count');
 
 		$factory   = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory();
 		$roomModel = $factory->createModel('Room', 'Administrator');
-		$roomParams     = $roomModel->getItem($room);
+		$roomParams     = $roomModel->getItem($this->room_id);
+		$roomParams     = ArrayHelper::fromObject($roomParams);
 		$extrasModel = $factory->createModel('Extras', 'Administrator');
 		$extrasParams     =  $extrasModel->getItems($extrasIds);
-		$visitorsPackage = (int) $infos->visitorsPackage;
-		$visitorsAdmission = (int) $infos->visitors;
 
-		$extraInfos = [];
-		$totalCosts = 0;
+		$extrasTotal = 0;
 
 		foreach ($extrasParams as $key => $extra) {
 			$extraInfos[$extra->id]['price'] = $extra->price;
-			$totalCosts += $extra->price * $extrasCount[$key];
+			$extrasTotal += $extra->price * $extrasCount[$key];
 		}
 
-		$params = ComponentHelper::getParams('com_dnbooking');
-
-		if(!$isHolidayOrWeekend)
-		{
-			$roomPriceRegular      = $roomParams->priceregular;
-			$totalCosts += $roomPriceRegular;
-
-			$packagePriceRegular   = $params->get('packagepriceregular');
-			$totalCosts += $packagePriceRegular * $visitorsPackage;
-
-			$admissionPriceRegular = $params->get('admissionpriceregular');
-			$totalCosts += $admissionPriceRegular * $visitorsAdmission;
-		}
-		else{
-			$roomPriceCustom = $roomParams->pricecustom;
-			$totalCosts += $roomPriceCustom;
-
-			$packagePriceCustom = $params->get('packagepricecustom');
-			$totalCosts += $packagePriceCustom * $visitorsPackage;
-
-			$admissionPriceCustom = $params->get('admissionpricecustom');
-			$totalCosts += $admissionPriceCustom * $visitorsAdmission;
-		}
+		$totalCosts = DnbookingHelper::calcPrice($this->additional_info, $roomParams, $extrasTotal, $this->holiday);
 
 		return $totalCosts;
-
 	}
 
 }

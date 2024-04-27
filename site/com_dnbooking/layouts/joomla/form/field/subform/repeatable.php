@@ -48,8 +48,14 @@ $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
 
 ?>
 
-<?php
-foreach ($forms as $k => $form) :
-    echo $this->sublayout($sublayout, ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
-endforeach;
-?>
+
+    <?php
+    foreach ($forms as $k => $form) :
+        echo $this->sublayout($sublayout, ['form' => $form, 'basegroup' => $fieldname, 'group' => $fieldname . $k, 'buttons' => $buttons]);
+    endforeach;
+    ?>
+
+    <template class="subform-repeatable-template-section hidden"><?php
+        echo trim($this->sublayout($sublayout, ['form' => $tmpl, 'basegroup' => $fieldname, 'group' => $fieldname . 'X', 'buttons' => $buttons]));
+        ?>
+    </template>

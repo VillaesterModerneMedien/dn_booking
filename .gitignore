@@ -22,3 +22,4 @@ Desktop.ini
 composer.phar
 composer.lock
 vendor/*
+/administrator/com_dnbooking/vendor/

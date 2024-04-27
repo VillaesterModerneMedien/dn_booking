@@ -23,7 +23,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\User\UserHelper;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Controller for single booking view
@@ -72,7 +75,7 @@ class ReservationController extends AdminReservationController
 	public function __construct($config = [], MVCFactoryInterface $factory = null, $app = null, $input = null)
 	{
 		$this->input = Factory::getApplication()->input;
-		$this->params = $this->_getComponentParams();
+		$this->params = ComponentHelper::getParams('com_dnbooking');
 		parent::__construct($config, $factory, $app, $input);
 	}
 
@@ -112,8 +115,8 @@ class ReservationController extends AdminReservationController
 		header('Access-Control-Allow-Headers: Content-Type'); // Erlaubte Header
 
 		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
-		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
-		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
+		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
+		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 
 		//$this->input->set('isHoliday') = $isHolidayOrWeekend;
 
@@ -131,7 +134,6 @@ class ReservationController extends AdminReservationController
 		$weeklyOpeningHour = $openingHours['weekly_opening_hours'];
 
 
-		$weeklyOpeningHour = $weeklyOpeningHour;
 		$weeklyOpeningHourKeys = array_keys($weeklyOpeningHour);
 
 		$blockedRooms = [];
@@ -210,8 +212,7 @@ class ReservationController extends AdminReservationController
 
 		$formFields = $this->input->get('jform', null, 'array');
 		$date         = HTMLHelper::_('date', $formFields['reservation_date'], 'Y-m-d');
-		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
-		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
+		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 
 		$app = Factory::getApplication();
 
@@ -235,22 +236,20 @@ class ReservationController extends AdminReservationController
 
 		$formData = $input->get('jform', null, 'array');
 		$date         = HTMLHelper::_('date', $formData['reservation_date'], 'Y-m-d');
-		$weekdayNumber = !empty($date) ? $this->_getWeekdayNumber($date) : -1;
-		$isHolidayOrWeekend = $this->_checkHolidays($date, $weekdayNumber);
+		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 
 		$formData['holiday'] = $isHolidayOrWeekend;
 
-		$formData = $model->saveReservation($formData);
-		$input->set('jform', $formData);
+		$customerId = $model->saveReservationCustomer($formData);
+		$input->set('jform', $customerId);
 
 		if ($this->save())
 		{
-			$params = ComponentHelper::getParams('com_dnbooking');
+			$params = $this->params;
 			$menuItem    = $params->get('returnurl');
 
 
-			$helper = new DnbookingHelper();
-			$helper->sendMail($formData, true);
+			DnbookingHelper::sendMail($formData, true);
 
 			if(!isset($menuItem)){
 				$this->setRedirect("/");
@@ -268,49 +267,6 @@ class ReservationController extends AdminReservationController
 		}
 	}
 
-
-	private function _checkHolidays($date, $weekdayNumber)
-	{
-		// Check if the date is a holiday or weekend
-		// Sa = 5, So = 6
-
-		if($weekdayNumber == 5 || $weekdayNumber == 6){
-			return true;
-		}
-
-		$params = $this->params;
-
-		foreach ($params->get('holidays') as $holiday) {
-			// Extract the start and end dates of the holiday
-			$startDate = date('Y-m-d', strtotime($holiday->startDate));
-			$endDate = date('Y-m-d', strtotime($holiday->endDate));
-
-			// Check if the date is within the start and end dates of the holiday
-			if ($date >= $startDate && $date <= $endDate) {
-				// If it is, return true
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Method to get the weekday number of a date.
-	 *
-	 * @param $date
-	 *
-	 * @return int
-	 *
-	 * @since version
-	 */
-	protected function _getWeekdayNumber($date)
-	{
-		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
-		return $weekdayNumber;
-	}
-
-
 	protected function _checkTime($time, $startTime, $endTime)
 	{
 		$timeObj = DateTime::createFromFormat('H:i:s', $time);
@@ -325,16 +281,4 @@ class ReservationController extends AdminReservationController
 		return $isOpen;
 	}
 
-
-	/**
-	 *
-	 * @return Registry
-	 *
-	 * @since version
-	 */
-	private function _getComponentParams()
-	{
-		$params = ComponentHelper::getParams('com_dnbooking');
-		return $params;
-	}
 }

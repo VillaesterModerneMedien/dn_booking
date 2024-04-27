@@ -14,13 +14,10 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Helper;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\DnbookingMailTemplate;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Helper\ContentHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\Mail\MailerFactoryInterface;
-use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
@@ -126,14 +123,25 @@ class DnbookingHelper
 		// Get the application instance
 		$app = Factory::getApplication();
 
-		// Get the current user
-		$user = $app->getIdentity();
-
 		// Get the input object
 		$input = $app->getInput();
 
 		// Get the values from the sendMails form
 		$sendMailFormValues = $input->get('sendMails', [], 'ARRAY');
+
+		$savedItem = [];
+
+		if ($isFrontend) {
+			$reservationsModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservations', 'Administrator');
+			$items = $reservationsModel->getItems();
+			$items = ArrayHelper::pivot($items, 'reservation_token');
+			$itemId = $items[$item['reservation_token']]->id;
+			$reservationModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Administrator');
+			$savedItem = $reservationModel->getItem($itemId);
+			$savedItem = ArrayHelper::fromObject($savedItem);
+		}
+
+		$item = array_merge($savedItem, $item);
 
 		// Get the component parameters
 		$componentParams = ComponentHelper::getParams('com_dnbooking');
@@ -160,24 +168,21 @@ class DnbookingHelper
 		// Set the sender of the email
 		$mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
 
+		if($isFrontend)
+		{
+			$sendMailFormValues['sendMailType'] = 'reservation_pending';
+		}
+
 		// Create a new mail template
 		$mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
 
 		// Add the order data to the mail template
 		$mailer->addTemplateData($orderDataFlattened);
-		$mailTemplate = MailTemplate::getTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE');
-		//$html = $mailer->replaceTags($htmlEmailHeader . Text::_($mailTemplate->htmlbody) . $htmlEmailFooter, $orderDataFlattened);
+		//$mailTemplate = MailTemplate::getTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE');
 
 
 		// Add the customer as the recipient of the email
-
-		if($isFrontend)
-		{
-			$mailer->addRecipient($orderDataFlattened['email'], $orderDataFlattened['firstname'] . ' ' . $orderDataFlattened['lastname']);
-		}
-		else{
-			$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
-		}
+		$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
 
 		try
 		{
@@ -209,6 +214,46 @@ class DnbookingHelper
 
 			return true;
 		}
+	}
+
+	public static function checkHolidays($date)
+	{
+		$date = date('Y-m-d', strtotime($date));
+		$weekdayNumber = !empty($date) ? self::getWeekdayNumber($date) : -1;
+		if($weekdayNumber == 5 || $weekdayNumber == 6){
+			return 1;
+		}
+
+		$params = ComponentHelper::getParams('com_dnbooking');
+
+		foreach ($params->get('holidays') as $holiday) {
+			// Extract the start and end dates of the holiday
+			$startDate = date('Y-m-d', strtotime($holiday->startDate));
+			$endDate = date('Y-m-d', strtotime($holiday->endDate));
+
+			// Check if the date is within the start and end dates of the holiday
+			if ($date >= $startDate && $date <= $endDate) {
+				// If it is, return true
+				return 1;
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Method to get the weekday number of a date.
+	 *
+	 * @param $date
+	 *
+	 * @return int
+	 *
+	 * @since version
+	 */
+	public static function getWeekdayNumber($date)
+	{
+		$weekdayNumber = (date('w', strtotime($date)) + 6) % 7;
+		return $weekdayNumber;
 	}
 
 }

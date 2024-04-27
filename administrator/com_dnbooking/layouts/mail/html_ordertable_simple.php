@@ -5,7 +5,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
 $app = Factory::getApplication();
-$item = ArrayHelper::fromObject($displayData);
+$item = $displayData;
 
 /**
  * siehe Settings in der Konfiguration
@@ -27,16 +27,12 @@ foreach ($item['additional_info'] as $key => $value) {
         <tbody>
             <tr>
                 <td><?= $item['visitorsPackage'] ?> x </td>
-                <td><?= Text::_('COM_DNBOOKING_PACKAGE_TEXT') ?>
-                    <strong><?= $item['reservation_date'] ?></strong>
-                </td>
+                <td><?= Text::_('COM_DNBOOKING_PACKAGE_TEXT') ?></td>
             </tr>
 		<?php if($item['visitors'] > 0): ?>
 			<tr>
 				<td><?= $item['visitors'] ?> x </td>
-                <td><?= Text::_('COM_DNBOOKING_TICKET_TEXT') ?>
-                    <strong><?= $item['reservation_date'] ?></strong>
-                <td>
+                <td><?= Text::_('COM_DNBOOKING_TICKET_TEXT') ?><td>
 			</tr>
 		<?php endif; ?>
         </tbody>

@@ -26,17 +26,15 @@ foreach (json_decode($item['additional_info']) as $key => $value) {
 }
 
 $packageprice = $params->get('packagepriceregular');
+$admissionprice = $params->get('admissionpriceregular');
+
 if($item['holiday']) {
 	$packageprice = $params->get('packagepricecustom');
+	$admissionprice = $params->get('admissionpricecustom');
 }
+
 $packagepriceTotal = $packageprice * (int) $item['visitorsPackage'];
-
-$admissionprice = $params->get('admissionpriceregular');
-if($item['holiday']) {
-	$packageprice = $params->get('admissionpricecustom');
-}
 $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
-
 $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $item['extras_price_total'], $item['holiday']);
 ?>
 <div id="summary">
@@ -89,7 +87,12 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
                 <tr>
                     <td>1 x</td>
                     <td><?= $value['title'] ?></td>
-                    <td class="alignRight"><?= number_format((float) $value['priceregular'], 2, ",", ".") ?> €</td>
+                    <?php if($item['holiday']): ?>
+                        <?php $roomPrice = $value['pricecustom']; ?>
+                    <?php else: ?>
+	                    <?php $roomPrice = $value['priceregular']; ?>
+                    <?php endif; ?>
+                        <td class="alignRight"><?= number_format((float) $roomPrice, 2, ",", ".") ?> €</td>
                 </tr>
             </table>
 		<?php elseif ($key == 'extras'): ?>

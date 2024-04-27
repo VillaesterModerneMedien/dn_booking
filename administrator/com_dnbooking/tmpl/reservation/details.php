@@ -15,8 +15,9 @@
     use Joomla\CMS\Router\Route;
     use Joomla\CMS\Language\Text;
     use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\User\UserHelper;
 
-    $app   = Factory::getApplication();
+$app   = Factory::getApplication();
     $input = $app->input;
 
     $wa = $this->document->getWebAssetManager();
@@ -29,6 +30,11 @@
     $tmpl = $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 
     $reservationId = $reservation->id;
+if (empty($this->form->getValue('reservation_token')))
+{
+	$reservationToken = UserHelper::genRandomPassword(32);
+	$this->form->setValue('reservation_token', null, $reservationToken);
+}
 ?>
 
 <script>
@@ -99,6 +105,12 @@
                                                     data-bs-target="#tab4" type="button" role="tab" aria-controls="tab4"
                                                     aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_ADDINFOS2_HEADLINE'); ?></button>
                                         </li>
+
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="tab5-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#tab5" type="button" role="tab" aria-controls="tab5"
+                                                    aria-selected="false"><?= Text::_('COM_DNBOOKING_HEADING_NOTES_HEADLINE'); ?></button>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -110,7 +122,7 @@
 	                        <?php echo LayoutHelper::render('reservation.customer_tab', $customer); ?>
 	                        <?php echo LayoutHelper::render('reservation.extras_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
-	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
+	                        <?php echo LayoutHelper::render('reservation.notes_tab', $this); ?>
 
                         </div>
                     </div>
