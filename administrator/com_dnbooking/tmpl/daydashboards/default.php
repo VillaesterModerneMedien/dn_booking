@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useScript('multiselect');
+$wa->useStyle('com_dnbooking.daydashboards');
 
 $user      = Factory::getApplication()->getIdentity();
 $userId    = $user->get('id');
@@ -23,7 +23,7 @@ $userId    = $user->get('id');
 $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
-<div class="card-columns">
+<div class="card-columns daydashboardsContainer">
 	<?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
         <?php foreach ($items as $item) : ?>
             <?php $this->item = $item; ?>

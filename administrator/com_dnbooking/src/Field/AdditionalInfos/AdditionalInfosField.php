@@ -15,6 +15,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\SubformField;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 
 /**
  * Custom Field class to load opening hours from component's configuration
@@ -79,6 +80,7 @@ class AdditionalInfosField extends SubformField
 				case 'list':
 					$options = explode(',', $field->fieldOptions);
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"  class="' . $firstClass . '">';
+					$formXML .= '<option value="">' . Text::_('COM_DNBOOKING_LABEL_CHOOSE') . '</option>';
 					foreach ($options as $option) {
 						list($value, $text) = explode(':', trim($option));
 						$formXML .= '<option value="' . $value . '">' . $text . '</option>';

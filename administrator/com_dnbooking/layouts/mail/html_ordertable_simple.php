@@ -11,7 +11,7 @@ $item = ArrayHelper::fromObject($displayData);
  * siehe Settings in der Konfiguration
  * visitors, visitorsPackage, birthdayChild
  */
-foreach (json_decode($item['additional_info']) as $key => $value) {
+foreach ($item['additional_info'] as $key => $value) {
 	$item[$key] = $value;
 }
 

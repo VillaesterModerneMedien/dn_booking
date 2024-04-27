@@ -12,6 +12,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\View\Daydashboard
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
@@ -71,7 +72,8 @@ class HtmlView extends BaseHtmlView
 	 */
 	private function addToolbar()
 	{
-		$date = Factory::getDate()->format('d.m.Y');
+		$date = date('d.m.Y');
+
 		$headline = Text::sprintf('COM_DNBOOKING_HEADLINE_DAYDASHBOARDS', $date);
 		ToolbarHelper::title($headline, 'calendar');
 	}

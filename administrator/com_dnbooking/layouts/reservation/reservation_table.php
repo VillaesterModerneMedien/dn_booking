@@ -53,58 +53,77 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
 		<?= $customer['phone']; ?>
     </p>
 
-    <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+    <table class="table table-striped">
         <thead>
         <tr>
-            <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-            <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-            <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+            <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+            <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+            <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
         </tr>
         </thead>
         <tr>
-            <td><?= $item['visitorsPackage'] . ' x </td><td>' . Text::_('COM_DNBOOKING_PACKAGE_TEXT') . ' <strong>' . $item['reservation_date'] . '</strong><td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
+            <td><?= $item['visitorsPackage'] ?> x </td>
+            <td><?= Text::_('COM_DNBOOKING_PACKAGE_TEXT') ?></td>
+            <td class="alignRight"><?= number_format($packagepriceTotal, 2, ",", ".") ?> €</td>
         </tr>
 		<?php if($item['visitors'] > 0): ?>
             <tr>
             <tr>
-                <td><?= $item['visitors'] . ' x </td><td>' . Text::_('COM_DNBOOKING_TICKET_TEXT') . ' <strong>' . $item['reservation_date'] . '</strong><td> ' . number_format($admissionpriceTotal, 2, ",", ".") . ' €</td>'?>
+                <td><?= $item['visitors'] ?> x </td>
+                <td><?= Text::_('COM_DNBOOKING_TICKET_TEXT') ?></td>
+                <td class="alignRight"><?= number_format($admissionpriceTotal, 2, ",", ".") ?> €</td>
             </tr>
 		<?php endif; ?>
     </table>
 	<?php foreach ($item as $key => $value): ?>
 		<?php if ($key == 'room'): ?>
             <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
-            <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                    <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                    <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                    <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                    <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                    <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                 </tr>
                 </thead>
                 <tr>
-					<?= '<td>1 x</td><td>' . $value['title'] . '<td> ' . number_format((float) $value['priceregular'], 2, ",", ".") . ' €</td>'?>
+                    <td>1 x</td>
+                    <td><?= $value['title'] ?></td>
+                    <td class="alignRight"><?= number_format((float) $value['priceregular'], 2, ",", ".") ?> €</td>
                 </tr>
             </table>
 		<?php elseif ($key == 'extras'): ?>
             <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
-            <table class="uk-table uk-table-justify uk-table-responsive uk-table-striped uk-table-small">
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                    <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                    <th class="uk-table-shrink"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                    <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                    <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                    <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                 </tr>
                 </thead>
 				<?php foreach ($value as $extra => $value): ?>
                     <tr>
-						<?= '<td>aa' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format((float) $value['price_total'], 2, ",", ".") . ' €</td>'?>
+						<td><?= $value['amount'] ?> x </td>
+                        <td><?= $value['name'] ?></td>
+                        <td class="alignRight"><?= number_format((float) $value['price_total'], 2, ",", ".") ?> €</td>
                     </tr>
 				<?php endforeach; ?>
             </table>
 		<?php endif; ?>
 
 	<?php endforeach; ?>
+
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td><strong><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></strong></td>
+            <td class="alignRight"><?= number_format((float) $totalPrice, 2, ",", ".") ?> €</td>
+        </tr>
+        </tbody>
+
+    </table>
+
     <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
     <div class="uk-card uk-card-default uk-card-body">
         <p>

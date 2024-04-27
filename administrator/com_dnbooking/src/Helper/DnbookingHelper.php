@@ -15,6 +15,7 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\DnbookingMail
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\Mail;
@@ -102,6 +103,8 @@ class DnbookingHelper
 		// Initialize an empty array to hold the reservations for today
 		$reservationsToday = [];
 
+		$test = ArrayHelper::pivot($reservations, 'id');
+
 		// Loop through each reservation object in the array
 		foreach ($reservations as $reservation)
 		{
@@ -167,7 +170,14 @@ class DnbookingHelper
 
 
 		// Add the customer as the recipient of the email
-		$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+
+		if($isFrontend)
+		{
+			$mailer->addRecipient($orderDataFlattened['email'], $orderDataFlattened['firstname'] . ' ' . $orderDataFlattened['lastname']);
+		}
+		else{
+			$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+		}
 
 		try
 		{

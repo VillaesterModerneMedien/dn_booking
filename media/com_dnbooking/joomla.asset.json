@@ -26,6 +26,11 @@
       "uri": "com_dnbooking/admin-calendar.css"
     },
     {
+      "name": "com_dnbooking.daydashboards",
+      "type": "style",
+      "uri": "com_dnbooking/daydashboards.css"
+    },
+    {
       "name": "com_dnbooking.reservation",
       "type": "style",
       "uri": "com_dnbooking/reservation.css",

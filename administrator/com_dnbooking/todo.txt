@@ -1,9 +1,15 @@
-- Stati anpassen (annulliert)
-- Resveration Table
-- JavaScript fixen ##
-- Personenzahl in Reservation Listing ausgeben
+TODO:
 
-- extras / räume filter dazu
-- Tagesansicht Backend
+- Mailtemplates fertig machen (ggf Mario)
+- Email Frontend
+- Geburtstagskinder ausgeben / prüfen
+- Email Header anpassen
+- Drucken Tagesansicht PDF
+- ggf. Rechnung PDF
+- Geburtstagsmail (Spassprojekt)
 
-- Vendor Infos in Konfig für Mailing (Konto usw)
+Bugs:
+
+- Filtern Reservations geht nicht richtig (Backend)
+- Additional Infos2 wird nicht mehr korrekt gespeichert (Backend)
+- Mails aus Frontend landen nicht im Mailcatcher
