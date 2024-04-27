@@ -45,17 +45,13 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
 ?>
 <div class="item">
 
+        <p><h3><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?></h3></p>
 
-    <div id="summary">
-
-        <p><h3><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $item['reservation_date'], $customer['firstname'] . ' ' . $customer['lastname']) ?></h3></p>
         <h4><?= Text::_('COM_DNBOOKING_RESERVATION_DATE_LABEL') . $item['reservation_date']; ?></h4>
 
         <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
             <?= $customer['address']; ?><br/>
-            <?= $customer['zip'] . ' ' . $customer['city']; ?>
-        </p>
-        <p>
+            <?= $customer['zip'] . ' ' . $customer['city']; ?><br/>
             <?= $customer['email']; ?><br/>
             <?= $customer['phone']; ?>
         </p>
@@ -137,6 +133,5 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
                 <?= $item['customer_notes']; ?>
             </p>
         </div>
-    </div>
 
 </div>

@@ -20,7 +20,11 @@ use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
+use Mpdf\HTMLParserMode;
 use Mpdf\Mpdf;
+use Mpdf\MpdfException;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
 
 require_once JPATH_ADMINISTRATOR . '/components/com_dnbooking/vendor/autoload.php';
@@ -259,16 +263,62 @@ class DnbookingHelper
 		return $weekdayNumber;
 	}
 
-	public static function printDaysheet($items)
+	public static function printDaysheet($items, $orientation = 'P')
 	{
 		$date = date('Y-m-d'); // Verwende das heutige Datum
 
-		$layout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
-		$html = $layout->render($items);
+		//$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+		//$html = $htmlLayout->render($items);
 
-		$mpdf = new Mpdf(['orientation' => 'L']);
-		$mpdf->WriteHTML($html);
-		$mpdf->Output('daysheet-' . $date . '.pdf', 'D');
+
+		$footerHTMLLayout = new FileLayout('daydashboards.pdfs.daysheet_footer', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+		$footerHTML = $footerHTMLLayout->render();
+
+		$stylesheet = file_get_contents(JPATH_SITE . '/media/com_dnbooking/css/printpdf.css');
+		$defaultConfig = (new ConfigVariables())->getDefaults();
+		$fontDirs = $defaultConfig['fontDir'];
+
+		$defaultFontConfig = (new FontVariables())->getDefaults();
+		$fontData = $defaultFontConfig['fontdata'];
+
+		try {
+			ob_clean();
+
+			$config = array(
+				'format' => 'A4',
+				'mode' => 'utf-8',
+				'orientation' => $orientation,
+				'margin_top' => 5,
+				'margin_bottom' => 35,
+				'setAutoTopMargin' => 'pad',
+				'fontDir' => array_merge($fontDirs, [
+					JPATH_SITE . '/media/com_dnbooking/fonts',
+				]),
+				'fontdata' => $fontData + [
+						'chewy' => [
+							'R' => 'chewy.ttf',
+						]
+					],
+			);
+
+			$mpdf = new Mpdf($config);
+			$mpdf->WriteHTML($stylesheet,HTMLParserMode::HEADER_CSS);
+			$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet_item', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+			$itemsCount = count($items);
+			for ($x = 0; $x < $itemsCount; $x++)
+			{
+				$html = $htmlLayout->render($items[$x]);
+				$mpdf->WriteHTML($html);
+				$mpdf->SetHTMLFooter($footerHTML);
+				if ($x < ($itemsCount -1))
+				{
+					$mpdf->AddPage();
+				}
+			}
+			$mpdf->Output('daysheet-' . $date . '.pdf', 'D');
+		} catch (MpdfException $e) {
+			echo $e->getMessage();
+		}
 	}
 
 }
