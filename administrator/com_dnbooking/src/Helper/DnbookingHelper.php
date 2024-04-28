@@ -148,6 +148,11 @@ class DnbookingHelper
 			$savedItem = ArrayHelper::fromObject($savedItem);
 		}
 
+		if(!is_array($item))
+		{
+			$item = ArrayHelper::fromObject($item);
+		}
+
 		$item = array_merge($savedItem, $item);
 
 		// Get the component parameters

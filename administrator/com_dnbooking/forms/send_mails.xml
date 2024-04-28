@@ -13,10 +13,7 @@
             <option value="reservation_pending">COM_DNBOOKING_MAILTYPE_OPTION2</option>
             <option value="reservation_confirmed">COM_DNBOOKING_MAILTYPE_OPTION3</option>
             <option value="reservation_cancelled">COM_DNBOOKING_MAILTYPE_OPTION4</option>
-
             <option value="customMail">COM_DNBOOKING_MAILTYPE_OPTION5</option>
-                        <option value="birthdaymail">COM_DNBOOKING_MAILTYPE_OPTION6</option>
-
         </field>
 
         <field name="sendMailCustomText"

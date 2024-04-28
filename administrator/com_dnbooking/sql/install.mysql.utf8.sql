@@ -105,8 +105,15 @@ CREATE TABLE if not exists `#__dnbooking_customers`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
-INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`,
-                                 `params`)
-VALUES ('com_dnbooking.statusmail', 'com_dnbooking', '', 'Kundenemail von {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}',
-        'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
-        '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
+
+INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`) VALUES ('com_dnbooking.reservation_statuschange', 'com_dnbooking', '', 'Kundenemail von {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}', 'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '', '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\", \"html_ordertable_simple\"]}');
+
+
+INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`) VALUES ('com_dnbooking.reservation_pending', 'com_dnbooking', '', 'Reservierung eingegangen von {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}', 'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '', '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
+
+
+INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`) VALUES ('com_dnbooking.reservation_confirmed', 'com_dnbooking', '', 'Reservierung ID {ID} bestätigt für den {RESERVATION_DATE}', 'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '', '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
+
+INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`) VALUES ('com_dnbooking.reservation_cancelled', 'com_dnbooking', '', 'Reservierung ID {ID}  für den {RESERVATION_DATE} storniert.', 'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '', '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}')
+
+INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`) VALUES ('com_dnbooking.customMail', 'com_dnbooking', '', 'Nachricht von Sensapolis an {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}', 'Hallo {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME},\r\n\r\n{CUSTOMER_MAILMESSAGE}\r\n\r\nName: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '', '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
