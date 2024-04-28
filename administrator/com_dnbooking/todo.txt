@@ -1,15 +1,18 @@
 TODO:
 
 - Mailtemplates fertig machen (ggf Mario)
+- Geburtstagskinder ausgeben / prüfen (mario)
 
-- Total in DayDashboards
-- Geburtstagskinder ausgeben / prüfen
+- Daydashboards Fehler ausgeben wenn nix
 - Reservierung Neu aus Backend fixen
-- Email Header anpassen
+- Email Header anpassen / CSS
 - Drucken Tagesansicht PDF
 - ggf. Rechnung PDF
 - Geburtstagsmail (Spassprojekt)
 
 Bugs:
+
+- wenn Geburstagskinder runtergesetzt wird, additionakl_infos2 auch anpassen und löschen (bzw macht das Sinn? ggf muss das manuell erfolgen)
+- Testen, wenn gleichtägige Buchung )´(oder ggf auch andere), dann leere Alertmeldung auch keine Anzeige der >räume
 - Filtern Reservations geht nicht richtig (Backend)
 - Alertmessage Fronztnend is leer

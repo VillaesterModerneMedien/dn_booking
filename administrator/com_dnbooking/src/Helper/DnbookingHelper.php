@@ -288,8 +288,8 @@ class DnbookingHelper
 				'format' => 'A4',
 				'mode' => 'utf-8',
 				'orientation' => $orientation,
-				'margin_top' => 5,
-				'margin_bottom' => 35,
+				'margin_top' => 0,
+				'margin_bottom' => 0,
 				'setAutoTopMargin' => 'pad',
 				'fontDir' => array_merge($fontDirs, [
 					JPATH_SITE . '/media/com_dnbooking/fonts',
@@ -303,7 +303,7 @@ class DnbookingHelper
 
 			$mpdf = new Mpdf($config);
 			$mpdf->WriteHTML($stylesheet,HTMLParserMode::HEADER_CSS);
-			$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet_item', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+			$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
 			$itemsCount = count($items);
 			for ($x = 0; $x < $itemsCount; $x++)
 			{
