@@ -1,5 +1,6 @@
 <?php
 use Joomla\CMS\Language\Text;
+
 $form = $displayData;
 ?>
 

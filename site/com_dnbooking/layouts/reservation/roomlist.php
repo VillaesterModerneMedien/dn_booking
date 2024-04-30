@@ -16,7 +16,6 @@ use Joomla\Input\Input;
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
-//$rooms = $displayData;
 $form = $displayData;
 $columns=3;
 $counter=0;

@@ -51,13 +51,8 @@ $this->form->setValue('reservation_token', null, $reservationToken);
 
     <section id="bookingTimes" class="booking uk-section uk-section-default" data-step="1">
         <h2><?php echo Text::_('COM_DNBOOKING_RESERVATIONDATA'); ?></h2>
-
+	    <?php echo LayoutHelper::render('reservation.moduletop', $this->form); ?>
 	    <?php echo LayoutHelper::render('reservation.reservationdata', $this->form); ?>
-
-        <div id="childrenContainer" class="uk-grid tm-grid-expand uk-grid-margin" uk-grid>
-	    <?php echo LayoutHelper::render('reservation.childrencontainer', $this->form); ?>
-        </div>
-
     </section>
 
     <section id="rooms" class="rooms uk-section uk-section-default" data-step="2">

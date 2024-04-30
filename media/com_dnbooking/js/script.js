@@ -239,7 +239,8 @@ function checkRequiredFields()
     const requiredFields = document.querySelectorAll('.required');
     let valid = true;
     requiredFields.forEach(function(field){
-        if(field.value === ''){
+
+    if(field.value === ''){
             field.classList.add('errorField');
             field.addEventListener('input', function(){
                 field.classList.remove('errorField');
@@ -316,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function setSubforms() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
+    const childrenContainer = document.getElementById('childrenContainer');
 
     const numberOfChildren = parseInt(birthdayChildrenInput.value, 10);
     if (isNaN(numberOfChildren)) {
@@ -342,14 +344,11 @@ function setSubforms() {
         }
     }
     if(numberOfChildren == 0){
-        currentGroups.forEach(function(row){
-            row.style.display = 'none';
-        });
+        childrenContainer.style.display = 'none';
+
     }
     else{
-        currentGroups.forEach(function(row){
-            row.style.display = 'flex';
-        });
+            childrenContainer.style.display = 'flex';
     }
 
 }
@@ -358,7 +357,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
     birthdayChildrenInput.setAttribute('max',0);
     const visitorsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
-console.log('besucherpaket', visitorsPackageInput);
     if (!birthdayChildrenInput) {
         console.error('Das Eingabefeld für Geburtstagskinder wurde nicht gefunden.');
         return;
@@ -367,16 +365,14 @@ console.log('besucherpaket', visitorsPackageInput);
     visitorsPackageInput.addEventListener('change', function() {
         birthdayChildrenInput.setAttribute('max',this.value);
     });
+
     birthdayChildrenInput.addEventListener('change', function() {
-       setSubforms();
-    });
-    birthdayChildrenInput.addEventListener('input', function() {
-        if(this.value < 0)
+        if(parseInt(this.value, 10) < 0)
         {
             setMessage('Die Anzahl der Geburtstagskinder darf nicht negativ sein');
             this.value = 0;
         }
-        else if (this.value > visitorsPackageInput.value)
+        else if (parseInt(this.value, 10) > parseInt(visitorsPackageInput.value, 10))
         {
             setMessage('Die Anzahl der Geburtstagskinder darf nicht größer sein als die Anzahl der Besucher mit Paket');
             this.value = this.getAttribute('max');
