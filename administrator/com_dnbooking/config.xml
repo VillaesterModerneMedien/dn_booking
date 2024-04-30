@@ -384,6 +384,23 @@
 
     </fieldset>
 
+    <fieldset
+            name="emailsettings"
+            label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_LABEL"
+    >
+        <field
+                name="emailheader"
+                label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_HEADER_LABEL"
+                type="editor"
+                filter="raw"
+        />
+        <field
+                name="emailfooter"
+                label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_FOOTER_LABEL"
+                type="editor"
+                filter="raw"
+        />
+    </fieldset>
 
     <fieldset
             name="permissions"

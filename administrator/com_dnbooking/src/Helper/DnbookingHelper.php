@@ -171,6 +171,10 @@ class DnbookingHelper
 		$htmlOrderTableSimple                = $layout->render($orderData);
 		$orderData['html_ordertable_simple'] = $htmlOrderTableSimple;
 
+		$layout                              = new FileLayout('mail.html_birthdaychildren', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+		$htmlBirthdayChildren                = $layout->render($orderData);
+		$orderData['html_birthdaychildren']  = $htmlBirthdayChildren;
+
 		// Flatten the order data array
 		$orderDataFlattened = ArrayHelper::flatten($orderData, '_');
 
@@ -308,6 +312,8 @@ class DnbookingHelper
 
 			$mpdf = new Mpdf($config);
 			$mpdf->WriteHTML($stylesheet,HTMLParserMode::HEADER_CSS);
+
+			//hier view checken und diverse layouts laden//
 			$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
 			$itemsCount = count($items);
 			for ($x = 0; $x < $itemsCount; $x++)

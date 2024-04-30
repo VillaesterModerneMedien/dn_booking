@@ -170,7 +170,6 @@ class ReservationModel extends AdminReservationModel
 			'address'    => $data['address'],
 			'zip'        => $data['zip'],
 			'city'       => $data['city'],
-			//'country'    => $data['country'],
 		];
 
 		// Allow an exception to be thrown.

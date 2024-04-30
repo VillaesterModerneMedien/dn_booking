@@ -7,6 +7,10 @@ use Joomla\Utilities\ArrayHelper;
 $app = Factory::getApplication();
 $item = $displayData;
 
+if(!is_array($item['additional_info'])) {
+    $item['additional_info'] = json_decode($item['additional_info'], true);
+}
+
 /**
  * siehe Settings in der Konfiguration
  * visitors, visitorsPackage, birthdayChild

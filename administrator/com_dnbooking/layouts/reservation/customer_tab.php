@@ -41,7 +41,6 @@
 			<hr/>
 			<p class="card-text"><strong><?= Text::_('COM_DNBOOKING_FIELD_ZIP_LABEL') ?>:</strong> <?= $customer->zip; ?></p>
 			<hr/>
-			<p class="card-text"><strong><?= Text::_('COM_DNBOOKING_FIELD_COUNTRY_LABEL') ?>:</strong> <?= $customer->country; ?></p>
 		</div>
 	</div>
 

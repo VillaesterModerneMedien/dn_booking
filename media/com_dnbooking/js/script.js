@@ -37,39 +37,6 @@ function changeChildrenNumber(input) {
     lastValue = currentValue;
 }
 
-
-/**
- * Adds a new child form field.
- */
-
-/*
-function addFormField() {
-
-    const formGroup = document.createElement('div');
-    const examplechild = document.getElementById('childExample');
-    let child = lastValue + 1;
-    let childHTML = examplechild.innerHTML;
-    childHTML = childHTML.replace(/childname/g, 'childname-' + child);
-    childHTML = childHTML.replace(/childdate/g, 'childdate-' + child);
-    childHTML = childHTML.replace(/childgender/g, 'childgender-' + child);
-    formGroup.innerHTML = '<h4>Kind ' + child + '</h4><div class="uk-grid tm-grid-expand uk-grid-margin" uk-grid="" id="child-' + child + '">' + childHTML + '</div>';
-
-    document.querySelector('#childrenContainer').appendChild(formGroup);
-}
-*/
-/**
- * Removes the last child form field.
- */
-/*
-function removeFormField() {
-
-    const childrenContainer = document.querySelector('#childrenContainer');
-    if (childrenContainer.children.length > 1) {
-
-        childrenContainer.removeChild(childrenContainer.lastElementChild);
-    }
-}
-*/
 /**
  * Updates the room status based on the selected date and number of visitors.
  * @param {string} date - The selected date.
@@ -149,7 +116,7 @@ function checkDate(date, visitors){
                 setMessage(translation.timeclosed + blocked.start + translation.till + blocked.end + translation.opened);
             }
             else if(blocked.times === 'dayclosed'){
-                setMessage(translation.dayxclosed );
+                setMessage(translation.dayclosed );
             }
             else if(date === '' || time === '') {
                 setMessage(translation.enterdate);
@@ -266,6 +233,22 @@ function extractTimeFromDateTime() {
     return timeString;
 }
 
+
+function checkRequiredFields()
+{
+    const requiredFields = document.querySelectorAll('.required');
+    let valid = true;
+    requiredFields.forEach(function(field){
+        if(field.value === ''){
+            field.classList.add('errorField');
+            field.addEventListener('input', function(){
+                field.classList.remove('errorField');
+            });
+            valid = false;
+        }
+    });
+  return valid;
+}
 /**
  * Initializes the reservation process when the DOM is ready.
  */
@@ -288,7 +271,12 @@ document.addEventListener('DOMContentLoaded', function () {
     maxSteps = uniqueSteps.size;
 
     checkBooking.addEventListener('click', function() {
-        renderOrderHTML();
+        if(checkRequiredFields() == true){
+            renderOrderHTML();
+        }
+        else{
+            setMessage('Bitte füllen Sie alle Pflichtfelder aus');
+        }
     });
     dateInput.addEventListener('change', function() {
         step=1;
@@ -326,50 +314,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setStep(step);
 });
 
-function setSubformsOLD() {
-    const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
-
-    const numberOfChildren = parseInt(birthdayChildrenInput.value, 10);
-    if (isNaN(numberOfChildren)) {
-        console.error('Die Eingabe ist keine gültige Zahl.');
-        return;
-    }
-
-    const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
-    const subformTemplateContent = document.querySelector('.subform-repeatable-template-section').content;
-    const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
-    const currentCount = currentGroups.length;
-
-    // Sicherstellen, dass das Template-Element als Referenzpunkt dient
-    const templateElement = document.querySelector('.subform-repeatable-template-section');
-
-    // Gruppen hinzufügen, falls mehr Kinder hinzugefügt werden sollen
-    if (numberOfChildren > currentCount) {
-        for (let i = currentCount; i < numberOfChildren; i++) {
-            let newGroup = document.importNode(subformTemplateContent, true);
-            newGroup.querySelector('[data-group]').setAttribute('data-group', `addinfos2_subform${i}`);
-            newGroup.querySelectorAll('input, select, label, button').forEach(element => {
-                const baseName = 'addinfos2_subformX';
-                if (element.id) element.id = element.id.replace(baseName, `addinfos2_subform${i}`);
-                if (element.htmlFor) element.htmlFor = element.htmlFor.replace(baseName, `addinfos2_subform${i}`);
-                if (element.name) element.name = element.name.replace(baseName, `addinfos2_subform${i}`);
-
-                if (element.getAttribute('data-button')) element.setAttribute('data-button', element.getAttribute('data-button').replace(baseName, `addinfos2_subform${i}`));
-                if (element.getAttribute('data-inputfield')) element.setAttribute('data-inputfield', element.getAttribute('data-inputfield').replace(baseName, `addinfos2_subform${i}`));
-
-            });
-
-            subformElement.insertBefore(newGroup, templateElement);
-        }
-    }
-    // Gruppen entfernen, falls weniger Kinder angezeigt werden sollen
-    else if (numberOfChildren < currentCount) {
-        for (let i = currentCount; i > numberOfChildren; i--) {
-            currentGroups[i - 1].remove();
-        }
-    }
-}
-
 function setSubforms() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
 
@@ -380,6 +324,7 @@ function setSubforms() {
     }
 
     const subformElement = document.querySelector('joomla-field-subform.subform-repeatable');
+
     const currentGroups = subformElement.querySelectorAll('.subform-repeatable-group');
     const currentCount = currentGroups.length;
 
@@ -396,13 +341,24 @@ function setSubforms() {
             subformElement.removeRow(row);
         }
     }
+    if(numberOfChildren == 0){
+        currentGroups.forEach(function(row){
+            row.style.display = 'none';
+        });
+    }
+    else{
+        currentGroups.forEach(function(row){
+            row.style.display = 'flex';
+        });
+    }
+
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
     birthdayChildrenInput.setAttribute('max',0);
     const visitorsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
-
+console.log('besucherpaket', visitorsPackageInput);
     if (!birthdayChildrenInput) {
         console.error('Das Eingabefeld für Geburtstagskinder wurde nicht gefunden.');
         return;
@@ -414,6 +370,20 @@ document.addEventListener('DOMContentLoaded', function() {
     birthdayChildrenInput.addEventListener('change', function() {
        setSubforms();
     });
+    birthdayChildrenInput.addEventListener('input', function() {
+        if(this.value < 0)
+        {
+            setMessage('Die Anzahl der Geburtstagskinder darf nicht negativ sein');
+            this.value = 0;
+        }
+        else if (this.value > visitorsPackageInput.value)
+        {
+            setMessage('Die Anzahl der Geburtstagskinder darf nicht größer sein als die Anzahl der Besucher mit Paket');
+            this.value = this.getAttribute('max');
+        }
+        setSubforms();
+    });
+
     setSubforms();
 });
 
@@ -422,6 +392,5 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('subform-row-add', function (event) {
         var row = event.target;
 
-        console.log('Row',row);
     });
 });

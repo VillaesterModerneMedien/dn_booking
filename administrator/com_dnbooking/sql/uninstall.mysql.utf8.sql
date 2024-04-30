@@ -7,3 +7,5 @@ DROP TABLE IF EXISTS `#__dnbooking_extras`;
 DELETE FROM `#__content_types` WHERE `type_alias` IN ('com_dnbooking.extra');
 DROP TABLE IF EXISTS `#__dnbooking_customers`;
 DELETE FROM `#__content_types` WHERE `type_alias` IN ('com_dnbooking.customer');
+
+DELETE FROM `#__mail_templates` WHERE `extension` = 'com_dnbooking';

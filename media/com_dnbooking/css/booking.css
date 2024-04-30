@@ -80,4 +80,8 @@
   margin-top: 20px !important;
 }
 
+#reservationForm .errorField {
+  border: 1px solid red;
+}
+
 /*# sourceMappingURL=booking.css.map */

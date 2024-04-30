@@ -1,6 +1,10 @@
 <?php
 
+use Joomla\CMS\Component\ComponentHelper;
+
 defined('_JEXEC') or die;
+$params = ComponentHelper::getParams('com_dnbooking');
+$emailHeader = $params->get('emailheader');
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -26,3 +30,6 @@ defined('_JEXEC') or die;
 	</xml><![endif]-->
 </head>
 <body>
+<?= $emailHeader; ?>
+
+

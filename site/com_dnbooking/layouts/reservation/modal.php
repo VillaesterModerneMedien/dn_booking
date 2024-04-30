@@ -59,9 +59,9 @@ $tableHead = "
 
 <p><h3><?= Text::sprintf('COM_DNBOKING_BOOKING_SUMMARY_HEADLINE', $data['firstname'] . ' ' . $data['lastname']) ?></h3></p>
     <h4>
-        Datum: <strong><?= $reservationDate?></strong>
+       <?= Text::_('COM_DNBOOKING_DATE_LABEL'); ?><strong><?= $reservationDate?></strong>
     </h4>
-    <h4>Anschrift:</h4>
+    <h4><?= Text::_('COM_DNBOOKING_ADRESS_LABEL'); ?></h4>
     <p><?= Text::_($data['salutation']) . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
         <?= $data['address']; ?><br/>
         <?= $data['zip'] . ' ' . $data['city']; ?>
@@ -71,11 +71,25 @@ $tableHead = "
         <?= $data['phone']; ?>
     </p>
 
-    <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?>:</strong></p>
+    <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
     <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
         <?= $tableHead ?>
         <tr>
-			 <td><?= $data['visitorsPackage'] . ' x </td><td>' . Text::_('COM_DNBOOKING_PACKAGE_TEXT') . ' <td> ' . number_format($packagepriceTotal, 2, ",", ".") . ' €</td>'?>
+            <td><?= $data['visitorsPackage']; ?> x </td>
+            <td>
+                <?= Text::_('COM_DNBOOKING_PACKAGE_TEXT'); ?><br/>
+                <p class="uk-text-meta uk-margin-left uk-margin-remove-top">
+                    <strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></strong><br/>
+                    <?php foreach($data['additional_infos2']['addinfos2_subform'] as $key => $value): ?>
+                        <?= $value['kindname']; ?>, <?= $value['kindgeschlecht']; ?>, <?= $value['kinddatum']; ?>
+                        <br/>
+                    <?php endforeach; ?>
+                </p>
+            </td>
+            <td>
+                <?= number_format($packagepriceTotal, 2, ",", "."); ?> €
+            </td>
+
         </tr>
         <?php if($data['visitors'] > 0): ?>
         <tr>
@@ -83,26 +97,17 @@ $tableHead = "
         </tr>
         <?php endif; ?>
     </table>
-    <p><strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL') ?>:</strong></p>
-    <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
-        <thead>
-            <th>name</th>
-            <th>geschlecht</th>
-            <th>geburtsdatum</th>
-        </thead>
-        <!--
-            Hier children reinpimmeln
-        -->
-    </table>
-    <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
+
+    <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?></strong></p>
     <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
 	    <?= $tableHead ?>
-
         <tr>
 			<?= '<td>1 x</td><td>' . $room['title'] . '<td> ' . number_format((float) $room['priceregular'], 2, ",", ".") . ' €</td>'?>
         </tr>
     </table>
-    <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
+
+    <?php if(array_key_exists('extras', $data) && !empty($data['extras'])) :?>
+    <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?></strong></p>
     <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
 	    <?= $tableHead ?>
 		<?php foreach ($data['extras'] as $extra => $value): ?>
@@ -111,6 +116,7 @@ $tableHead = "
             </tr>
 		<?php endforeach; ?>
     </table>
+    <?php endif; ?>
 
     <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
         <tr>
@@ -120,10 +126,12 @@ $tableHead = "
         </tr>
     </table>
 
+    <?php if(array_key_exists('customer_notes', $data) && !empty($data['customer_notes'])) :?>
     <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
     <div class="uk-card uk-card-default uk-card-body">
         <p>
 			<?= $data['customer_notes']; ?>
         </p>
     </div>
+    <?php endif; ?>
 </div>

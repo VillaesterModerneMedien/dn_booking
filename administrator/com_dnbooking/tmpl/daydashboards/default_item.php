@@ -39,7 +39,10 @@ if($item['holiday']) {
 }
 $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
-$totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $item['extras_price_total'], $item['holiday']);
+
+$extraTotal = array_key_exists('extras_price_total', $item) ? $item['extras_price_total'] : 0;
+
+$totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $extraTotal, $item['holiday']);
 
 ?>
 <div class="col-12">

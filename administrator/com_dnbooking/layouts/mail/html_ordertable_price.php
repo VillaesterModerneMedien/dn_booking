@@ -87,7 +87,7 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
 				</thead>
 				<?php foreach ($value as $extra => $value): ?>
 					<tr>
-						<?= '<td>aa' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format((float) $value['price_total'], 2, ",", ".") . ' €</td>'?>
+						<?= '<td>' . $value['amount'] . ' x </td><td> ' . $value['name'] . ' </td><td> ' . number_format((float) $value['price_total'], 2, ",", ".") . ' €</td>'?>
 					</tr>
 				<?php endforeach; ?>
 			</table>
