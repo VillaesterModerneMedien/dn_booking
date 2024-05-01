@@ -81,7 +81,7 @@ class HtmlView extends BaseHtmlView
 
 		$input = $app->input;
 		$date = $app->getUserState('com_dnbooking.daydashboards.currentDate', date('Y-m-d'));
-
+		$date = $date['currentDate'];
 
 		if($date == '')
 		{
@@ -89,6 +89,7 @@ class HtmlView extends BaseHtmlView
 			$date = date('d.m.Y');
 		}
 
+		$date = date('d.m.Y', strtotime($date));
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
