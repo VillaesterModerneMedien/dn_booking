@@ -102,18 +102,31 @@ class DnbookingHelper
 	public static function filterReservationsToday($reservations)
 	{
 		// Get today's date in 'Y-m-d' format
-		$today = date('Y-m-d');
+		$app = Factory::getApplication();
+		$input = $app->input;
+
+		$currentDate = $app->getUserState('com_dnbooking.daydashboards.currentDate', date('Y-m-d'));
+		$currentDate = $currentDate['currentDate'];
+
+		if($currentDate == '')
+		{
+			$today = date('Y-m-d');
+		}
+		else{
+			$today = $currentDate;
+		}
 
 		// Initialize an empty array to hold the reservations for today
 		$reservationsToday = [];
 
-		$test = ArrayHelper::pivot($reservations, 'id');
-
 		// Loop through each reservation object in the array
 		foreach ($reservations as $reservation)
 		{
+
 			// Extract the date from the 'reservation_date' and compare it with today's date
-			if (substr($reservation->reservation_date, 0, 10) == $today)
+
+			$extractedDate = substr($reservation->reservation_date, 0, 10);
+			if ($extractedDate == $today)
 			{
 				// If the reservation date is today, add it to the list
 				$reservationsToday[] = $reservation;
@@ -274,6 +287,19 @@ class DnbookingHelper
 
 	public static function printDaysheet($items, $orientation = 'P')
 	{
+
+		$app = Factory::getApplication();
+		$input = $app->input;
+		$currentDate = $input->getString('currentDate', date('Y-m-d'));
+
+		if($currentDate == '')
+		{
+			$today = date('Y-m-d');
+		}
+		else{
+			$today = $currentDate;
+		}
+
 		$date = date('Y-m-d'); // Verwende das heutige Datum
 
 		//$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');

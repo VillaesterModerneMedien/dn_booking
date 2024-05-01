@@ -12,6 +12,7 @@
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 
@@ -22,7 +23,24 @@ $wa->useStyle('com_dnbooking.daydashboards');
 $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
+<script>
 
+    document.addEventListener("DOMContentLoaded", function() {
+        var container = document.querySelector('.view-daydashboards');
+
+        var buttonStatusGroup = container.querySelector('.button-status-group');
+        var buttonChooseDay = container.querySelector('.button-chooseDay');
+
+        if (buttonStatusGroup) {
+            buttonStatusGroup.removeAttribute('disabled');
+        }
+        if (buttonChooseDay) {
+            buttonChooseDay.removeAttribute('disabled');
+        }
+    });
+
+
+</script>
 <form action="<?php echo Route::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
 
     <div class="card-columns daydashboardsContainer">
@@ -35,6 +53,17 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
     </div>
 
     <input type="hidden" name="task" value="" />
+    <input type="hidden" name="currentDate" value="" />
     <?php echo HTMLHelper::_('form.token'); ?>
+
+	<?php echo HTMLHelper::_(
+		'bootstrap.renderModal',
+		'chooseDayModal',
+		[
+			'title'  => Text::_('COM_DNBOOKING_CHOOSE_DAY_HEADLINE'),
+			'footer' => $this->loadTemplate('batch_footer'),
+		],
+		$this->loadTemplate('batch_body')
+	); ?>
 
 </form>
