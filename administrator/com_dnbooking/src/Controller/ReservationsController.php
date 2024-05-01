@@ -11,17 +11,11 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\MailerFactoryAwareInterface;
 use Joomla\CMS\Mail\MailerFactoryAwareTrait;
-use Joomla\CMS\Mail\MailTemplate;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\Session\Session;
-use Joomla\Utilities\ArrayHelper;
-use PHPMailer\PHPMailer\Exception as phpMailerException;
 
 /**
  * The Reservations list controller class.
@@ -116,55 +110,4 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 		$this->setRedirect('index.php?option=com_dnbooking&view=reservations');
 	}
 
-
-	/*
-	protected function sendMail($item){
-		// Set the new values to test with the current settings
-		$app      = Factory::getApplication();
-		$user     = $app->getIdentity();
-		$input    = $app->getInput();
-		$sendMailFormValues = $input->get('sendMails', [], 'ARRAY');
-		$componentParams = ComponentHelper::getParams('com_dnbooking');
-
-		$orderData = ArrayHelper::fromObject($item);
-		$orderData['vendor_email'] = $componentParams['vendor_email'];
-		$orderData['vendor_from'] = $componentParams['vendor_from'];
-		$orderData['vendor_phone'] = $componentParams['vendor_phone'];
-		$orderData['vendor_address'] = $componentParams['vendor_address'];
-		$orderData['vendor_accountdata'] = $componentParams['vendor_accountdata'];
-
-		$orderDataFlattened = ArrayHelper::flatten($orderData, '_');
-
-		$mail = $this->getMailerFactory()->createMailer();
-		$mail->setSender($orderData['vendor_email'], $orderData['vendor_from']);
-
-		$mailer = new MailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
-		$mailer->addTemplateData($orderDataFlattened);
-
-		//$mailer->addRecipient($vendorEmail, $vendorName);
-		$mailer->addRecipient($orderData['customer_email'], $orderData['customer_firstname'] . ' ' . $orderData['customer_lastname']);
-
-		try {
-			$mailSent = $mailer->send();
-		} catch (MailDisabledException | phpMailerException $e) {
-			$app->enqueueMessage($e->getMessage(), 'error');
-
-			return false;
-		}
-
-		if ($mailSent === true) {
-			$methodName = Text::_('COM_DNBOOKING_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
-
-			// If JMail send the mail using PHP Mail as fallback.
-			if ($mail->Mailer !== $app->get('mailer')) {
-				$app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS_FALLBACK', $app->get('mailfrom'), $methodName), 'warning');
-			} else {
-				$app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
-			}
-
-			return true;
-		}
-	}
-
-	*/
 }
