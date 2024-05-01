@@ -8,6 +8,7 @@
  */
 
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
@@ -46,6 +47,9 @@ $room = ArrayHelper::fromObject($data['room_id']);
 $total = DnbookingHelper::calcPrice($data['additional_info'], $room, $data['extras_price_total'], $data['isHolidayOrWeekend']);
 $reservationDate = HTMLHelper::_('date', $data['reservation_date'], 'd. F Y - H:i');
 
+$params = ComponentHelper::getParams('com_dnbooking');
+$additionalInfos2FieldKeys = $params->get('additional_info_form2');
+
 $tableHead = " 
     <thead>
         <tr>
@@ -80,10 +84,19 @@ $tableHead = "
                 <?= Text::_('COM_DNBOOKING_PACKAGE_TEXT'); ?><br/>
                 <p class="uk-text-meta uk-margin-left uk-margin-remove-top">
                     <strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></strong><br/>
-                    <?php foreach($data['additional_infos2']['addinfos2_subform'] as $key => $value): ?>
-                        <?= $value['kindname']; ?>, <?= $value['kindgeschlecht']; ?>, <?= $value['kinddatum']; ?>
+	                <?php foreach($data['additional_infos2']['addinfos2_subform'] as $key => $value): ?>
+		                <?php
+		                $fieldCount = count((array)$additionalInfos2FieldKeys);
+		                $currentField = 1;
+		                ?>
+		                <?php foreach ($additionalInfos2FieldKeys as $fieldKey): ?>
+			                <?php if (isset($value[$fieldKey->fieldName])): ?>
+				                <?= $value[$fieldKey->fieldName]; ?><?php if ($currentField < $fieldCount): ?>, <?php endif; ?>
+			                <?php endif; ?>
+			                <?php $currentField++; ?>
+		                <?php endforeach; ?>
                         <br/>
-                    <?php endforeach; ?>
+	                <?php endforeach; ?>
                 </p>
             </td>
             <td>
