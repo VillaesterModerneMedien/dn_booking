@@ -294,4 +294,62 @@ class ReservationModel extends AdminModel
 		return $this;
 	}
 
+
+	public function save($data)
+	{
+		$table      = $this->getTable();
+		$context    = $this->option . '.' . $this->name;
+		$key        = $table->getKeyName();
+		$pk         = (isset($data[$key])) ? $data[$key] : (int) $this->getState($this->getName() . '.id');
+		$isNew      = true;
+
+		try {
+			// Load the row if saving an existing record.
+			if ($pk > 0) {
+				$table->load($pk);
+				$isNew = false;
+			}
+
+			// Bind the data.
+			if (!$table->bind($data)) {
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Überprüfung des Besuchers und des Raums für Reservierungen
+			if ($context === 'com_dnbooking.reservation') {
+				$customerId = $data['customer_id'] ?? 0;
+				$roomId = $data['room_id'] ?? 0;
+
+				if (empty($customerId)) {
+					$this->setError(Text::_('COM_DNBOOKING_ERROR_INVALID_CUSTOMER'));
+					return false;
+				}
+
+				if (empty($roomId)) {
+					$this->setError(Text::_('COM_DNBOOKING_ERROR_INVALID_ROOM'));
+					return false;
+				}
+			}
+
+			// Store the data.
+			if (!$table->store()) {
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Set the new item ID on the model state if necessary
+			if (isset($table->$key)) {
+				$this->setState($this->getName() . '.id', $table->$key);
+			}
+
+			$this->setState($this->getName() . '.new', $isNew);
+
+			return true;
+		} catch (\Exception $e) {
+			$this->setError($e->getMessage());
+			return false;
+		}
+	}
+
 }

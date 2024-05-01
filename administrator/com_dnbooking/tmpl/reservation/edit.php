@@ -69,7 +69,7 @@ if (empty($this->form->getValue('reservation_token')))
 
             <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
-                    <div class="card-header"><h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_EDIT_HEADLINE'); ?></h3>
+                    <div class="card-header"><h3><?= Text::_('COM_DNBOOKING_HEADLINE_NEW_RESERVATION'); ?></h3>
                     </div>
                     <div class="card-body">
                         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
@@ -127,10 +127,6 @@ if (empty($this->form->getValue('reservation_token')))
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-6">
-               Reservierung anlegen
             </div>
 
         </div>

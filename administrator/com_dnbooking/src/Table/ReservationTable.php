@@ -169,7 +169,6 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 
 	protected function _calcPrice()
 	{
-		//TODO: Guido anpassen
 
 		$extrasIds = ArrayHelper::getColumn($this->extras_ids, 'extra_id');
 		$extrasCount = ArrayHelper::getColumn($this->extras_ids, 'extra_count');

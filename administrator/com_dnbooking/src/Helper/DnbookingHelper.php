@@ -58,8 +58,14 @@ class DnbookingHelper
 			$infos = json_decode($infos, true);
 		}
 
-		$visitorsPackage   = (int) $infos['visitorsPackage'];
-		$visitorsAdmission = (int) $infos['visitors'];
+		$visitorsPackage = 0;
+		$visitorsAdmission = 0;
+
+		if($infos != [])
+		{
+			$visitorsPackage   = (int) $infos['visitorsPackage'];
+			$visitorsAdmission = (int) $infos['visitors'];
+		}
 
 		$totalCosts = $extrasTotal;
 
@@ -67,7 +73,10 @@ class DnbookingHelper
 
 		if (!$isHolidayOrWeekend)
 		{
-			$totalCosts       += (float) $roomParams['priceregular'];
+			if($roomParams != [])
+			{
+				$totalCosts       += (float) $roomParams['priceregular'];
+			}
 
 			$packagePriceRegular = $params->get('packagepriceregular');
 			$totalCosts          += $packagePriceRegular * $visitorsPackage;
@@ -77,7 +86,10 @@ class DnbookingHelper
 		}
 		else
 		{
-			$totalCosts      += (float) $roomParams['pricecustom'];
+			if($roomParams != [])
+			{
+				$totalCosts       += (float) $roomParams['pricecustom'];
+			}
 
 			$packagePriceCustom = $params->get('packagepricecustom');
 			$totalCosts         += $packagePriceCustom * $visitorsPackage;
