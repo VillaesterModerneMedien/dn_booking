@@ -52,7 +52,7 @@ class ReservationField extends FormField
 		// Load language
 		$languages = LanguageHelper::getContentLanguages(array(0, 1), false);
 		Factory::getLanguage()->load('com_dnbooking', JPATH_ADMINISTRATOR);
-		
+
 		// The active reservation id field.
 		$value = (int) $this->value > 0 ? (int) $this->value : '';
 
@@ -87,7 +87,7 @@ class ReservationField extends FormField
 				);
 
 				Text::script('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED');
-				
+
 				$scriptSelect[$this->id] = true;
 			}
 		}
@@ -105,8 +105,8 @@ class ReservationField extends FormField
 		}
 
 		$urlSelect = $linkReservations . '&amp;function=jSelectReservation_' . $this->id;
-		$urlEdit   = $linkReservation . '&amp;task=reservation.edit&amp;id=\' + document.getElementById("' . $this->id . '_id").value + \'';
-		$urlNew    = $linkReservation . '&amp;task=reservation.add';
+		$urlEdit   = $linkReservation . '&amp;task=reservation.details&amp;id=\' + document.getElementById("' . $this->id . '_id").value + \'';
+		$urlNew    = $linkReservation . '&amp;task=reservation.details';
 
 		if ($value)
         {
