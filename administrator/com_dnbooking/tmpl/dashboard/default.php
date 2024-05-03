@@ -18,63 +18,63 @@ use Joomla\CMS\Router\Route;
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useStyle('com_dnbooking.daydashboards');
-
-$itemsToday = DnbookingHelper::filterReservationsToday($this->items);
+$wa->useStyle('com_dnbooking.reservation');
+$app = Factory::getApplication();
+$user = $app->getIdentity();
 
 ?>
-<script>
-
-    document.addEventListener("DOMContentLoaded", function() {
-        var container = document.querySelector('.view-daydashboards');
-
-        var buttonStatusGroup = container.querySelector('.button-status-group');
-        var buttonChooseDay = container.querySelector('.button-chooseDay');
-
-        if (buttonStatusGroup) {
-            buttonStatusGroup.removeAttribute('disabled');
-        }
-        if (buttonChooseDay) {
-            buttonChooseDay.removeAttribute('disabled');
-        }
-    });
 
 
-</script>
-<?php if(!empty($itemsToday)) : ?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6">
+            <div class="card text-white bg-primary">
 
-<form action="<?php echo Route::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
+                <div class="card-header">
+                    <h4><?= Text::_('COM_DNBOOKING_DASHBOARD_INFOS_HEADLINE') ?></h4>
+                </div>
 
-    <div class="card-columns daydashboardsContainer">
-        <?php foreach (array_chunk($itemsToday, 3) as $items) : ?>
-            <?php foreach ($items as $item) : ?>
-                <?php $this->item = $item; ?>
-                <?php echo $this->loadTemplate('item'); ?>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-    </div>
+                <div class="card-body">
+                    <p>
+	                    <?= Text::_('COM_DNBOOKING_DASHBOARD_INFOS_TEXT1') ?>
+                    <hr />
+                    <h4><?= Text::_('COM_DNBOOKING_DASHBOARD_SUPPORT_HEADLINE') ?></h4>
+                    </p>                 <p>
+	                    <?= Text::_('COM_DNBOOKING_DASHBOARD_SUPPORT_TEXT') ?>
+                    </p>
 
-    <input type="hidden" name="task" value="" />
-    <input type="hidden" name="currentDate" value="" />
-    <?php echo HTMLHelper::_('form.token'); ?>
+                </div>
 
-	<?php echo HTMLHelper::_(
-		'bootstrap.renderModal',
-		'chooseDayModal',
-		[
-			'title'  => Text::_('COM_DNBOOKING_CHOOSE_DAY_HEADLINE'),
-			'footer' => $this->loadTemplate('batch_footer'),
-		],
-		$this->loadTemplate('batch_body')
-	); ?>
+            </div>
+        </div>
 
-</form>
+        <div class="col-6">
+            <div class="card text-white bg-primary">
 
-<?php else : ?>
+                <div class="card-header">
+                    <h4><?= Text::_('COM_DNBOOKING_DASHBOARD_INFOS_HEADLINE') ?></h4>
+                </div>
 
-    <div class="alert alert-info">
-        <h4 class="alert-heading"><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS'); ?></h4>
-        <p><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS_DESC'); ?></p>
-    </div>
+                <div class="card-body">
+                    <h3><?php echo Text::_('COM_DNBOOKING_DASHBOARD_STATS_HEADLINE');?></h3>
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><?php echo Text::_('COM_DNBOOKING_DASHBOARD_RESERVATIONS_TOTAL_HEADLINE'); ?></td>
+                            <td><?php echo $this->statistic->reservations;?></td>
+                        </tr>
+                        <tr>
+                            <td><?php echo Text::_('COM_DNBOOKING_DASHBOARD_CUSTOMERS_TOTAL_HEADLINE'); ?></td>
+                            <td><?php echo $this->statistic->customers;?></td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-<?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+
+</div>
