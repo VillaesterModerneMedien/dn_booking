@@ -109,8 +109,6 @@
         <field
                 name="room_id"
                 type="Rooms"
-                label="COM_DNBOOKING_FIELD_ROOM_ID_LABEL"
-                description="COM_DNBOOKING_ROOM_LABEL"
                 default="0"
                 required="true"
                 header="COM_DNBOOKING_FIELD_SELECT_ROOM"

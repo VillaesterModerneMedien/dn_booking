@@ -30,7 +30,6 @@ extract($displayData);
  * @var   boolean  $hidden          Is this field hidden in the form?
  * @var   string   $hint            Placeholder for the field.
  * @var   string   $id              DOM id of the field.
- * @var   string   $label           Label of the field.
  * @var   string   $labelclass      Classes to apply to the label.
  * @var   boolean  $multiple        Does this field support multiple values?
  * @var   string   $name            Name of the input field.
@@ -63,6 +62,7 @@ list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
 $columns=3;
 $counter=0;
+
 ?>
 <fieldset id="<?php echo $id; ?>" class="<?php echo trim($class . ' radio'); ?>"
     <?php echo $disabled ? 'disabled' : ''; ?>
@@ -71,6 +71,12 @@ $counter=0;
     <?php echo $dataAttribute; ?>>
 
     <?php if (!empty($options)) : ?>
+
+    <?php
+        if (isset($options[0]->text) && $options[0]->text === "COM_DNBOOKING_FIELD_SELECT_ROOM") {
+            array_shift($options);
+        }
+    ?>
 
     <ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@s uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
         <?php foreach ($options as $i => $room) : ?>

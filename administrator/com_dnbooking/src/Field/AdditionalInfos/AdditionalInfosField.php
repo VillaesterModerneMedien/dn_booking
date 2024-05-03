@@ -89,7 +89,7 @@ class AdditionalInfosField extends SubformField
 					break;
 				case 'calendar':
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" 
-	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y" format="%d.%m.%Y"   class="' . $firstClass . '" />';
+	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y"  class="' . $firstClass . '" />';
 
 					break;
 				case 'number':

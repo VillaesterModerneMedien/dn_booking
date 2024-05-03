@@ -81,7 +81,11 @@ class HtmlView extends BaseHtmlView
 
 		$input = $app->input;
 		$date = $app->getUserState('com_dnbooking.daydashboards.currentDate', date('Y-m-d'));
-		$date = $date['currentDate'];
+
+		if(is_array($date))
+		{
+			$date = $date['currentDate'];
+		}
 
 		if($date == '')
 		{

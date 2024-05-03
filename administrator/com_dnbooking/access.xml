@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <access component="com_dnbooking">
 	<section name="component">
-
 		<action name="core.create" title="JACTION_CREATE" />
 		<action name="core.delete" title="JACTION_DELETE" />
 		<action name="core.edit" title="JACTION_EDIT" />
-
+		<action name="core.manage" title="JACTION_MANAGE" />
 		<action name="customer.create" title="JACTION_CREATE_CUSTOMER" />
 		<action name="customer.delete" title="JACTION_DELETE_CUSTOMER" />
 		<action name="customer.edit" title="JACTION_EDIT_CUSTOMER" />
-
+		<action name="reservation.create" title="JACTION_CREATE_RESERVATION" />
+		<action name="reservation.delete" title="JACTION_DELETE_RESERVATION" />
+		<action name="reservation.edit" title="JACTION_EDIT_RESERVATION" />
 	</section>
 
 </access>

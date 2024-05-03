@@ -41,6 +41,8 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 
 </script>
+<?php if(!empty($itemsToday)) : ?>
+
 <form action="<?php echo Route::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
 
     <div class="card-columns daydashboardsContainer">
@@ -67,3 +69,12 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 	); ?>
 
 </form>
+
+<?php else : ?>
+
+    <div class="alert alert-info">
+        <h4 class="alert-heading"><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS'); ?></h4>
+        <p><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS_DESC'); ?></p>
+    </div>
+
+<?php endif; ?>

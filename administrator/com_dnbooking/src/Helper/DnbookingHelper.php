@@ -118,7 +118,11 @@ class DnbookingHelper
 		$input = $app->input;
 
 		$currentDate = $app->getUserState('com_dnbooking.daydashboards.currentDate', date('Y-m-d'));
-		$currentDate = $currentDate['currentDate'];
+
+		if(is_array($currentDate))
+		{
+			$currentDate = $currentDate['currentDate'];
+		}
 
 		if($currentDate == '')
 		{

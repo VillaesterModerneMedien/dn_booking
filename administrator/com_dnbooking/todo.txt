@@ -1,10 +1,8 @@
 TODO:
 
-- Mailtemplates fertig machen (ggf Mario)
-- Geburtstagskinder ausgeben / prüfen (mario)
+- Nur Tage anzeigen Dayshboard, die auch gebucht sind
 
-- Daydashboards Fehler ausgeben wenn nix
-- Reservierung Neu aus Backend fixen
+- Idee Guido: Buchung erst "annnehmen" und auf Pending setzen nach Anclicken eines Bestätitgungslinks..... -->
 
 - ggf. Rechnung PDF
 
