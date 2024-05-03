@@ -322,21 +322,25 @@ class DnbookingHelper
 
             $itemsCount = count($items);
             if($model === 'daydashboards'){
-                $htmlLayout = new FileLayout('daydashboards.pdfs.daysheetgrid', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+				$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet_grid', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+				$html = $htmlLayout->render($items);
+	            $mpdf->WriteHTML($html);
+
             }
             else{
                 $htmlLayout = new FileLayout('daydashboards.pdfs.daysheet', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
+	            for ($x = 0; $x < $itemsCount; $x++)
+	            {
+		            $html = $htmlLayout->render($items[$x]);
+		            $mpdf->WriteHTML($html);
+		            $mpdf->SetHTMLFooter($footerHTML);
+		            if ($x < ($itemsCount -1))
+		            {
+			            $mpdf->AddPage();
+		            }
+	            }
             }
-            for ($x = 0; $x < $itemsCount; $x++)
-            {
-                $html = $htmlLayout->render($items[$x]);
-                $mpdf->WriteHTML($html);
-                $mpdf->SetHTMLFooter($footerHTML);
-                if ($x < ($itemsCount -1))
-                {
-                    $mpdf->AddPage();
-                }
-            }
+
             $mpdf->Output('daysheet-' . $date . '.pdf', 'D');
         } catch (MpdfException $e) {
             echo $e->getMessage();
