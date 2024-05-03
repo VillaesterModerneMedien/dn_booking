@@ -4,7 +4,7 @@
 ?>
 <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
 
-	<div class="firstCard card text-white bg-primary border-secondary mb-3">
+	<div class="firstCard card mb-3">
 		<div class="card-header card-header-reservation">
 			<h3>
 				<?= Text::_('COM_DNBOOKING_HEADING_CUSTOMER_HEADLINE'); ?>

@@ -4,7 +4,7 @@
     $form = $displayData->get('form');
 ?>
 <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-    <div class="firstCard card text-white bg-secondary mb-3">
+    <div class="firstCard card mb-3">
         <div class="card-header">
             <!--  <h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_HEADLINE'); ?></h3> -->
         </div>

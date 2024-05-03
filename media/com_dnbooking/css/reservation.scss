@@ -4,38 +4,6 @@
     margin-top: 20px;
 }
 
-.form-select, .custom-select {
-    background-color: $dark;
-}
-.choices[data-type*="select-one"] .choices__inner, .choices[data-type*="select-multiple"] .choices__inner {
-    background-color: $dark;
-}
-
-.alert-secondary {
-    background-color: $secondary;
-    color: white;
-}
-
-.border-primary {
-     border-color: $primary !important;
- }
-
-.border-secondary {
-    --bs-border-opacity: 1;
-    border-color: $secondary !important;
-    border: 1px solid;
-}
-
-.border-success {
-    --bs-border-opacity: 1;
-    border-color: rgba(var(--bs-success-rgb), var(--bs-border-opacity)) !important;
-}
-
-.border-info {
-    --bs-border-opacity: 1;
-    border-color: rgba(var(--bs-info-rgb), var(--bs-border-opacity)) !important;
-}
-
 .card-header-reservation{
     display: flex;
     justify-content: space-between;
@@ -52,4 +20,11 @@
 }
 .alignRight{
     text-align: right;
+}
+.navbar.navbar-expand-lg{
+    margin-bottom: -28px;
+
+}
+#navbarNav.nav-link.active{
+    background-color: var(--card-bg);
 }

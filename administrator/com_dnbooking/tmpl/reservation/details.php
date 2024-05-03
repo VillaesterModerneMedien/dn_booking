@@ -68,11 +68,11 @@ if (empty($this->form->getValue('reservation_token')))
         <div class="row">
 
             <div class="col-md-6">
-                <div class="card text-white bg-secondary mb-3">
+                <div class="card bg-secondary mb-3">
                     <div class="card-header"><h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_EDIT_HEADLINE'); ?></h3>
                     </div>
                     <div class="card-body">
-                        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+                        <nav class="navbar navbar-expand-lg" data-bs-theme="light">
                             <div class="container-fluid">
                                 <div class="collapse navbar-collapse" id="navbarNav">
                                     <ul class="navbar-nav nav-tabs" id="myTabs" role="tablist">
@@ -130,7 +130,7 @@ if (empty($this->form->getValue('reservation_token')))
             </div>
 
             <div class="col-md-6">
-                <div class="card text-white bg-secondary mb-3">
+                <div class="card border-primary bg-secondary mb-3">
                     <div class="card-header" style="display: flex; justify-content: space-between">
                         <h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_SUMMARY_HEADLINE'); ?></h3>
                         <joomla-toolbar-button id="toolbar-print" task="reservation.printDaysheet">
