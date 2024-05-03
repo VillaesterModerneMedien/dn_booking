@@ -115,7 +115,7 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_('COM_DNBOOKING_HEADLINE_CUSTOMERS'), 'list com_dnbooking');
 
-
+		/*
 		echo '<pre>';
 		var_dump('core.create' . $canDo->get('core.create'));
 		var_dump('core.edit' . $canDo->get('core.edit'));
@@ -127,6 +127,7 @@ class HtmlView extends BaseHtmlView
 		var_dump('reservation.edit' . $canDo->get('reservation.edit'));
 		var_dump('reservation.delete' . $canDo->get('reservation.delete'));
 		echo '</pre>';
+		*/
 
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
