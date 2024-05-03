@@ -1,6 +1,19 @@
 @import "variables";
 
-.daysheetItem {
+/*Geteilte Styles*/
+.h1-headline-pdf {
+  font-size: 2em;
+  margin: 0;
+  padding: 0;
+  font-family: 'Chewy';
+}
+h2 {
+  font-family: 'chelvetica';
+}
+
+
+/**SingleAnsicht**/
+.daysheetItem{
   position: absolute;
   top: 0;
   left: 0;
@@ -8,62 +21,76 @@
   height: 80%;
 }
 
-.header{
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  height: 3cm;
-  padding: 1cm;
-  background: $blue;
-  color: white;
-
-  .h1-headline-pdf{
-    font-size: 2em;
-    margin: 0;
-    padding: 0;
-    font-family: 'Chewy';
+  .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3cm;
+    padding: 1cm;
+    background: $blue;
+    color: white;
   }
-
-  h2{
+  #logo {
+    position: absolute;
+    z-index: 1000;
+    right: 0px;
+    top: 0px;
+    width: 200px;
+    display: block;
+  }
+  .daysheetBody {
+    padding: 0.5cm 2cm 0cm 2cm;
     font-family: 'chelvetica';
+    table {
+      width: 100%;
+      display: block;
+      border-top: 1px solid #000;
+      border-bottom: 1px solid #000;
+      font-family: 'chelvetica';
+
+      th, td {
+        text-align: left;
+        font-family: 'chelvetica';
+        font-weight: bold;
+      }
+
+      .alignRight {
+        text-align: right;
+      }
+    }
+
   }
-}
-
-#logo{
-  position: absolute;
-  z-index: 1000;
-  right: 0px;
-  top: 0px;
-  width: 200px;
-  display: block;
-}
-
-.daysheetBody{
-  padding: 0.5cm 2cm 0cm 2cm;
-  font-family: 'chelvetica';
-
-  table{
+  table.footer {
     width: 100%;
     display: block;
     border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
     font-family: 'chelvetica';
-
-    th,td{
-      text-align: left;
-      font-family: 'chelvetica';
-      font-weight: bold;
-    }
-
-    .alignRight{
-      text-align: right;
-    }
   }
+
+/*Gridansicht*/
+.daysheetGrid{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-table.footer {
+.gridHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1cm;
+  padding: 0.5cm 2cm;
+  background: $blue;
+  color: white;
+}
+
+table.reservationsGrid {
   width: 100%;
-  display: block;
-  border-top: 1px solid #000;
-  font-family: 'chelvetica';
+  border:none!important;
+
+}
+table.singleReservation {
+  border:1px solid black;
 }
