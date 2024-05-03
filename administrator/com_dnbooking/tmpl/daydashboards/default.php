@@ -10,7 +10,6 @@
 \defined('_JEXEC') or die;
 
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -24,12 +23,10 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
 
 ?>
 <script>
-
     document.addEventListener("DOMContentLoaded", function() {
-        var container = document.querySelector('.view-daydashboards');
-
-        var buttonStatusGroup = container.querySelector('.button-status-group');
-        var buttonChooseDay = container.querySelector('.button-chooseDay');
+        const container = document.querySelector('.view-daydashboards');
+        const buttonStatusGroup = container.querySelector('.button-status-group');
+        const buttonChooseDay = container.querySelector('.button-chooseDay');
 
         if (buttonStatusGroup) {
             buttonStatusGroup.removeAttribute('disabled');
@@ -38,11 +35,7 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
             buttonChooseDay.removeAttribute('disabled');
         }
     });
-
-
 </script>
-<?php if(!empty($itemsToday)) : ?>
-
 <form action="<?php echo Route::_('index.php?option=com_dnbooking&view=daydashboards'); ?>" method="post" name="adminForm" id="adminForm">
 
     <div class="card-columns daydashboardsContainer">
@@ -58,23 +51,14 @@ $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
     <input type="hidden" name="currentDate" value="" />
     <?php echo HTMLHelper::_('form.token'); ?>
 
-	<?php echo HTMLHelper::_(
-		'bootstrap.renderModal',
-		'chooseDayModal',
-		[
-			'title'  => Text::_('COM_DNBOOKING_CHOOSE_DAY_HEADLINE'),
-			'footer' => $this->loadTemplate('batch_footer'),
-		],
-		$this->loadTemplate('batch_body')
-	); ?>
+    <?php echo HTMLHelper::_(
+        'bootstrap.renderModal',
+        'chooseDayModal',
+        [
+            'title'  => Text::_('COM_DNBOOKING_CHOOSE_DAY_HEADLINE'),
+            'footer' => $this->loadTemplate('batch_footer'),
+        ],
+        $this->loadTemplate('batch_body')
+    ); ?>
 
 </form>
-
-<?php else : ?>
-
-    <div class="alert alert-info">
-        <h4 class="alert-heading"><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS'); ?></h4>
-        <p><?php echo Text::_('COM_DNBOOKING_DAYDASHBOARDS_NO_RESERVATIONS_DESC'); ?></p>
-    </div>
-
-<?php endif; ?>

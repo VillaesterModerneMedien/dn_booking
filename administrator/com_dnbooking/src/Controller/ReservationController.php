@@ -283,11 +283,11 @@ class ReservationController extends FormController
 	{
 		$app = Factory::getApplication();
 		$id = $this->input->getInt('id');
-
 		$model = $this->getModel();
+		$modelName = $model->getName();
 		$items = array($model->getItem($id));
 
-		DnbookingHelper::printDaysheet($items);
+		DnbookingHelper::printDaysheet($items, $modelName, 'P');
 
 		$app->close();
 	}
