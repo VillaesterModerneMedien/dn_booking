@@ -79,10 +79,11 @@ class DaydashboardsController extends AdminController
 		$app = Factory::getApplication();
 
 		$model      = $this->getModel();
+		$modelName       = $model->getName();
 		$items      = $model->getItems();
 		$itemsToday = DnbookingHelper::filterReservationsToday($items);
 
-		DnbookingHelper::printDaysheet($itemsToday);
+		DnbookingHelper::printDaysheet($itemsToday, $modelName, 'L');
 
 		$app->close();
 	}

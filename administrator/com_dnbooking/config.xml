@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <inlinehelp button="show"/>
@@ -24,7 +25,7 @@
             label="COM_DNBOOKING_CONFIG_OPENINGHOURSSETTINGS_LABEL"
             addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\OpeningHours"
     >
-        <field name="closed_color" type="color" default="" label="COM_DNBOOKING_CONFIG_CLOSED_COLOR_LABEL"
+        <field name="closed_color" type="color" default="#FF0000" label="COM_DNBOOKING_CONFIG_CLOSED_COLOR_LABEL"
                description="COM_DNBOOKING_CONFIG_CLOSEDCOLOR_DESC"/>
 
         <field name="regular_opening_hours" type="subform"
@@ -58,38 +59,55 @@
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_MONDAY"
                         description="COM_DNBOOKING_CONFIG_DAY_MONDAY_DESC"
+                        default="regular_opening_hoursclosed"
                 />
                 <field
                         name="opening_hours_tuesday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_TUESDAY"
                         description="COM_DNBOOKING_CONFIG_DAY_TUESDAY_DESC"
+                        default="regular_opening_hoursclosed"
+
                 />
                 <field
                         name="opening_hours_wednesday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY_DESC"/>
+                        description="COM_DNBOOKING_CONFIG_DAY_WEDNESDAY_DESC"
+                        default="regular_opening_hoursclosed"
+
+                />
                 <field
                         name="opening_hours_thursday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_THURSDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_THURSDAY_DESC"/>
+                        description="COM_DNBOOKING_CONFIG_DAY_THURSDAY_DESC"
+                        default="regular_opening_hoursclosed"
+
+                />
                 <field
                         name="opening_hours_friday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_FRIDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_FRIDAY_DESC"/>
+                        description="COM_DNBOOKING_CONFIG_DAY_FRIDAY_DESC"
+                        default="regular_opening_hoursclosed"
+
+                />
                 <field
                         name="opening_hours_saturday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_SATURDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_SATURDAY_DESC"/>
+                        description="COM_DNBOOKING_CONFIG_DAY_SATURDAY_DESC"
+                        default="regular_opening_hoursclosed"
+
+                />
                 <field
                         name="opening_hours_sunday"
                         type="OpeningHours"
                         label="COM_DNBOOKING_CONFIG_DAY_SUNDAY"
-                        description="COM_DNBOOKING_CONFIG_DAY_SUNDAY_DESC"/>
+                        description="COM_DNBOOKING_CONFIG_DAY_SUNDAY_DESC"
+                        default="regular_opening_hoursclosed"
+                />
             </form>
         </field>
 
@@ -175,7 +193,7 @@
                         name="startDate"
                         type="calendar"
                         label="COM_DNBOOKING_FIELD_HOLIDAYS_STARTDATE_LABEL"
-                        translateformat="false"
+                        translateformat="true"
                         showtime="false"
                         required="true"
                         filter="server_utc"
@@ -186,7 +204,7 @@
                         name="endDate"
                         type="calendar"
                         label="COM_DNBOOKING_FIELD_HOLIDAYS_ENDDATE_LABEL"
-                        translateformat="false"
+                        translateformat="true"
                         showtime="false"
                         required="true"
                         filter="server_utc"

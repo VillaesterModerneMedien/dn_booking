@@ -9,7 +9,6 @@
 
     defined('_JEXEC') or die;
 
-
     $app = Factory::getApplication();
     $item = ArrayHelper::fromObject($displayData);
     $customer = $item['customer'];
