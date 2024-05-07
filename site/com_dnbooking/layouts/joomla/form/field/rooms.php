@@ -10,6 +10,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Input\Input;
 use YOOtheme\Config;
@@ -57,6 +58,8 @@ extract($displayData);
  */
 $format = '<input hidden type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s>';
 $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
+$input = Factory::getApplication()->input;
+
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 $columns=3;
@@ -119,7 +122,7 @@ $counter=0;
                     <h3 class="el-title uk-margin-top uk-margin-remove-bottom">
                             <?php echo Text::alt($room->title, $alt); ?>
                     </h3>
-                    <div class="el-meta uk-text-meta uk-margin-top">
+                    <div class="el-meta uk-text-meta ">
 		                <?= sprintf(Text::_('COM_DNBOOKING_ROOMSGRID_PERSONS'), $room->personsmin, $room->personsmax);?>
                     </div>
                     <div class="el-content uk-panel uk-margin-top">

@@ -96,6 +96,15 @@
                             room.removeEventListener('click', handleRoomClick);
                             room.addEventListener('click', handleRoomClick);
                         }
+                        if(blocked.isHolidayOrWeekend === 1)
+                        {
+                            room.classList.add('holiday');
+                            room.classList.remove('regular');
+                        }
+                        else {
+                            room.classList.add('regular');
+                            room.classList.remove('holiday');
+                        }
                     });
             }
         };

@@ -28,6 +28,26 @@
     }
 }
 
+.room{
+    &.regular{
+        .priceregular{
+            display:block;
+        }
+        .pricecustom {
+            display: none;
+        }
+    }
+    &.holiday{
+        .priceregular{
+            display:none;
+        }
+        .pricecustom{
+            display:block;
+        }
+    }
+}
+
+
 .activeRoom{
     .el-item{
         border: 2px solid green;

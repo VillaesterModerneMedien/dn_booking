@@ -79,7 +79,8 @@ foreach ($params['weekly_opening_hours'] as $day => $value) {
 foreach ($params['regular_opening_hours'] as $name => $value) {
     $colors[$name] = $value;
 }
-$colors['regular_opening_hours'.$counter]['openinghour_color'] = $closedColor;
+$colors['regular_opening_hoursclosed']['openinghour_color'] = $closedColor;
+
 
 $settings = [
    'zeiten' => $zeiten,

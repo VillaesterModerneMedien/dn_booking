@@ -25,6 +25,19 @@
   opacity: 0.3;
 }
 
+.room.regular .priceregular {
+  display: block;
+}
+.room.regular .pricecustom {
+  display: none;
+}
+.room.holiday .priceregular {
+  display: none;
+}
+.room.holiday .pricecustom {
+  display: block;
+}
+
 .activeRoom .el-item {
   border: 2px solid green;
 }

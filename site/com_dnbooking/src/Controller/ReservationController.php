@@ -137,14 +137,22 @@ class ReservationController extends AdminReservationController
 
 		if($time){
 			if ($customOpeningHour) {
+
+				$openingCount = count($regularOpeningHour);
 				$a = $customOpeningHour['opening_time'];
-				$b = $regularOpeningHour['regular_opening_hours' . $a];
-				$startTime = $b['starttime'] . ':00';
-				$endTime = $b['endtime'] . ':00';
-				$isOpen = $this->_checkTime($time, $startTime, $endTime);
-				$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
-				$blockedRooms['start'] = $startTime;
-				$blockedRooms['end'] = $endTime;
+				if($a == $openingCount){
+					$isOpen = false;
+					$blockedRooms['times'] = $isOpen ? '' : 'dayclosed';
+				}else{
+					$b = $regularOpeningHour['regular_opening_hours' . $a];
+					$startTime = $b['starttime'] . ':00';
+					$endTime = $b['endtime'] . ':00';
+					$isOpen = $this->_checkTime($time, $startTime, $endTime);
+					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
+					$blockedRooms['start'] = $startTime;
+					$blockedRooms['end'] = $endTime;
+				}
+
 			}
 
 			$a = ($weekdayNumber != -1) ? $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]] : false;
