@@ -46,7 +46,7 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
 
 ?>
 <div class="col-12">
-    <div class="card text-white bg-secondary">
+    <div class="card">
 
     <div class="card-header">
             <h3>

@@ -22,6 +22,7 @@ $params = ComponentHelper::getParams('com_dnbooking');
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.calendar');
 $wa->useStyle('com_dnbooking.admin-calendar');
+$wa->useScript('bootstrap.modal');
 
 
 $user      = Factory::getApplication()->getIdentity();
