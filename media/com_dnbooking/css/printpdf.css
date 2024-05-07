@@ -84,13 +84,33 @@ table.footer {
   color: white;
 }
 
-table.reservationsGrid {
+.daysheetBody table.reservationsGrid {
   width: 100%;
   border: none !important;
 }
 
 table.singleReservation {
+  border-collapse: collapse;
   border: 1px solid black;
+}
+table.singleReservation th {
+  background-color: #DDD;
+}
+
+.border-bottom {
+  border-bottom: 1px solid black;
+}
+
+.border-top {
+  border-top: 1px solid black;
+}
+
+.checkbox {
+  border: 1px solid black;
+}
+
+table, td, tr {
+  vertical-align: top;
 }
 
 /*# sourceMappingURL=printpdf.css.map */
