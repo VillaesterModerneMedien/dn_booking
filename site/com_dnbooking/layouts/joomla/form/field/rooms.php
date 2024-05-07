@@ -59,7 +59,6 @@ $format = '<input hidden type="radio" id="%1$s" name="%2$s" value="%3$s" %4$s>';
 $alt    = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $name);
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
-
 $columns=3;
 $counter=0;
 
@@ -111,7 +110,6 @@ $counter=0;
 			                'width' => null,
 			                'height' => null,
 			                'uk-img' => true,
-			                //'uk-cover' => true,
 			                'thumbnail' => true,
 		                ]);
 

@@ -17,8 +17,6 @@ use Joomla\Input\Input;
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
 
 $form = $displayData;
-$columns=3;
-$counter=0;
 
 ?>
 	<div class="uk-container">
