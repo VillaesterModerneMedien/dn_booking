@@ -18,3 +18,25 @@ export function filterSpecial(blockedRooms) {
     });
     return result;
 }
+
+export function setMinPackage(packageField){
+    const minPackage = 5;
+    packageField.setAttribute('min', minPackage);
+    packageField.value = minPackage;
+}
+
+export function checkDateInput(dateInput) {
+    function parseDateString(dateString) {
+        let [datePart, timePart] = dateString.split(' ');
+        let [day, month, year] = datePart.split('.');
+        let [hours, minutes, seconds] = timePart.split(':');
+        return new Date(year, month - 1, day, hours, minutes, seconds);
+    }
+
+    let selectedDate = parseDateString(dateInput);
+
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 1);
+
+    return selectedDate >= minDate;
+}

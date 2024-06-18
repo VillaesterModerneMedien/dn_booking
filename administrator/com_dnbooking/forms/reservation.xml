@@ -162,13 +162,15 @@
                 cols="50"
             />
 
-        <field
+       <!--
+            <field
                 name="general_notes"
                 type="textarea"
                 label="COM_DNBOOKING_FIELD_GENERAL_NOTES_LABEL"
                 rows="10"
                 cols="50"
             />
+        -->
 
         <field
                 name="customer_notes"

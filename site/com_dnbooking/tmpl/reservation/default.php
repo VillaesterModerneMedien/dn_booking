@@ -77,9 +77,9 @@ $this->form->setValue('reservation_token', null, $reservationToken);
     <section class="stickyBottom uk-section uk-section-default">
         <div class="uk-grid uk-grid-small uk-child-width-1-3@m " uk-grid>
             <div>
-                <a href="#" class="uk-button uk-button-primary" dnprev>
+                <!--<a href="#" class="uk-button uk-button-primary" dnprev>
                     zurück
-                </a>
+                </a>-->
             </div>
             <div>
 

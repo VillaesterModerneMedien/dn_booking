@@ -1,6 +1,71 @@
 (function (exports) {
     'use strict';
 
+    function createSingleCheck(extra){
+        const input = extra.querySelector('input[type="number"]');
+        const label = extra.querySelector('label');
+        input.setAttribute('hidden', 'true');
+        label.setAttribute('hidden', 'true');
+
+        extra.addEventListener('click', function(){
+            const value = input.value;
+            if (value === '0') {
+                input.value = '1';
+                extra.classList.add('checked');
+            } else {
+                input.value = '0';
+                extra.classList.remove('checked');
+            }
+        });
+    }
+
+    function resetExtraOptions(extraOptions){
+        extraOptions.forEach(extra => {
+            const input = extra.querySelector('input[type="number"]');
+            input.value = '0';
+            extra.classList.remove('checked');
+        });
+    }
+    function createOptionsCheck(extraOptions){
+        extraOptions.forEach(extra => {
+            const input = extra.querySelector('input[type="number"]');
+            const label = extra.querySelector('label');
+            input.setAttribute('hidden', 'true');
+            label.setAttribute('hidden', 'true');
+
+            extra.addEventListener('click', function(){
+                const value = input.value;
+                if (value === '0') {
+                    resetExtraOptions(extraOptions);
+                    input.value = '1';
+                    extra.classList.add('checked');
+                } else {
+                    input.value = '0';
+                    extra.classList.remove('checked');
+                }
+            });
+        });
+    }
+    function setCustomExtras(extras){
+        const singleCheck = [14];
+        const optionsCheck = [16,17,18,19,20];
+        let extraOptions = [];
+
+        extras.forEach(extra => {
+            let extraID = extra.getAttribute('data-extra-id');
+            if (singleCheck.includes(parseInt(extraID))) {
+                createSingleCheck(extra);
+            }
+            else if (optionsCheck.includes(parseInt(extraID))) {
+                if(extraOptions.includes(extra) === false) {
+                    extraOptions.push(extra);
+                }
+            }
+        });
+
+        createOptionsCheck(extraOptions);
+    }
+
     function filterSpecial(blockedRooms) {
         let roomSets = [
             {
@@ -22,10 +87,38 @@
         return result;
     }
 
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
+
+    function checkDateInput(dateInput) {
+        function parseDateString(dateString) {
+            let [datePart, timePart] = dateString.split(' ');
+            let [day, month, year] = datePart.split('.');
+            let [hours, minutes, seconds] = timePart.split(':');
+            return new Date(year, month - 1, day, hours, minutes, seconds);
+        }
+
+        let selectedDate = parseDateString(dateInput);
+
+        const minDate = new Date();
+        minDate.setDate(minDate.getDate() + 1);
+
+        return selectedDate >= minDate;
+    }
+
     /**
      * @copyright  (C) Add your copyright here
      * @license    GNU General Public License version 2 or later; see LICENSE.txt
      */
+
+    /**
+     * State if chosen date and time is valid
+     * @type {boolean}
+     */
+    let dateValid = false;
 
     /**
      * Current step in the booking process.
@@ -38,28 +131,6 @@
      * @type {number}
      */
     let maxSteps = 1;
-
-    /**
-     * Last value of the children number input.
-     * @type {number}
-     */
-    let lastValue = 0;
-
-    /**
-     * Changes the number of children form fields based on the input value.
-     * @param {HTMLInputElement} input - The input element for the number of children.
-     */
-    function changeChildrenNumber(input) {
-        const currentValue = parseInt(input, 10) || 0;
-
-        if (currentValue > lastValue) {
-            addFormField();
-        } else if (currentValue < lastValue) {
-            removeFormField();
-        }
-
-        lastValue = currentValue;
-    }
 
     /**
      * Updates the room status based on the selected date and number of visitors.
@@ -136,9 +207,11 @@
         xhr.onload = function() {
             if (this.status === 200) {
                 let blocked = JSON.parse(this.responseText);
-                step = 2;
+
                 document.querySelectorAll('.roomList .room');
                 if((blocked.times === undefined || blocked.times === '') && date !== '' && time !== ''){
+                    dateValid = true;
+                    step = 2;
                     setStep(step);
                     updateRoomStatus(date, visitors);
                 }
@@ -267,9 +340,12 @@
     function checkRequiredFields()
     {
         const requiredFields = document.querySelectorAll('.required');
-        let valid = true;
-        requiredFields.forEach(function(field){
+        const radioButtons = document.querySelectorAll('#jform_room_id input[type="radio"]');
+        const roomList = document.getElementById('jform_room_id');
 
+        let valid = true;
+
+        requiredFields.forEach(function(field){
         if(field.value === ''){
                 field.classList.add('errorField');
                 field.addEventListener('input', function(){
@@ -278,72 +354,19 @@
                 valid = false;
             }
         });
-      return valid;
-    }
-    /**
-     * Initializes the reservation process when the DOM is ready.
-     */
-    document.addEventListener('DOMContentLoaded', function () {
-
-        const dateInput = document.getElementById('jform_reservation_date');
-        const personsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
-        const birthdaychildrenInput = document.getElementById('jform_additional_info__birthdaychildren-lbl');
-        const checkBooking = document.getElementById('checkBooking');
-        const checkStatus = document.getElementById('checkStatus');
-        //const inputs = document.querySelectorAll('.checkrooms');
-        const buttons = document.querySelectorAll("button");
-        const uniqueSteps = new Set();
-        const elements = document.querySelectorAll('[data-step]');
-
-        elements.forEach(element => {
-            const stepValue = element.getAttribute('data-step');
-            uniqueSteps.add(stepValue);
-        });
-        maxSteps = uniqueSteps.size;
-
-        checkBooking.addEventListener('click', function() {
-            if(checkRequiredFields() == true){
-                renderOrderHTML();
+        for (const radioButton of radioButtons) {
+            if (radioButton.checked) {
+                valid = true;
+                break;
             }
             else {
-                setMessage('Bitte füllen Sie alle Pflichtfelder aus');
+                roomList.classList.add('errorField');
+                valid = false;
             }
-        });
-        dateInput.addEventListener('change', function() {
-            step=1;
-            setStep(step);
-        });
+        }
 
-        personsPackageInput.addEventListener('change', function() {
-            updateRoomStatus(dateInput.value, personsPackageInput.value);
-        });
-        birthdaychildrenInput.addEventListener('change', function() {
-            changeChildrenNumber(birthdaychildrenInput.value);
-        });
-        checkStatus.addEventListener('click', function(event) {
-            event.preventDefault();
-            checkDate(dateInput.value, personsPackageInput.value);
-        });
-        buttons.forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-            });
-        });
-        document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
-            button.addEventListener('click', event => {
-                if(event.target.hasAttribute('dnnext')) {
-                    if (step < maxSteps){
-                        step++;
-                    }
-                } else if(event.target.hasAttribute('dnprev')) {
-                    step = Math.max(1, step - 1);
-                }
-
-                setStep(step);
-            });
-        });
-        setStep(step);
-    });
+      return valid;
+    }
 
     function setSubforms() {
         const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
@@ -378,21 +401,56 @@
 
         }
         else {
-                childrenContainer.style.display = 'flex';
+            childrenContainer.style.display = 'flex';
         }
 
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
-        birthdayChildrenInput.setAttribute('max',0);
-        const visitorsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
-        if (!birthdayChildrenInput) {
-            console.error('Das Eingabefeld für Geburtstagskinder wurde nicht gefunden.');
-            return;
-        }
+    /**
+     * Initializes the reservation process when the DOM is ready.
+     */
+    document.addEventListener('DOMContentLoaded', function () {
+        const radioButtons = document.querySelectorAll('#jform_room_id input[type="radio"]');
+        const roomList = document.getElementById('jform_room_id');
 
-        visitorsPackageInput.addEventListener('change', function() {
+        const dateInput = document.getElementById('jform_reservation_date');
+        const personsPackageInput = document.getElementById('jform_additional_info__visitorsPackage');
+        const birthdayChildrenInput = document.getElementById('jform_additional_info__birthdaychildren');
+        const checkBooking = document.getElementById('checkBooking');
+        const checkStatus = document.getElementById('checkStatus');
+        const buttons = document.querySelectorAll("button");
+        const extras = document.querySelectorAll(".extraListItem");
+
+        const uniqueSteps = new Set();
+        const elements = document.querySelectorAll('[data-step]');
+
+        birthdayChildrenInput.setAttribute('max',5);
+
+
+        elements.forEach(element => {
+            const stepValue = element.getAttribute('data-step');
+            uniqueSteps.add(stepValue);
+        });
+        maxSteps = uniqueSteps.size;
+
+        checkBooking.addEventListener('click', function() {
+            if(checkRequiredFields() === true){
+                renderOrderHTML();
+            }
+            else {
+                setMessage('Bitte füllen Sie alle Pflichtfelder aus');
+            }
+        });
+        dateInput.addEventListener('change', function() {
+            if(checkDateInput(this.getAttribute('data-alt-value')) === false){
+                setMessage('Bitte wählen Sie ein Datum, welches mindestens zwei Tage in der Zukunft liegt');
+            }
+            step=1;
+            setStep(step);
+        });
+
+        personsPackageInput.addEventListener('change', function() {
+            updateRoomStatus(dateInput.value, personsPackageInput.value);
             birthdayChildrenInput.setAttribute('max',this.value);
         });
 
@@ -402,7 +460,7 @@
                 setMessage('Die Anzahl der Geburtstagskinder darf nicht negativ sein');
                 this.value = 0;
             }
-            else if (parseInt(this.value, 10) > parseInt(visitorsPackageInput.value, 10))
+            else if (parseInt(this.value, 10) > parseInt(personsPackageInput.value, 10))
             {
                 setMessage('Die Anzahl der Geburtstagskinder darf nicht größer sein als die Anzahl der Besucher mit Paket');
                 this.value = this.getAttribute('max');
@@ -410,18 +468,52 @@
             setSubforms();
         });
 
-        setSubforms();
-    });
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.addEventListener('subform-row-add', function (event) {
-            event.target;
-
+        checkStatus.addEventListener('click', function(event) {
+            event.preventDefault();
+            checkDate(dateInput.value, personsPackageInput.value);
         });
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+            });
+        });
+
+        document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
+            button.addEventListener('click', event => {
+                console.log('DateValid: ', dateValid);
+                console.log('step: ', step);
+                if(event.target.hasAttribute('dnnext')) {
+                    if (step < maxSteps && dateValid === true){
+                        step++;
+                    }
+                    else {
+                        setMessage('Bitte zuerst Verfügbarkeit prüfen');
+                    }
+
+                } else if(event.target.hasAttribute('dnprev')) {
+                    step = Math.max(1, step - 1);
+                }
+                setStep(step);
+            });
+        });
+
+        radioButtons.forEach(function(radioButton){
+            radioButton.addEventListener('click', function(){
+                roomList.classList.remove('errorField');
+            });
+        });
+
+        setStep(step);
+        setMinPackage(personsPackageInput);
+        setSubforms();
+        setCustomExtras(extras);
     });
 
+    exports.checkDateInput = checkDateInput;
     exports.filterSpecial = filterSpecial;
+    exports.setCustomExtras = setCustomExtras;
+    exports.setMinPackage = setMinPackage;
 
     return exports;
 

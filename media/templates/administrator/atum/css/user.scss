@@ -1,0 +1,34 @@
+.logo img{
+  object-fit: cover !important;
+  object-position: left center !important;
+  width: auto !important;
+  height: 80px !important;
+  margin: 0 .35rem !important;
+}
+.header .logo{
+  background: #004088 !important;
+}
+.header-inside{
+  background: #1f5098 !important;
+}
+#sidebar-wrapper{
+   background: #1f5098 !important;
+ }
+
+/*
+.com_config #sidebar{
+  display: none !important;
+}
+
+.com_config #config{
+  width: 100% !important;
+}
+*/
+.header a {
+  color: #fff;
+  text-decoration: none;
+  background: #1f5098;
+}
+.joomlaversion{
+  display: none;
+}
