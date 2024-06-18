@@ -115,20 +115,6 @@ class HtmlView extends BaseHtmlView
 
 		ToolbarHelper::title(Text::_('COM_DNBOOKING_HEADLINE_CUSTOMERS'), 'list com_dnbooking');
 
-		/*
-		echo '<pre>';
-		var_dump('core.create' . $canDo->get('core.create'));
-		var_dump('core.edit' . $canDo->get('core.edit'));
-		var_dump('core.delete' . $canDo->get('core.delete'));
-		var_dump('customer.create' . $canDo->get('customer.create'));
-		var_dump('customer.edit' . $canDo->get('customer.edit'));
-		var_dump('customer.delete' . $canDo->get('customer.delete'));
-		var_dump('reservation.create' . $canDo->get('reservation.create'));
-		var_dump('reservation.edit' . $canDo->get('reservation.edit'));
-		var_dump('reservation.delete' . $canDo->get('reservation.delete'));
-		echo '</pre>';
-		*/
-
 		// Get the toolbar object instance
 		$toolbar = Toolbar::getInstance('toolbar');
         if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_dnbooking', 'core.create')) > 0)

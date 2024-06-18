@@ -122,7 +122,7 @@ class HtmlView extends BaseHtmlView
 			$toolbar->addNew('extra.add');
 		}
         
-        if (!$this->isEmptyState && $canDo->get('core.edit.state'))
+        if (!$this->isEmptyState && $canDo->get('core.edit'))
 		{
             $dropdown = $toolbar->dropdownButton('status-group')
 				->text('JTOOLBAR_CHANGE_STATUS')
