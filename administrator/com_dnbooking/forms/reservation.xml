@@ -77,11 +77,11 @@
                 class="form-select-color-state"
                 validate="options"
         >
-            <option value="1">JPUBLISHED</option>
-            <option value="0">JUNPUBLISHED</option>
-            <option value="2">JARCHIVED</option>
-            <option value="3">COM_DNBOOKING_FIELD_RESERVATION_STATUS_CANCELLED</option>
-            <option value="-2">JTRASHED</option>
+            <option value="0">COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED</option>
+            <option value="1">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED</option>
+            <option value="4">COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE</option>
+            <option value="2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED</option>
+            <option value="-2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_TRASHED</option>
         </field>
 
     </fieldset>

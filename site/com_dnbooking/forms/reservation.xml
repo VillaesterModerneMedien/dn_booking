@@ -176,12 +176,11 @@
         />
 
         <field
-                name="reservation_status"
+                name="published"
                 type="hidden"
-                label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
                 default="1"
-                required="true"
         />
+
 
         <field
                 name="reservation_token"

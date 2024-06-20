@@ -105,7 +105,13 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 	{
 		$date   = Factory::getDate()->toSql();
 		$db = $this->getDbo();
+		$app = Factory::getApplication();
+		$user = $app->getIdentity();
 
+
+		if($user->guest == 1){
+			$this->published = 1;
+		}
 		$this->holiday = DnbookingHelper::checkHolidays($this->reservation_date);
 
 		// Set created date if not set.
