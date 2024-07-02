@@ -14,6 +14,7 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Helper;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Extension\DnbookingMailTemplate;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Mail\Exception\MailDisabledException;
 use Joomla\CMS\Mail\Mail;
@@ -187,24 +188,26 @@ class DnbookingHelper
         $orderData['html_birthdaychildren']  = $htmlBirthdayChildren;
 
         $orderDataFlattened = ArrayHelper::flatten($orderData, '_');
-
+		$orderDataFlattened['reservation_timesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'H:i');
+		$orderDataFlattened['reservation_datesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'd. F Y');
         /** @var Mail $mail */
         $mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 
         $mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
 
-        if($isFrontend)
-        {
-            $sendMailFormValues['sendMailType'] = 'reservation_pending';
+	    $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
+
+	    $mailer->addTemplateData($orderDataFlattened);
+
+		if($isFrontend){
+	        $sendMailFormValues['sendMailType'] = 'reservation_pending';
+	        $mailer->addRecipient($orderDataFlattened['email'], $orderDataFlattened['firstname'] . ' ' . $orderDataFlattened['lastname']);
         }
+		else{
+	        $mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+		}
 
-        $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
-
-        $mailer->addTemplateData($orderDataFlattened);
-
-        $mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
-
-        try
+	    try
         {
             $mailSent = $mailer->send();
         }

@@ -1,6 +1,48 @@
 (function (exports) {
     'use strict';
 
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
+
+    function checkDateInput(dateInput) {
+        function parseDateString(dateString) {
+            let [datePart, timePart] = dateString.split(' ');
+            let [day, month, year] = datePart.split('.');
+            let [hours, minutes, seconds] = timePart.split(':');
+            return new Date(year, month - 1, day, hours, minutes, seconds);
+        }
+
+        let selectedDate = parseDateString(dateInput);
+
+        const minDate = new Date();
+        minDate.setDate(minDate.getDate() + 3);
+        return selectedDate >= minDate;
+    }
+
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -46,67 +88,50 @@
             });
         });
     }
-    function setCustomExtras(extras){
+    function setCustomExtras(extras) {
         const singleCheck = [14];
-        const optionsCheck = [16,17,18,19,20];
+        const optionsCheck = [16, 17, 18, 19, 20];
         let extraOptions = [];
+
+        // Die ursprüngliche UL-Liste referenzieren
+        const originalUl = document.querySelector('.extraList');
+
+        // Ziel-ULs erstellen und die Klassen der ursprünglichen UL übernehmen
+        const ulSingleCheck = document.createElement('ul');
+        const ulOptionsCheck = document.createElement('ul');
+
+        ulSingleCheck.className = originalUl.className;
+        ulOptionsCheck.className = originalUl.className;
+
+        originalUl.parentNode.insertBefore(ulSingleCheck, originalUl.nextSibling);
+        ulSingleCheck.parentNode.insertBefore(ulOptionsCheck, ulSingleCheck.nextSibling);
+
+    // Joomla Sprachvariablen verwenden
+        const singleCheckHeading = document.createElement('h2');
+        singleCheckHeading.innerText = JoomlaLang['COM_DNBOOKING_SINGLE_CHECK_LIST'];
+
+        const optionsCheckHeading = document.createElement('h2');
+        optionsCheckHeading.innerText = JoomlaLang['COM_DNBOOKING_OPTIONS_CHECK_LIST'];
+
+        ulSingleCheck.parentNode.insertBefore(singleCheckHeading, ulSingleCheck);
+        ulOptionsCheck.parentNode.insertBefore(optionsCheckHeading, ulOptionsCheck);
 
         extras.forEach(extra => {
             let extraID = extra.getAttribute('data-extra-id');
             if (singleCheck.includes(parseInt(extraID))) {
                 createSingleCheck(extra);
-            }
-            else if (optionsCheck.includes(parseInt(extraID))) {
-                if(extraOptions.includes(extra) === false) {
+                ulSingleCheck.appendChild(extra);
+            } else if (optionsCheck.includes(parseInt(extraID))) {
+                if (!extraOptions.includes(extra)) {
                     extraOptions.push(extra);
                 }
             }
         });
 
-        createOptionsCheck(extraOptions);
-    }
-
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
+        extraOptions.forEach(extra => {
+            createOptionsCheck(extraOptions);
+            ulOptionsCheck.appendChild(extra);
         });
-        return result;
-    }
-
-    function setMinPackage(packageField){
-        const minPackage = 5;
-        packageField.setAttribute('min', minPackage);
-        packageField.value = minPackage;
-    }
-
-    function checkDateInput(dateInput) {
-        function parseDateString(dateString) {
-            let [datePart, timePart] = dateString.split(' ');
-            let [day, month, year] = datePart.split('.');
-            let [hours, minutes, seconds] = timePart.split(':');
-            return new Date(year, month - 1, day, hours, minutes, seconds);
-        }
-
-        let selectedDate = parseDateString(dateInput);
-
-        const minDate = new Date();
-        minDate.setDate(minDate.getDate() + 1);
-
-        return selectedDate >= minDate;
     }
 
     /**
@@ -442,6 +467,7 @@
             }
         });
         dateInput.addEventListener('change', function() {
+            dateValid = false;
             if(checkDateInput(this.getAttribute('data-alt-value')) === false){
                 setMessage('Bitte wählen Sie ein Datum, welches mindestens zwei Tage in der Zukunft liegt');
             }
@@ -470,7 +496,12 @@
 
         checkStatus.addEventListener('click', function(event) {
             event.preventDefault();
-            checkDate(dateInput.value, personsPackageInput.value);
+            if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
+                setMessage('Bitte wählen Sie ein Datum, welches mindestens vier Tage in der Zukunft liegt');
+            }
+            else {
+                checkDate(dateInput.value, personsPackageInput.value);
+            }
         });
 
         buttons.forEach(button => {

@@ -11,6 +11,7 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
 
 \defined('_JEXEC') or die;
 
@@ -66,6 +67,44 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
                 <?= $customer['phone']; ?>
             </p>
 
+            <p><strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL') ?>:</strong></p>
+            <table class="table table-striped">
+		        <?php
+		        $additionalInfos2FieldKeys = $params->get('additional_info_form2');
+		        $fieldCount = count((array)$additionalInfos2FieldKeys);
+
+		        $children = json_decode($item['additional_infos2']);
+		        $children = ArrayHelper::fromObject($children);
+		        foreach($children as $child){
+			        foreach ($child as $key => $value) {
+
+				        $currentField = 1;
+				        echo "<tr>";
+				        echo "<td>";
+				        foreach ($additionalInfos2FieldKeys as $fieldKey)
+				        {
+
+					        if (isset($value[$fieldKey->fieldName])){
+						        if (DateTime::createFromFormat('Y-m-d H:i:s', $value[$fieldKey->fieldName]) !== false) {
+							        echo date('d.m.Y', strtotime($value[$fieldKey->fieldName]));
+						        }
+						        else{
+							        echo  $value[$fieldKey->fieldName];
+						        }
+						        if ($currentField < $fieldCount){
+							        echo ", ";
+						        }
+					        }
+
+					        $currentField++;
+				        }
+				        echo "</td>";
+				        echo "</tr>";
+			        }
+		        } ?>
+            </table>
+
+            <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -142,6 +181,10 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room']
             <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
             <p>
                 <?= $item['customer_notes']; ?>
+            </p>
+            <h4><?= Text::_('COM_DNBOOKING_INTERNAL_COMMENTS_LABEL'); ?></h4>
+            <p>
+		        <?= $item['admin_notes']; ?>
             </p>
         </div>
     </div>

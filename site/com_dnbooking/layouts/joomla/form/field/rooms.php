@@ -62,7 +62,6 @@ $input = Factory::getApplication()->input;
 
 
 list($config, $view, $input) = app(Config::class, View::class, Input::class);
-$columns=3;
 $counter=0;
 
 ?>
@@ -80,7 +79,7 @@ $counter=0;
         }
     ?>
 
-    <ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-<?=$columns;?>@s uk-child-width-1-<?=$columns;?>@m uk-grid-match" uk-grid="">
+    <ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-match" uk-grid="">
         <?php foreach ($options as $i => $room) : ?>
             <?php
                 // Initialize some option attributes.
@@ -90,7 +89,7 @@ $counter=0;
                 $ovalue     = htmlspecialchars($room->value, ENT_COMPAT, 'UTF-8');
                 $attributes = array_filter([$checked]);
             ?>
-            <li data-room-id="<?= $room->id ?>" class="room <?php if($counter % $columns == 0): echo 'uk-first-column';endif;?>">
+            <li data-room-id="<?= $room->id ?>" class="room ">
                 <label for="<?php echo $oid; ?>">
 
                 <?php if ($required) : ?>
@@ -128,6 +127,9 @@ $counter=0;
                     <div class="el-content uk-panel uk-margin-top">
                         <p class="priceregular"><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICEREGULAR') . $room->priceregular . ' €'?></p>
                         <p class="pricecustom"><?= Text::_('COM_DNBOOKING_ROOMSGRID_PRICECUSTOM') . $room->pricecustom . ' €'?></p>
+                        <?php if($room->description != ''):?>
+                            <p class ="description"><?= $room->description; ?></p>
+                        <?php endif;?>
                     </div>
 
                     <?php echo sprintf($format, $oid, $name, $ovalue, implode(' ', $attributes)); ?>

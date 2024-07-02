@@ -21,6 +21,8 @@ if(array_key_exists('room', $item)) {
 
 $id = $item['id'];
 $params = ComponentHelper::getParams('com_dnbooking');
+$additionalInfos2FieldKeys = $params->get('additional_info_form2');
+$fieldCount = count((array)$additionalInfos2FieldKeys);
 
 if($id) {
     $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
@@ -67,8 +69,11 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $room, $item[
 <div id="summary">
 
     <?php if($customer): ?>
-    <p><h3><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $item['reservation_date'], $customer['firstname'] . ' ' . $customer['lastname']) ?></h3></p>
-    <h4><?= Text::_('COM_DNBOOKING_RESERVATION_DATE_LABEL') . $item['reservation_date']; ?></h4>
+    <p>
+        <strong>
+	        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $item['reservation_date'], $customer['firstname'] . ' ' . $customer['lastname']) ?>
+        </strong>
+    </p>
 
     <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
 		<?= $customer['address']; ?><br/>
@@ -83,6 +88,47 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $room, $item[
     <p><h3><?= Text::sprintf('COM_DNBOOKING_HEADLINE_FILLALL_REQUIRED') ?></h3></p>
     <?php endif; ?>
 
+
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL'); ?></strong>
+                </td>
+            </tr>
+	    <?php
+	    $children = json_decode($item['additional_infos2']);
+        $children = ArrayHelper::fromObject($children);
+	    foreach($children as $child){
+            foreach ($child as $key => $value) {
+
+                $currentField = 1;
+                echo "<tr>";
+                echo "<td>";
+                foreach ($additionalInfos2FieldKeys as $fieldKey)
+                {
+
+                    if (isset($value[$fieldKey->fieldName])){
+	                    if (DateTime::createFromFormat('Y-m-d H:i:s', $value[$fieldKey->fieldName]) !== false) {
+		                    echo date('d.m.Y', strtotime($value[$fieldKey->fieldName]));
+	                    }
+                        else{
+                            echo  $value[$fieldKey->fieldName];
+                        }
+                        if ($currentField < $fieldCount){
+                            echo ", ";
+                        }
+                    }
+
+                    $currentField++;
+                }
+                echo "</td>";
+                echo "</tr>";
+            }
+
+	    } ?>
+    </table>
+
+    <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
     <?php if($customer && $room): ?>
         <table class="table table-striped">
             <thead>
@@ -164,6 +210,12 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $room, $item[
         <div class="uk-card uk-card-default uk-card-body">
             <p>
                 <?= $item['customer_notes']; ?>
+            </p>
+        </div>
+        <h4><?= Text::_('COM_DNBOOKING_INTERNAL_COMMENTS_LABEL'); ?></h4>
+        <div class="uk-card uk-card-default uk-card-body">
+            <p>
+			    <?= $item['admin_notes']; ?>
             </p>
         </div>
 

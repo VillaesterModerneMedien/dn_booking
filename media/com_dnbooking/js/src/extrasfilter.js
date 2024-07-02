@@ -43,22 +43,50 @@ function createOptionsCheck(extraOptions){
         });
     })
 }
-export function setCustomExtras(extras){
+export function setCustomExtras(extras) {
     const singleCheck = [14];
-    const optionsCheck = [16,17,18,19,20];
+    const optionsCheck = [16, 17, 18, 19, 20];
     let extraOptions = [];
+
+    // Die ursprüngliche UL-Liste referenzieren
+    const originalUl = document.querySelector('.extraList');
+
+    // Ziel-ULs erstellen und die Klassen der ursprünglichen UL übernehmen
+    const ulSingleCheck = document.createElement('ul');
+    const ulOptionsCheck = document.createElement('ul');
+
+    ulSingleCheck.className = originalUl.className;
+    ulOptionsCheck.className = originalUl.className;
+
+    originalUl.parentNode.insertBefore(ulSingleCheck, originalUl.nextSibling);
+    ulSingleCheck.parentNode.insertBefore(ulOptionsCheck, ulSingleCheck.nextSibling);
+
+// Joomla Sprachvariablen verwenden
+    const singleCheckHeading = document.createElement('h2');
+    singleCheckHeading.innerText = JoomlaLang['COM_DNBOOKING_SINGLE_CHECK_LIST'];
+
+    const optionsCheckHeading = document.createElement('h2');
+    optionsCheckHeading.innerText = JoomlaLang['COM_DNBOOKING_OPTIONS_CHECK_LIST'];
+
+    ulSingleCheck.parentNode.insertBefore(singleCheckHeading, ulSingleCheck);
+    ulOptionsCheck.parentNode.insertBefore(optionsCheckHeading, ulOptionsCheck);
 
     extras.forEach(extra => {
         let extraID = extra.getAttribute('data-extra-id');
         if (singleCheck.includes(parseInt(extraID))) {
             createSingleCheck(extra);
-        }
-        else if (optionsCheck.includes(parseInt(extraID))) {
-            if(extraOptions.includes(extra) === false) {
+            ulSingleCheck.appendChild(extra);
+        } else if (optionsCheck.includes(parseInt(extraID))) {
+            if (!extraOptions.includes(extra)) {
                 extraOptions.push(extra);
             }
         }
     });
 
-    createOptionsCheck(extraOptions);
+    extraOptions.forEach(extra => {
+        createOptionsCheck(extraOptions);
+        ulOptionsCheck.appendChild(extra);
+    });
 }
+
+

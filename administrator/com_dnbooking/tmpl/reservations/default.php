@@ -59,7 +59,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'); ?>
                             </th>
                             <th scope="col">
-								<?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'), 'a.reservation_date', $listDirn, $listOrder); ?>
+								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'); ?>
                             </th>
                             <th scope="col">
 								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_PRICE'); ?>
@@ -88,23 +88,33 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 							switch ($item->published)
 							{
-								case 0:
-									$orderStatus = 'JUNPUBLISHED';
-									$statusIcon  = 'icon-cancel';
-									$btnClass    = 'btn-primary';
-									break;
-								case 1:
-									$orderStatus = 'JPUBLISHED';
-									$statusIcon  = 'icon-check';
-									$btnClass    = 'btn-success';
-									break;
-								case 2:
-									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_CANCELLED';
+								case -2:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_TRASHED';
 									$statusIcon  = 'icon-trash';
 									$btnClass    = 'btn-danger';
 									break;
+                                case 0:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED';
+									$statusIcon  = 'icon-cancel';
+									$btnClass    = 'btn-danger';
+									break;
+								case 1:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED';
+									$statusIcon  = 'fa-solid fa-arrows-rotate ';
+									$btnClass    = 'btn-default';
+									break;
+								case 2:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED';
+									$statusIcon  = 'icon-check';
+									$btnClass    = 'btn-success';
+									break;
+								case 4:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE';
+									$statusIcon  = 'fa-solid fa-euro-sign';
+									$btnClass    = 'btn-primary';
+									break;
 								default:
-									$orderStatus = 'JUNPUBLISHED';
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED';
 									$statusIcon  = 'icon-cancel';
 									$btnClass    = 'btn-primary';
 									break;

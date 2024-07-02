@@ -13,6 +13,7 @@ use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
 
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
@@ -20,7 +21,12 @@ $wa = $this->document->getWebAssetManager();
 $wa->useStyle('com_dnbooking.daydashboards');
 
 $itemsToday = DnbookingHelper::filterReservationsToday($this->items);
+$items = ArrayHelper::fromObject($itemsToday);
 
+$filteredItems = array_filter($items, function($item) {
+	return $item['published'] == 4;
+});
+$itemsToday = $filteredItems;
 ?>
 <script>
     document.addEventListener("DOMContentLoaded", function() {

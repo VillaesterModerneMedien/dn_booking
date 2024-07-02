@@ -17,10 +17,11 @@
 				class="js-select-submit-on-change"
 		>
 			<option value="">JOPTION_SELECT_PUBLISHED</option>
-			<option value="1">JPUBLISHED</option>
-			<option value="0">JUNPUBLISHED</option>
-			<option value="2">JARCHIVED</option>
-			<option value="3">COM_DNBOOKING_FIELD_RESERVATION_STATUS_CANCELLED</option>
+			<option value="1">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED</option>
+			<option value="0">COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED</option>
+			<option value="2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED</option>
+			<option value="4">COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE</option>
+
 			<option value="-2">JTRASHED</option>
 		</field>
 
@@ -38,10 +39,8 @@
 				validate="options"
 		>
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
-			<option value="ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
-			<option value="a.reservation_date ASC">DATE_ASC</option>
-			<option value="a.reservation_date DESC">DATE_DESC</option>
+			<option value="a.published ASC">JGRID_STATUS_ORDERING_ASC</option>
+			<option value="a.published DESC">JGRID_STATUS_ORDERING_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>

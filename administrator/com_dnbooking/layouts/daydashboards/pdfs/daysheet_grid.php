@@ -9,7 +9,13 @@
     defined('_JEXEC') or die;
 
     $app = Factory::getApplication();
+
     $items = ArrayHelper::fromObject($displayData);
+    $filteredItems = array_filter($items, function($item) {
+        return $item['published'] == 4;
+    });
+    $items = $filteredItems;
+
     $params = ComponentHelper::getParams('com_dnbooking');
     $reservationDate = HTMLHelper::_('date', $items[0]['reservation_date'], Text::_('DATE_FORMAT_LC4'));
     $holiday = $items[0]['holiday'];
@@ -23,7 +29,11 @@
         $packageprice = $params->get('packagepricecustom');
         $packageprice = $params->get('admissionpricecustom');
     }
-?>
+
+
+    ?>
+
+
 <div class="daysheetGrid">
 
     <div class="gridHeader">
@@ -33,10 +43,14 @@
     <div class="daysheetBody">
         <table class="reservationsGrid">
 	        <?php foreach (array_chunk($items, 4) as $row) : ?>
+            <?php  $itemCount = 0; ?>
                 <tr>
                     <?php foreach ($row as $item) : ?>
+                    <?php $count++; ?>
+                        <?php if ($item['published'] !=4) {
+                            continue;
+                        } ?>
                         <?php $reservationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');?>
-
                         <?php $children = json_decode($item['additional_infos2'], true);?>
                         <?php $persons = json_decode($item['additional_info'], true);?>
                         <td width="25%">
@@ -117,6 +131,7 @@
                                 </tr>
                                 <?php endif;?>
                                 <?php if($item['admin_notes'] != null) :?>
+                                <tr>
                                     <td colspan="2" class="border-top">
                                         <?= Text::_('COM_DNBOOKING_INTERNAL_COMMENTS_LABEL') ?>
                                     </td>
@@ -129,7 +144,11 @@
                                 <?php endif;?>
                             </table>
                         </td>
+
                     <?php endforeach; ?>
+                    <?php for ($i = $count; $i < 4; $i++) : ?>
+                        <td width="25%" class="quarterCell emptyCell"></td>
+	                <?php endfor; ?>
                 </tr>
 	        <?php endforeach; ?>
         </table>

@@ -10,7 +10,9 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 
 extract($displayData);
 
@@ -32,6 +34,20 @@ extract($displayData);
  * @var   bool    $groupByFieldset  Whether group the subform fields by it`s fieldset
  */
 $form = $forms[0];
+
+
+// Sprachvariablen definieren
+$singleCheckList = Text::_('COM_DNBOOKING_SINGLE_CHECK_LIST');
+$optionsCheckList = Text::_('COM_DNBOOKING_OPTIONS_CHECK_LIST');
+
+// Sprachvariablen in einem JavaScript-Objekt verfügbar machen
+$document = Factory::getDocument();
+$document->addScriptDeclaration("
+    var JoomlaLang = {
+        'COM_DNBOOKING_SINGLE_CHECK_LIST': '{$singleCheckList}',
+        'COM_DNBOOKING_OPTIONS_CHECK_LIST': '{$optionsCheckList}'
+    };
+");
 
 ?>
 <div class="subform-wrapper">

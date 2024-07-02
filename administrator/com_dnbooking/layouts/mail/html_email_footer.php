@@ -8,6 +8,7 @@ $params = ComponentHelper::getParams('com_dnbooking');
 $emailFooter = $params->get('emailfooter');
 
 ?>
+</div>
 <?= $emailFooter;?>
 
     </body>

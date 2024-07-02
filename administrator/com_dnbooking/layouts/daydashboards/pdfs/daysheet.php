@@ -39,20 +39,34 @@
     }
     $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
+    $item['extras_price_total'] ?? ($item['extras_price_total'] = 0);
+
     $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $item['extras_price_total'], $item['holiday']);
     $resevationDate = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC4'));
     $resevationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');
 
+    $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 ?>
+
 <div class="daysheetItem">
 
     <div class="header">
-        <h1 class="h1-headline-pdf"><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?></h1>
-        <h2><?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?></h2>
+        <table width="100%">
+            <tr>
+                <td >
+                    <img class="logo" src="<?=$logo?>" alt="Sensapolis Logo" >
+                </td>
 
-        <div id="logo">
-            <img src="https://sensapolis-kehl.de/wp-content/uploads/2023/05/sensapolis-kehl-logo_w.svg" alt="Sensapolis Logo">
-        </div>
+            </tr>
+            <tr >
+                <td class="text">
+                    <span>
+                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?> -
+                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?>
+                    </span>
+                </td>
+            </tr>
+        </table>
     </div>
 
 
@@ -63,8 +77,45 @@
 		    <?= $customer['zip'] . ' ' . $customer['city']; ?><br/>
 		    <?= $customer['email']; ?><br/>
 		    <?= $customer['phone']; ?>
-        </p>
+        </p><br/>
+        <p><strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL') ?>:</strong></p>
+        <table class="table table-striped">
+		    <?php
+		    $additionalInfos2FieldKeys = $params->get('additional_info_form2');
+		    $fieldCount = count((array)$additionalInfos2FieldKeys);
 
+		    $children = json_decode($item['additional_infos2']);
+		    $children = ArrayHelper::fromObject($children);
+		    foreach($children as $child){
+			    foreach ($child as $key => $value) {
+
+				    $currentField = 1;
+				    echo "<tr>";
+                        echo "<td>";
+                        foreach ($additionalInfos2FieldKeys as $fieldKey)
+                        {
+
+                            if (isset($value[$fieldKey->fieldName])){
+                                if (DateTime::createFromFormat('Y-m-d H:i:s', $value[$fieldKey->fieldName]) !== false) {
+                                    echo date('d.m.Y', strtotime($value[$fieldKey->fieldName]));
+                                }
+                                else{
+                                    echo  $value[$fieldKey->fieldName];
+                                }
+                                if ($currentField < $fieldCount){
+                                    echo ", ";
+                                }
+                            }
+
+                            $currentField++;
+                        }
+                        echo "</td>";
+				    echo "</tr>";
+			    }
+		    } ?>
+        </table>
+
+        <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -123,7 +174,6 @@
 				    <?php endforeach; ?>
                 </table>
 		    <?php endif; ?>
-
 	    <?php endforeach; ?>
 
         <table class="table table-striped">
@@ -142,7 +192,5 @@
 			    <?= $item['customer_notes']; ?>
             </p>
         </div>
-
     </div>
-
 </div>

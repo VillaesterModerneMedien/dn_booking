@@ -111,7 +111,8 @@ class ReservationsModel extends ListModel
 		}
 		elseif ($published === '')
 		{
-			$query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
+			//$query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
+			$query->where('(' . $db->quoteName('a.published') . ' != -2 )');
 		}
 
 		// Filter by search in title or note or id:.
@@ -136,9 +137,6 @@ class ReservationsModel extends ListModel
 				$query->bind(':admin_notes', $search);
 			}
 		}
-		$test = (string) $query;
-		$test2 = str_replace('#__', 'tvo5l_', $test);
-
 		return $query;
 	}
 

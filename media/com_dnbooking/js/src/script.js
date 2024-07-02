@@ -337,6 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     dateInput.addEventListener('change', function() {
+        dateValid = false;
         if(checkDateInput(this.getAttribute('data-alt-value')) === false){
             setMessage('Bitte wählen Sie ein Datum, welches mindestens zwei Tage in der Zukunft liegt');
         }
@@ -365,7 +366,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
-        checkDate(dateInput.value, personsPackageInput.value);
+        if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
+            setMessage('Bitte wählen Sie ein Datum, welches mindestens vier Tage in der Zukunft liegt');
+        }
+        else{
+            checkDate(dateInput.value, personsPackageInput.value);
+        }
     });
 
     buttons.forEach(button => {

@@ -28,3 +28,10 @@
 #navbarNav.nav-link.active{
     background-color: var(--card-bg);
 }
+
+.form-select.form-select-success, .form-select-success.custom-select, .form-select.custom-select-success, .custom-select-success.custom-select {
+    color: #FFF;
+}
+.form-select.form-select-danger, .form-select-danger.custom-select, .form-select.custom-select-danger, .custom-select-danger.custom-select {
+    color: #FFF;
+}

@@ -11,6 +11,17 @@ h2 {
   font-family: 'chelvetica';
 }
 
+.header .text{
+  font-family: 'chelvetica';
+  color:#FFF;
+  vertical-align: bottom;
+  width:100%;
+}
+
+.header .logo{
+  width:auto;
+  height:40px;
+}
 
 /**SingleAnsicht**/
 .daysheetItem{
@@ -25,19 +36,15 @@ h2 {
     position: absolute;
     top: 0;
     left: 0;
-    height: 3cm;
-    padding: 1cm;
+    width:100%;
+    padding-top: 5mm;
+    padding-left:2cm;
+    padding-right:2cm;
+    padding-bottom: 0;
     background: $blue;
     color: white;
   }
-  #logo {
-    position: absolute;
-    z-index: 1000;
-    right: 0px;
-    top: 0px;
-    width: 200px;
-    display: block;
-  }
+
   .daysheetBody {
     padding: 0.5cm 2cm 0cm 2cm;
     font-family: 'chelvetica';
@@ -90,7 +97,9 @@ h2 {
   width: 100%;
   border:none!important;
 }
-
+.reservationsGrid td{
+  max-width:25%;
+}
 table.singleReservation {
   border-collapse: collapse;
   border:1px solid black;

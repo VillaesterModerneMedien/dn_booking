@@ -340,6 +340,12 @@
         />
 
         <field
+            name="vendor_logo"
+            type="media"
+            label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_LOGO_LABEL"
+        />
+
+        <field
                 name="vendor_address"
                 type="textarea"
                 label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_ADDRESS_LABEL"

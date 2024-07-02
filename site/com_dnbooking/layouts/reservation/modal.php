@@ -67,12 +67,12 @@ $tableHead = "
     </h4>
     <h4><?= Text::_('COM_DNBOOKING_ADRESS_LABEL'); ?></h4>
     <p><?= Text::_($data['salutation']) . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
-        <?= $data['address']; ?><br/>
-        <?= $data['zip'] . ' ' . $data['city']; ?>
+        <?= isset($data['adress']) ? $data['address'] . '<br/>' : ''; ?>
+        <?= isset($data['zip']) ? $data['zip'] . ' ' : '';?><?=  isset($data['city']) ? $data['city'] : ''; ?>
     </p>
     <p>
-        <?= $data['email']; ?><br/>
-        <?= $data['phone']; ?>
+        <?= isset($data['email']) ? $data['email'] : ''; ?><br/>
+        <?= isset($data['phone']) ? $data['phone'] : ''; ?>
     </p>
 
     <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>

@@ -36,7 +36,6 @@ export function checkDateInput(dateInput) {
     let selectedDate = parseDateString(dateInput);
 
     const minDate = new Date();
-    minDate.setDate(minDate.getDate() + 1);
-
+    minDate.setDate(minDate.getDate() + 3);
     return selectedDate >= minDate;
 }

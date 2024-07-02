@@ -21,6 +21,9 @@ $emailHeader = $params->get('emailheader');
 		body { -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; }
 		table { border-collapse: collapse; mso-table-lspace: 0px; mso-table-rspace: 0px; }
 		td, a, span { border-collapse: collapse; mso-line-height-rule: exactly; }
+        .footerTable td {padding-left:10px; padding-right:10px;}
+        .headerTable td{padding:0;}
+        .emailBody{padding:10px;background-color:#edfbff;}
 	</style>
 	<!--[if gte mso 9]><xml>
 		<o:OfficeDocumentSettings>
@@ -31,5 +34,6 @@ $emailHeader = $params->get('emailheader');
 </head>
 <body>
 <?= $emailHeader; ?>
+<div class="emailBody">
 
 
