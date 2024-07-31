@@ -29,6 +29,7 @@ function createOptionsCheck(extraOptions){
         const label = extra.querySelector('label');
         input.setAttribute('hidden', 'true');
         label.setAttribute('hidden', 'true');
+        extra.classList.add('deko');
 
         extra.addEventListener('click', function(){
             const value = input.value;

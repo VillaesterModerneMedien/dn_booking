@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let keysZeiten = Object.keys(zeiten);
     let farben = options.farben;
     let keysFarben = Object.keys(farben);
+    let preis = options.higherPrice;
     let customTimes = [];
     let editingDayID = 0;
     let editingDate = '';
@@ -81,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send('dayID=' + dayId + '&opening_time=' + time  + '&token=' + token); // Senden Sie die notwendigen Daten
     }
 
-    //TODO JOOMLA PARAMS, siehe Slack
 
     function formatDate(d) {
         return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');

@@ -57,9 +57,17 @@ class OpeningHoursField extends ListField
 		// Überprüfe, ob Öffnungszeiten definiert sind, und füge sie den Optionen hinzu
 		if (!empty($params['regular_opening_hours']) && is_array($params['regular_opening_hours'])) {
 			foreach ($params['regular_opening_hours'] as $name => $hours) {
-				$text = $hours['starttime'] . ' - ' . $hours['endtime'];
+				if($hours['higherPrice'] == 1){
+					$priceValue = Text::_("COM_DNBOOKING_CONFIG_MODAL_HIGHERPRICE");
+				}
+				else{
+					$priceValue = Text::_("COM_DNBOOKING_CONFIG_MODAL_LOWERPRICE");
+				}
+
+				$text = $hours['starttime'] . ' - ' . $hours['endtime'] . ' : ' . $priceValue;
 				$regularParams['opening_times'] = $name;
 				$regularParams['openingtimes_color'] = $hours['openinghour_color'];
+				$regularParams['higherPrice'] = $hours['higherPrice'];
 				$options[] = \Joomla\CMS\HTML\HTMLHelper::_('select.option', json_encode($regularParams), $text);
 			}
 		}

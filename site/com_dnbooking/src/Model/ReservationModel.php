@@ -118,7 +118,7 @@ class ReservationModel extends AdminReservationModel
 		return $this->db->loadAssocList();
 	}
 
-	public function getOpeningHours($date, $time): array
+	public function getOpeningHours($date): array
 	{
 
 		$date = HTMLHelper::_('date', $date, 'Y-m-d');

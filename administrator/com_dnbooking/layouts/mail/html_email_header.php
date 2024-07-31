@@ -18,7 +18,7 @@ $emailHeader = $params->get('emailheader');
 	<meta name="viewport" content="width=device-width, initial-scale=1.0 " />
 	<meta name="format-detection" content="telephone=no"/>
 	<style type="text/css">
-		body { -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; }
+		body { -webkit-text-size-adjust: 100% !important; -ms-text-size-adjust: 100% !important; -webkit-font-smoothing: antialiased !important; font-family: "Open Sans", "Helvetica Neue", Arial, sans-serif}
 		table { border-collapse: collapse; mso-table-lspace: 0px; mso-table-rspace: 0px; }
 		td, a, span { border-collapse: collapse; mso-line-height-rule: exactly; }
         .footerTable td {padding-left:10px; padding-right:10px;}

@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
+
 extract($displayData);
 
 /**
@@ -83,7 +84,17 @@ if (!empty($groupByFieldset)) {
 ?>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function getData(region){
+        const checkFieldset = document.getElementById('jform_selectHolidaysType');
+        const checkBoxes = checkFieldset.querySelectorAll('input[type="checkbox"]:checked');
+        const checkChoices = [];
+
+        console.log(region);
+        checkBoxes.forEach(checkbox => {
+            checkChoices.push(checkbox.value);
+        });
+        const checkString = checkChoices.join(',');
+
         const container = document.querySelector('#subfieldList_jform_holidays .subform-repeatable-container');
         // Spinner-Code mit Text, transparentem Hintergrund und voller Breite
         const spinnerHtml = `
@@ -94,35 +105,46 @@ if (!empty($groupByFieldset)) {
                 <p>Feiertaqe und Ferien werden geladen...</p>
             </div>`;
 
-        document.getElementById('jform_region').addEventListener('change', function() {
-            // Die URL, an die die Anfrage gesendet wird
-            var url = 'index.php?option=com_dnbooking&task=config.generateHolidayTableHTML';
-            // Die Daten, die an den Server gesendet werden
-            var data = {
-                region: this.value
-            };
-            // Die Optionen für die Fetch-Anfrage
-            var options = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest' // Wichtig für Joomla, um zu erkennen, dass es sich um eine AJAX-Anfrage handelt
-                },
-                body: new URLSearchParams(data).toString()
-            };
+        var url = 'index.php?option=com_dnbooking&task=config.generateHolidayTableHTML';
+        // Die Daten, die an den Server gesendet werden
+        var data = {
+            region: region,
+            checkLiveStatus: checkString
+        };
+        // Die Optionen für die Fetch-Anfrage
+        var options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest' // Wichtig für Joomla, um zu erkennen, dass es sich um eine AJAX-Anfrage handelt
+            },
+            body: new URLSearchParams(data).toString()
+        };
 
-            container.innerHTML = spinnerHtml; // Spinner und Text anzeigen
+        container.innerHTML = spinnerHtml; // Spinner und Text anzeigen
 
-            // Senden der Fetch-Anfrage
-            fetch(url, options)
-                .then(response => response.text())
-                .then(html => {
-                    container.innerHTML = html; // Antwortinhalt einfügen und Spinner ausblenden
-                })
-                .catch(error => {
-                    container.innerHTML = '<div>Error loading data</div>'; // Fehlerbehandlung
-                    console.error('Error:', error);
-                });
+        // Senden der Fetch-Anfrage
+        fetch(url, options)
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html; // Antwortinhalt einfügen und Spinner ausblenden
+            })
+            .catch(error => {
+                container.innerHTML = '<div>Error loading data</div>'; // Fehlerbehandlung
+                console.error('Error:', error);
+            });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const region = document.getElementById('jform_region');
+        const holidayCheckbox = document.getElementById('jform_selectHolidaysType');
+
+        holidayCheckbox.addEventListener('change', function() {
+            getData(region.value);
+        });
+
+        region.addEventListener('change', function() {
+            getData(this.value);
         });
     });
 </script>

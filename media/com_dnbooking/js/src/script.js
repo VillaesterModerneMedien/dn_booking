@@ -1,4 +1,4 @@
-import { filterSpecial,setMinPackage,checkDateInput } from "./sindelfingen.js";
+import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
 
 /**
@@ -24,6 +24,8 @@ let step = 1;
  */
 let maxSteps = 1;
 
+let roomID = 'null';
+
 /**
  * Updates the room status based on the selected date and number of visitors.
  * @param {string} date - The selected date.
@@ -43,6 +45,7 @@ function updateRoomStatus(date, visitors){
     xhr.onload = function() {
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
+            console.log(blocked);
             let rooms = document.querySelectorAll('.roomList .room');
                 if(blocked.rooms !== undefined) {
                     let blockedRooms = blocked.rooms;
@@ -62,7 +65,7 @@ function updateRoomStatus(date, visitors){
                         room.removeEventListener('click', handleRoomClick);
                         room.addEventListener('click', handleRoomClick);
                     }
-                    if(blocked.isHolidayOrWeekend === 1)
+                    if(blocked.isHolidayOrWeekend === 1 || blocked.isHigherPrice == "1")
                     {
                         room.classList.add('holiday')
                         room.classList.remove('regular')
@@ -150,7 +153,6 @@ function handleRoomClick() {
     let rooms = document.querySelectorAll('.roomList .room');
     rooms.forEach(function(room) {
         room.classList.remove('activeRoom');
-        console.log(room);
     });
     if (radioButton) {
         radioButton.checked = true;
@@ -167,7 +169,6 @@ function renderOrderHTML() {
     let xhr = new XMLHttpRequest();
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getOrderHTML';
     let translation = Joomla.getOptions('com_dnbooking.translations');
-
 
     xhr.open('POST', url, true);
 
@@ -204,6 +205,7 @@ function renderOrderHTML() {
 function setStep(newStep) {
     step = newStep;
     let scrollToElement = null;
+    const nextButton = document.getElementById('dnnext');
     document.querySelectorAll('[data-step]').forEach(element => {
         const elementStep = parseInt(element.getAttribute('data-step'), 10);
         if(elementStep <= step) {
@@ -218,6 +220,12 @@ function setStep(newStep) {
     if(scrollToElement) {
         scrollToElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    if(step <= 1){
+        nextButton.style.display = 'none';
+    }
+    else {
+        nextButton.style.display = 'block';
+    }
 }
 
 /**
@@ -229,6 +237,36 @@ function extractTimeFromDateTime() {
     const dateTimeString = dateTimeInput.getAttribute('data-alt-value');
     const timeString = dateTimeString.split(' ')[1];
     return timeString;
+}
+
+function parseDateString(dateString) {
+    let [datePart, timePart] = dateString.split(' ');
+    let [day, month, year] = datePart.split('.');
+    let [hours, minutes, seconds] = timePart.split(':');
+    return new Date(year, month - 1, day, hours, minutes, seconds);
+}
+function formatDate(date) {
+    // Verwendung der toLocaleDateString-Methode mit spezifischen Optionen
+    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+function checkDateInput(dateInput) {
+
+    let selectedDate = parseDateString(dateInput);
+
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 3);
+
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 6);
+
+    if((selectedDate >= minDate) && (selectedDate <= maxDate))
+    {
+        return true;
+    }
+    let minDateString = formatDate(minDate);
+    let maxDateString = formatDate(maxDate);
+    setMessage('Bitte wählen Sie ein Datum, welches zwischen dem ' + minDateString + ' und dem ' + maxDateString + ' liegt');
+    return false;
 }
 
 
@@ -315,11 +353,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkStatus = document.getElementById('checkStatus');
     const buttons = document.querySelectorAll("button");
     const extras = document.querySelectorAll(".extraListItem");
+    const nextButton = document.getElementById('dnnext');
 
     const uniqueSteps = new Set();
     const elements = document.querySelectorAll('[data-step]');
 
     birthdayChildrenInput.setAttribute('max',5);
+    nextButton.style.display='none';
 
 
     elements.forEach(element => {
@@ -329,18 +369,18 @@ document.addEventListener('DOMContentLoaded', function () {
     maxSteps = uniqueSteps.size;
 
     checkBooking.addEventListener('click', function() {
+        let checkedDeko = document.querySelectorAll(".extraListItem.checked");
         if(checkRequiredFields() === true){
+            doubleDeko(roomID)
             renderOrderHTML();
         }
         else{
             setMessage('Bitte füllen Sie alle Pflichtfelder aus');
         }
     });
+
     dateInput.addEventListener('change', function() {
         dateValid = false;
-        if(checkDateInput(this.getAttribute('data-alt-value')) === false){
-            setMessage('Bitte wählen Sie ein Datum, welches mindestens zwei Tage in der Zukunft liegt');
-        }
         step=1;
         setStep(step);
     });
@@ -367,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function () {
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
         if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
-            setMessage('Bitte wählen Sie ein Datum, welches mindestens vier Tage in der Zukunft liegt');
+            dateValid = false;
         }
         else{
             checkDate(dateInput.value, personsPackageInput.value);
@@ -380,27 +420,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
-        button.addEventListener('click', event => {
-            console.log('DateValid: ', dateValid);
-            console.log('step: ', step);
-            if(event.target.hasAttribute('dnnext')) {
-                if (step < maxSteps && dateValid === true){
-                    step++;
-                }
-                else {
-                    setMessage('Bitte zuerst Verfügbarkeit prüfen');
-                }
 
-            } else if(event.target.hasAttribute('dnprev')) {
-                step = Math.max(1, step - 1);
-            }
-            setStep(step);
-        });
+    nextButton.addEventListener('click', event => {
+        if (step < maxSteps && dateValid === true){
+            step++;
+        }
+        else {
+            setMessage('Bitte zuerst Verfügbarkeit prüfen');
+        }
+        setStep(step);
     });
+
 
     radioButtons.forEach(function(radioButton){
         radioButton.addEventListener('click', function(){
+            roomID = this.getAttribute('value');
             roomList.classList.remove('errorField');
         });
     });

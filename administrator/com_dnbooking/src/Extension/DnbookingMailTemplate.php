@@ -99,6 +99,8 @@ class DnbookingMailTemplate extends MailTemplate
 		$layout = new FileLayout('mail.html_email_footer', JPATH_ROOT .'/administrator/components/com_dnbooking/layouts');
 		$htmlEmailFooter = $layout->render();
 
+
+
 		$mailStyle = $config->get('mail_style', 'plaintext');
 		$plainBody = $this->replaceTags(Text::_($mail->body), $this->data);
 		$htmlBody  = $this->replaceTags($htmlEmailHeader . Text::_($mail->htmlbody) . $htmlEmailFooter, $this->data);

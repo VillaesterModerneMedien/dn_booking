@@ -44,6 +44,8 @@ if($data['isHolidayOrWeekend']) {
 $admissionpriceTotal = $admissionprice * (int) $data['visitors'];
 $room = ArrayHelper::fromObject($data['room_id']);
 
+$roomprice = $data['isHolidayOrWeekend'] ? $room['pricecustom'] : $room['priceregular'];
+
 $total = DnbookingHelper::calcPrice($data['additional_info'], $room, $data['extras_price_total'], $data['isHolidayOrWeekend']);
 $reservationDate = HTMLHelper::_('date', $data['reservation_date'], 'd. F Y - H:i');
 
@@ -115,7 +117,7 @@ $tableHead = "
     <table class="uk-table  uk-table-responsive uk-table-striped uk-table-small">
 	    <?= $tableHead ?>
         <tr>
-			<?= '<td>1 x</td><td>' . $room['title'] . '<td> ' . number_format((float) $room['priceregular'], 2, ",", ".") . ' €</td>'?>
+			<?= '<td>1 x</td><td>' . $room['title'] . '<td> ' . number_format((float) $roomprice, 2, ",", ".") . ' €</td>'?>
         </tr>
     </table>
 

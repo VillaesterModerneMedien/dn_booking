@@ -107,12 +107,21 @@ class ReservationTable extends Table implements VersionableTableInterface, Tagga
 		$db = $this->getDbo();
 		$app = Factory::getApplication();
 		$user = $app->getIdentity();
+		$holiday = DnbookingHelper::checkHolidays($this->reservation_date);
+		$customPrice = DnbookingHelper::checkPrice($this->reservation_date);
 
+		if($holiday || $customPrice){
+			$higherPrice = 1;
+		}
+		else{
+			$higherPrice = 0;
+		}
 
 		if($user->guest == 1){
 			$this->published = 1;
 		}
-		$this->holiday = DnbookingHelper::checkHolidays($this->reservation_date);
+
+		$this->holiday = $higherPrice;
 
 		// Set created date if not set.
 		if (!(int) $this->created)

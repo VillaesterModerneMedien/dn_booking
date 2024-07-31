@@ -33,45 +33,55 @@ $zeiten = [
 $colors = [
 ];
 
+$translations = [
+	'monday' => Text::_('COM_DNBOOKING_CALENDAR_MONDAY'),
+	'tuesday' => Text::_('COM_DNBOOKING_CALENDAR_TUESDAY'),
+	'wednesday' => Text::_('COM_DNBOOKING_CALENDAR_WEDNESDAY'),
+	'thursday' => Text::_('COM_DNBOOKING_CALENDAR_THURSDAY'),
+	'friday' => Text::_('COM_DNBOOKING_CALENDAR_FRIDAY'),
+	'saturday' => Text::_('COM_DNBOOKING_CALENDAR_SATURDAY'),
+	'sunday' => Text::_('COM_DNBOOKING_CALENDAR_SUNDAY'),
+	'january' => Text::_('COM_DNBOOKING_CALENDAR_JANUARY'),
+	'february' => Text::_('COM_DNBOOKING_CALENDAR_FEBRUARY'),
+	'march' => Text::_('COM_DNBOOKING_CALENDAR_MARCH'),
+	'april' => Text::_('COM_DNBOOKING_CALENDAR_APRIL'),
+	'may' => Text::_('COM_DNBOOKING_CALENDAR_MAY'),
+	'june' => Text::_('COM_DNBOOKING_CALENDAR_JUNE'),
+	'july' => Text::_('COM_DNBOOKING_CALENDAR_JULY'),
+	'august' => Text::_('COM_DNBOOKING_CALENDAR_AUGUST'),
+	'september' => Text::_('COM_DNBOOKING_CALENDAR_SEPTEMBER'),
+	'october' => Text::_('COM_DNBOOKING_CALENDAR_OCTOBER'),
+	'november' => Text::_('COM_DNBOOKING_CALENDAR_NOVEMBER'),
+	'december' => Text::_('COM_DNBOOKING_CALENDAR_DECEMBER'),
+	'add' => Text::_('COM_DNBOOKING_CALENDAR_TASK_ADD'),
+	'edit' => Text::_('COM_DNBOOKING_CALENDAR_TASK_EDIT'),
+	'delete' => Text::_('COM_DNBOOKING_CALENDAR_TASK_DELETE'),
+	'success' => Text::_('COM_DNBOOKING_CALENDAR_TASK_SUCCESS'),
+	'failed' => Text::_('COM_DNBOOKING_CALENDAR_TASK_FAILED'),
+	'higherprice' => Text::_('COM_DNBOOKING_CONFIG_MODAL_HIGHERPRICE'),
+	'lowerprice' => Text::_("COM_DNBOOKING_CONFIG_MODAL_LOWERPRICE"),
+	'closed' => Text::_('COM_DNBOOKING_CALENDAR_CLOSED')
+];
+
 $closedColor = $params['closed_color'];
 
 $regularOpeningHours = $this->openinghours['regular_opening_hours'];
 
 $regularOpeningHoursHTML = '';
 $counter=0;
+
 foreach ($regularOpeningHours as $day => $value) {
-    $regularOpeningHoursHTML .= "<option value='" . $day . "'>" . $value['starttime'] . " - " . $value['endtime'] . "</option>";
+	if($value['higherPrice'] == 1){
+		$priceValue = $translations['higherprice'];
+	}
+	else{
+		$priceValue = $translations['lowerprice'];
+	}
+    $regularOpeningHoursHTML .= "<option value='" . $day . "'>" . $value['starttime'] . " - " . $value['endtime'] . ' : ' . $priceValue . "</option>";
     $counter++;
 }
     $regularOpeningHoursHTML .= "<option value='regular_opening_hours".$counter."'>" . Text::_('COM_DNBOOKING_CALENDAR_CLOSED'). "</option>";
 
-
-$translations = [
-    'monday' => Text::_('COM_DNBOOKING_CALENDAR_MONDAY'),
-    'tuesday' => Text::_('COM_DNBOOKING_CALENDAR_TUESDAY'),
-    'wednesday' => Text::_('COM_DNBOOKING_CALENDAR_WEDNESDAY'),
-    'thursday' => Text::_('COM_DNBOOKING_CALENDAR_THURSDAY'),
-    'friday' => Text::_('COM_DNBOOKING_CALENDAR_FRIDAY'),
-    'saturday' => Text::_('COM_DNBOOKING_CALENDAR_SATURDAY'),
-    'sunday' => Text::_('COM_DNBOOKING_CALENDAR_SUNDAY'),
-    'january' => Text::_('COM_DNBOOKING_CALENDAR_JANUARY'),
-    'february' => Text::_('COM_DNBOOKING_CALENDAR_FEBRUARY'),
-    'march' => Text::_('COM_DNBOOKING_CALENDAR_MARCH'),
-    'april' => Text::_('COM_DNBOOKING_CALENDAR_APRIL'),
-    'may' => Text::_('COM_DNBOOKING_CALENDAR_MAY'),
-    'june' => Text::_('COM_DNBOOKING_CALENDAR_JUNE'),
-    'july' => Text::_('COM_DNBOOKING_CALENDAR_JULY'),
-    'august' => Text::_('COM_DNBOOKING_CALENDAR_AUGUST'),
-    'september' => Text::_('COM_DNBOOKING_CALENDAR_SEPTEMBER'),
-    'october' => Text::_('COM_DNBOOKING_CALENDAR_OCTOBER'),
-    'november' => Text::_('COM_DNBOOKING_CALENDAR_NOVEMBER'),
-    'december' => Text::_('COM_DNBOOKING_CALENDAR_DECEMBER'),
-    'add' => Text::_('COM_DNBOOKING_CALENDAR_TASK_ADD'),
-    'edit' => Text::_('COM_DNBOOKING_CALENDAR_TASK_EDIT'),
-    'delete' => Text::_('COM_DNBOOKING_CALENDAR_TASK_DELETE'),
-    'success' => Text::_('COM_DNBOOKING_CALENDAR_TASK_SUCCESS'),
-    'failed' => Text::_('COM_DNBOOKING_CALENDAR_TASK_FAILED')
-];
 
 foreach ($params['weekly_opening_hours'] as $day => $value) {
     $zeiten[$day] = $value;
@@ -107,7 +117,13 @@ Factory::getDocument()->addScriptOptions('com_dnbooking', $settings);
                         <tr>
 	                        <?php
 	                        foreach ($params['regular_opening_hours'] as $name => $value) {
-		                        echo "<td style='font-size:12px; background-color: " . $value->openinghour_color . "'>" . $value->starttime . " - " . $value->endtime . "</td>";
+		                        if($value->higherPrice == 1){
+			                        $priceValue = $translations['higherprice'];
+		                        }
+		                        else{
+			                        $priceValue = $translations['lowerprice'];
+		                        }
+		                        echo "<td style='font-size:12px; background-color: " . $value->openinghour_color . "'>" . $value->starttime . " - " . $value->endtime . "<br/>" . $priceValue. "</td>";
 	                        }
 		                        echo "<td style='font-size:12px; background-color: " . $params['closed_color'] . "'>Geschlossen</td>";
 

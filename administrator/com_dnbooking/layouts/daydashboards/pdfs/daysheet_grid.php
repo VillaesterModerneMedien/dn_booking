@@ -42,7 +42,7 @@
 
     <div class="daysheetBody">
         <table class="reservationsGrid">
-	        <?php foreach (array_chunk($items, 4) as $row) : ?>
+	        <?php foreach (array_chunk($items, 7) as $row) : ?>
             <?php  $itemCount = 0; ?>
                 <tr>
                     <?php foreach ($row as $item) : ?>
@@ -53,7 +53,7 @@
                         <?php $reservationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');?>
                         <?php $children = json_decode($item['additional_infos2'], true);?>
                         <?php $persons = json_decode($item['additional_info'], true);?>
-                        <td width="25%">
+                        <td width="14.28%">
                             <table class="singleReservation">
                                 <thead>
                                     <tr>
@@ -146,8 +146,8 @@
                         </td>
 
                     <?php endforeach; ?>
-                    <?php for ($i = $count; $i < 4; $i++) : ?>
-                        <td width="25%" class="quarterCell emptyCell"></td>
+                    <?php for ($i = $count; $i < 7; $i++) : ?>
+                        <td width="14.28%" class="quarterCell emptyCell"></td>
 	                <?php endfor; ?>
                 </tr>
 	        <?php endforeach; ?>

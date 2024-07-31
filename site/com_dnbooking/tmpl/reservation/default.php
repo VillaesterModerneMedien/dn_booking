@@ -74,18 +74,15 @@ $this->form->setValue('reservation_token', null, $reservationToken);
         <button type="button" id="checkBooking" class="uk-button uk-button-default"><?php echo JText::_('COM_DNBOOKING_CHECKBOOKING_LABEL'); ?></button>
     </section>
 
-    <section class="stickyBottom uk-section uk-section-default">
+    <section class="stickyBottom uk-section uk-section-default" id="bookingNav">
         <div class="uk-grid uk-grid-small uk-child-width-1-3@m " uk-grid>
             <div>
-                <!--<a href="#" class="uk-button uk-button-primary" dnprev>
-                    zurück
-                </a>-->
             </div>
             <div>
 
             </div>
             <div>
-                <button class="uk-button uk-button-primary" dnnext>
+                <button class="uk-button uk-button-primary"  id="dnnext" dnnext>
                     Weiter
                 </button>
             </div>

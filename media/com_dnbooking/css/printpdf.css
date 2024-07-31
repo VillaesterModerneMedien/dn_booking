@@ -37,15 +37,15 @@ h2 {
   left: 0;
   width: 100%;
   padding-top: 5mm;
-  padding-left: 2cm;
-  padding-right: 2cm;
+  padding-left: 0;
+  padding-right: 0;
   padding-bottom: 0;
   background: #1f5098;
   color: white;
 }
 
 .daysheetBody {
-  padding: 0.5cm 2cm 0cm 2cm;
+  padding: 0;
   font-family: "chelvetica";
 }
 .daysheetBody table {
@@ -85,7 +85,7 @@ table.footer {
   top: 0;
   left: 0;
   height: 1cm;
-  padding: 0.5cm 2cm;
+  padding: 0.5cm 0.5cm;
   background: #1f5098;
   color: white;
 }

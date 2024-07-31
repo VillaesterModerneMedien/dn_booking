@@ -158,6 +158,7 @@ class DnbookingHelper
             $items = $reservationsModel->getItems();
             $items = ArrayHelper::pivot($items, 'reservation_token');
             $itemId = $items[$item['reservation_token']]->id;
+
             $reservationModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Administrator');
             $savedItem = $reservationModel->getItem($itemId);
             $savedItem = ArrayHelper::fromObject($savedItem);
@@ -179,9 +180,24 @@ class DnbookingHelper
         $orderData['vendor_address']     = $componentParams['vendor_address'];
         $orderData['vendor_accountdata'] = $componentParams['vendor_accountdata'];
 
+		$orderData['customText'] = $sendMailFormValues['sendMailCustomText'];
+		$orderData['stornoText'] = $sendMailFormValues['sendMailStornoText'];
+
         $layout                              = new FileLayout('mail.html_ordertable_simple', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
         $htmlOrderTableSimple                = $layout->render($orderData);
         $orderData['html_ordertable_simple'] = $htmlOrderTableSimple;
+
+	    $layout                              = new FileLayout('mail.html_ordertable_price', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+	    $htmlOrderTablePrice                 = $layout->render($orderData);
+	    $orderData['html_ordertable_price']  = $htmlOrderTablePrice;
+
+	    $layout                              = new FileLayout('mail.html_custommail', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+	    $htmlCustomMail                      = $layout->render($orderData);
+	    $orderData['html_custommail']        = $htmlCustomMail;
+
+	    $layout                              = new FileLayout('mail.html_stornotext', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
+	    $htmlStornoText                      = $layout->render($orderData);
+	    $orderData['html_stornotext']        = $htmlStornoText;
 
         $layout                              = new FileLayout('mail.html_birthdaychildren', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
         $htmlBirthdayChildren                = $layout->render($orderData);
@@ -190,22 +206,20 @@ class DnbookingHelper
         $orderDataFlattened = ArrayHelper::flatten($orderData, '_');
 		$orderDataFlattened['reservation_timesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'H:i');
 		$orderDataFlattened['reservation_datesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'd. F Y');
+
         /** @var Mail $mail */
         $mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
 
         $mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
 
-	    $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
+	    if($isFrontend){
+		    $sendMailFormValues['sendMailType'] = 'reservation_pending';
+	    }
 
+	    $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
 	    $mailer->addTemplateData($orderDataFlattened);
 
-		if($isFrontend){
-	        $sendMailFormValues['sendMailType'] = 'reservation_pending';
-	        $mailer->addRecipient($orderDataFlattened['email'], $orderDataFlattened['firstname'] . ' ' . $orderDataFlattened['lastname']);
-        }
-		else{
-	        $mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
-		}
+		$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
 
 	    try
         {
@@ -235,6 +249,59 @@ class DnbookingHelper
         }
     }
 
+
+	public static function checkPrice($date){
+		$params = ComponentHelper::getParams('com_dnbooking');
+		$date = HTMLHelper::date($date, 'Y-m-d');
+
+		$db = Factory::getContainer()->get('DatabaseDriver');
+		$query = $db->getQuery(true);
+		$query->select('*')
+			->from($db->quoteName('#__dnbooking_openinghours'))
+			->where($db->quoteName('day') . ' = ' . $db->quote($date));
+
+		// Führe die Abfrage für die Tabelle #__dnbooking_openinghours aus
+		$db->setQuery($query);
+		$openingHours = $db->loadAssocList();
+		$customOpeningHour = is_array($openingHours) ? $openingHours[0] : false ;
+		$regularOpeningHourClass = $params->get('regular_opening_hours');
+		$weeklyOpeningHour = $params->get('weekly_opening_hours');
+		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
+		$hoursArray = [];
+		$regularOpeningHour = [];
+
+		foreach ($weeklyOpeningHour as $key => $value){
+			$hoursArray[$key] = $value;
+		}
+
+		foreach ($regularOpeningHourClass as $key => $value){
+			foreach ($value as $valuename => $valuecontent){
+				$regularOpeningHour[$key][$valuename] = $valuecontent;
+			}
+		}
+
+		$weeklyOpeningHourKeys = array_keys($hoursArray);
+
+		if ($customOpeningHour) {
+
+			$openingCount = count($regularOpeningHour);
+			$a = $customOpeningHour['opening_time'];
+			$b = $regularOpeningHour['regular_opening_hours' . $a];
+			$isHigherPrice = $b['higherPrice'];
+
+		}
+
+		$a =  $hoursArray[$weeklyOpeningHourKeys[$weekdayNumber]];
+		if ($a && !$customOpeningHour) {
+			$b = json_decode($a, true);
+			$c = array_keys($b);
+			$openingTime = $b[$c[0]];
+			$d = $regularOpeningHour[$openingTime];
+			$isHigherPrice = $d['higherPrice'];
+		}
+
+		return (int) $isHigherPrice;
+	}
     public static function checkHolidays($date)
     {
         $date = date('Y-m-d', strtotime($date));
@@ -255,6 +322,7 @@ class DnbookingHelper
         }
         return 0;
     }
+
 
     /**
      * Method to get the weekday number of a date.
@@ -302,7 +370,7 @@ class DnbookingHelper
             ob_clean();
 
             $config = array(
-                'format' => 'A4',
+                'format' => 'A3',
                 'mode' => 'utf-8',
                 'orientation' => $orientation,
                 'margin_top' => 0,

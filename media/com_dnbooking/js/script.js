@@ -1,48 +1,6 @@
 (function (exports) {
     'use strict';
 
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function setMinPackage(packageField){
-        const minPackage = 5;
-        packageField.setAttribute('min', minPackage);
-        packageField.value = minPackage;
-    }
-
-    function checkDateInput(dateInput) {
-        function parseDateString(dateString) {
-            let [datePart, timePart] = dateString.split(' ');
-            let [day, month, year] = datePart.split('.');
-            let [hours, minutes, seconds] = timePart.split(':');
-            return new Date(year, month - 1, day, hours, minutes, seconds);
-        }
-
-        let selectedDate = parseDateString(dateInput);
-
-        const minDate = new Date();
-        minDate.setDate(minDate.getDate() + 3);
-        return selectedDate >= minDate;
-    }
-
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -74,6 +32,7 @@
             const label = extra.querySelector('label');
             input.setAttribute('hidden', 'true');
             label.setAttribute('hidden', 'true');
+            extra.classList.add('deko');
 
             extra.addEventListener('click', function(){
                 const value = input.value;
@@ -134,6 +93,41 @@
         });
     }
 
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        let input = checkedItem.querySelector('input[type="number"]');
+        console.log(roomID);
+        if(roomID === '13'){
+            input.value=2;
+        }
+    }
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
+
     /**
      * @copyright  (C) Add your copyright here
      * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -157,6 +151,8 @@
      */
     let maxSteps = 1;
 
+    let roomID = 'null';
+
     /**
      * Updates the room status based on the selected date and number of visitors.
      * @param {string} date - The selected date.
@@ -176,6 +172,7 @@
         xhr.onload = function() {
             if (this.status === 200) {
                 let blocked = JSON.parse(this.responseText);
+                console.log(blocked);
                 let rooms = document.querySelectorAll('.roomList .room');
                     if(blocked.rooms !== undefined) {
                         let blockedRooms = blocked.rooms;
@@ -192,7 +189,7 @@
                             room.removeEventListener('click', handleRoomClick);
                             room.addEventListener('click', handleRoomClick);
                         }
-                        if(blocked.isHolidayOrWeekend === 1)
+                        if(blocked.isHolidayOrWeekend === 1 || blocked.isHigherPrice == "1")
                         {
                             room.classList.add('holiday');
                             room.classList.remove('regular');
@@ -280,7 +277,6 @@
         let rooms = document.querySelectorAll('.roomList .room');
         rooms.forEach(function(room) {
             room.classList.remove('activeRoom');
-            console.log(room);
         });
         if (radioButton) {
             radioButton.checked = true;
@@ -297,7 +293,6 @@
         let xhr = new XMLHttpRequest();
         let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getOrderHTML';
         let translation = Joomla.getOptions('com_dnbooking.translations');
-
 
         xhr.open('POST', url, true);
 
@@ -334,6 +329,7 @@
     function setStep(newStep) {
         step = newStep;
         let scrollToElement = null;
+        const nextButton = document.getElementById('dnnext');
         document.querySelectorAll('[data-step]').forEach(element => {
             const elementStep = parseInt(element.getAttribute('data-step'), 10);
             if(elementStep <= step) {
@@ -348,6 +344,12 @@
         if(scrollToElement) {
             scrollToElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
+        if(step <= 1){
+            nextButton.style.display = 'none';
+        }
+        else {
+            nextButton.style.display = 'block';
+        }
     }
 
     /**
@@ -359,6 +361,36 @@
         const dateTimeString = dateTimeInput.getAttribute('data-alt-value');
         const timeString = dateTimeString.split(' ')[1];
         return timeString;
+    }
+
+    function parseDateString(dateString) {
+        let [datePart, timePart] = dateString.split(' ');
+        let [day, month, year] = datePart.split('.');
+        let [hours, minutes, seconds] = timePart.split(':');
+        return new Date(year, month - 1, day, hours, minutes, seconds);
+    }
+    function formatDate(date) {
+        // Verwendung der toLocaleDateString-Methode mit spezifischen Optionen
+        return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+    function checkDateInput(dateInput) {
+
+        let selectedDate = parseDateString(dateInput);
+
+        const minDate = new Date();
+        minDate.setDate(minDate.getDate() + 3);
+
+        const maxDate = new Date();
+        maxDate.setMonth(maxDate.getMonth() + 6);
+
+        if((selectedDate >= minDate) && (selectedDate <= maxDate))
+        {
+            return true;
+        }
+        let minDateString = formatDate(minDate);
+        let maxDateString = formatDate(maxDate);
+        setMessage('Bitte wählen Sie ein Datum, welches zwischen dem ' + minDateString + ' und dem ' + maxDateString + ' liegt');
+        return false;
     }
 
 
@@ -445,11 +477,13 @@
         const checkStatus = document.getElementById('checkStatus');
         const buttons = document.querySelectorAll("button");
         const extras = document.querySelectorAll(".extraListItem");
+        const nextButton = document.getElementById('dnnext');
 
         const uniqueSteps = new Set();
         const elements = document.querySelectorAll('[data-step]');
 
         birthdayChildrenInput.setAttribute('max',5);
+        nextButton.style.display='none';
 
 
         elements.forEach(element => {
@@ -459,18 +493,18 @@
         maxSteps = uniqueSteps.size;
 
         checkBooking.addEventListener('click', function() {
+            document.querySelectorAll(".extraListItem.checked");
             if(checkRequiredFields() === true){
+                doubleDeko(roomID);
                 renderOrderHTML();
             }
             else {
                 setMessage('Bitte füllen Sie alle Pflichtfelder aus');
             }
         });
+
         dateInput.addEventListener('change', function() {
             dateValid = false;
-            if(checkDateInput(this.getAttribute('data-alt-value')) === false){
-                setMessage('Bitte wählen Sie ein Datum, welches mindestens zwei Tage in der Zukunft liegt');
-            }
             step=1;
             setStep(step);
         });
@@ -497,7 +531,7 @@
         checkStatus.addEventListener('click', function(event) {
             event.preventDefault();
             if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
-                setMessage('Bitte wählen Sie ein Datum, welches mindestens vier Tage in der Zukunft liegt');
+                dateValid = false;
             }
             else {
                 checkDate(dateInput.value, personsPackageInput.value);
@@ -510,27 +544,21 @@
             });
         });
 
-        document.querySelectorAll('[dnnext], [dnprev]').forEach(button => {
-            button.addEventListener('click', event => {
-                console.log('DateValid: ', dateValid);
-                console.log('step: ', step);
-                if(event.target.hasAttribute('dnnext')) {
-                    if (step < maxSteps && dateValid === true){
-                        step++;
-                    }
-                    else {
-                        setMessage('Bitte zuerst Verfügbarkeit prüfen');
-                    }
 
-                } else if(event.target.hasAttribute('dnprev')) {
-                    step = Math.max(1, step - 1);
-                }
-                setStep(step);
-            });
+        nextButton.addEventListener('click', event => {
+            if (step < maxSteps && dateValid === true){
+                step++;
+            }
+            else {
+                setMessage('Bitte zuerst Verfügbarkeit prüfen');
+            }
+            setStep(step);
         });
+
 
         radioButtons.forEach(function(radioButton){
             radioButton.addEventListener('click', function(){
+                roomID = this.getAttribute('value');
                 roomList.classList.remove('errorField');
             });
         });
@@ -541,7 +569,7 @@
         setCustomExtras(extras);
     });
 
-    exports.checkDateInput = checkDateInput;
+    exports.doubleDeko = doubleDeko;
     exports.filterSpecial = filterSpecial;
     exports.setCustomExtras = setCustomExtras;
     exports.setMinPackage = setMinPackage;

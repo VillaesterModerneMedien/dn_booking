@@ -19,23 +19,18 @@ export function filterSpecial(blockedRooms) {
     return result;
 }
 
+export function doubleDeko(roomID){
+    let checkedItem = document.querySelector('.deko.checked');
+    let input = checkedItem.querySelector('input[type="number"]');
+    console.log(roomID);
+    if(roomID === '13'){
+        input.value=2;
+    }
+}
 export function setMinPackage(packageField){
     const minPackage = 5;
     packageField.setAttribute('min', minPackage);
     packageField.value = minPackage;
 }
 
-export function checkDateInput(dateInput) {
-    function parseDateString(dateString) {
-        let [datePart, timePart] = dateString.split(' ');
-        let [day, month, year] = datePart.split('.');
-        let [hours, minutes, seconds] = timePart.split(':');
-        return new Date(year, month - 1, day, hours, minutes, seconds);
-    }
 
-    let selectedDate = parseDateString(dateInput);
-
-    const minDate = new Date();
-    minDate.setDate(minDate.getDate() + 3);
-    return selectedDate >= minDate;
-}

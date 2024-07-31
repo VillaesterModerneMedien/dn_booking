@@ -141,26 +141,30 @@ class HolidaysField extends SubformField
 
 		$holidays = [];
 
-		$holidaysCelebration = json_decode($this->_getHolidaysCelebration($region, $year), true);
-		foreach ($holidaysCelebration as $holiday)
-		{
-			$holidays[] = [
-				'start' => $holiday['startDate'],
-				'end' => $holiday['endDate'],
-				'name' => $holiday['name'][0]['text'],
-			];
+		if($params->get('selectHolidaysType')){
+			if(in_array('publicHolidays', $params->get('selectHolidaysType'))){
+				$publicHolidayList = json_decode($this->_getPublicHolidays($region, $year), true);
+				foreach ($publicHolidayList as $holiday)
+				{
+					$holidays[] = [
+						'start' => $holiday['startDate'],
+						'end' => $holiday['endDate'],
+						'name' => $holiday['name'][0]['text'],
+					];
+				}
+			}
+			if(in_array('holiday', $params->get('selectHolidaysType'))){
+				$holidayList = json_decode($this->_getHoliday($region, $year), true);
+				foreach ($holidayList as $holiday)
+				{
+					$holidays[] = [
+						'start' => $holiday['startDate'],
+						'end' => $holiday['endDate'],
+						'name' => $holiday['name'][0]['text'],
+					];
+				}
+			}
 		}
-
-		$yearDataHoliday = json_decode($this->_getHolidays($region, $year), true);
-		foreach ($yearDataHoliday as $holiday)
-		{
-			$holidays[] = [
-				'start' => $holiday['startDate'],
-				'end' => $holiday['endDate'],
-				'name' => $holiday['name'][0]['text'],
-			];
-		}
-
 
 		$value = [];
 		foreach ($holidays as $holiday)
@@ -202,7 +206,7 @@ class HolidaysField extends SubformField
         return $forms;
     }
 
-	protected function _getHolidays($region, $year)
+	protected function _getPublicHolidays($region, $year)
 	{
 		$curl = curl_init();
 		$curlURL = 'https://openholidaysapi.org/PublicHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom='. $year .'-01-01&validTo='. $year+1 . '-12-31&subdivisionCode='. $region;
@@ -224,7 +228,7 @@ class HolidaysField extends SubformField
 		return $response;
 	}
 
-	protected function _getHolidaysCelebration($region, $year)
+	protected function _getHoliday($region, $year)
 	{
 		$curl = curl_init();
 		$curlURL = 'https://openholidaysapi.org/SchoolHolidays?countryIsoCode=DE&languageIsoCode=DE&validFrom=' . $year . '-01-01&validTo=' . $year+1 . '-12-31&subdivisionCode='. $region;

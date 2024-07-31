@@ -23,6 +23,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Controller for single booking view
@@ -112,17 +113,15 @@ class ReservationController extends AdminReservationController
 
 		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
 		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
-		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 
 		//$this->input->set('isHoliday') = $isHolidayOrWeekend;
-
 		$time           = $this->input->get('time', null, 'string');
 
 		$personscount = $this->input->get('visitors', null, 'int');
 		$model        = $this->getModel();
 		$rooms        = $model->updateRooms();
 		$reservations = $model->getReservations();
-		$openingHours = $model->getOpeningHours($date, $time);
+		$openingHours = $model->getOpeningHours($date);
 		$isOpen = true;
 
 		$customOpeningHour = isset($openingHours['opening_hours'][0]) ? $openingHours['opening_hours'][0] : false;
@@ -148,6 +147,7 @@ class ReservationController extends AdminReservationController
 					$startTime = $b['starttime'] . ':00';
 					$endTime = $b['endtime'] . ':00';
 					$isOpen = $this->_checkTime($time, $startTime, $endTime);
+					$isHigherPrice = $b['higherPrice'];
 					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
 					$blockedRooms['start'] = $startTime;
 					$blockedRooms['end'] = $endTime;
@@ -171,6 +171,7 @@ class ReservationController extends AdminReservationController
 					$startTime = $d['starttime'] . ':00';
 					$endTime = $d['endtime'] . ':00';
 					$isOpen = $this->_checkTime($time, $startTime, $endTime);
+					$isHigherPrice = $d['higherPrice'];
 					$blockedRooms['times'] = $isOpen ? '' : 'timeclosed';
 					$blockedRooms['start'] = $startTime;
 					$blockedRooms['end'] = $endTime;
@@ -205,10 +206,41 @@ class ReservationController extends AdminReservationController
 		}
 
 		$blockedRooms['isHolidayOrWeekend'] = $isHolidayOrWeekend;
+		$blockedRooms['isHigherPrice'] = $isHigherPrice;
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
 		$app->close();
 
+	}
+
+	protected function _checkPrice($date){
+		$model        = $this->getModel();
+		$openingHours = $model->getOpeningHours($date);
+		$customOpeningHour = isset($openingHours['opening_hours'][0]) ? $openingHours['opening_hours'][0] : false;
+		$regularOpeningHour = $openingHours['regular_opening_hours'];
+		$weeklyOpeningHour = $openingHours['weekly_opening_hours'];
+		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
+		$weeklyOpeningHourKeys = array_keys($weeklyOpeningHour);
+
+		if ($customOpeningHour) {
+
+			$openingCount = count($regularOpeningHour);
+			$a = $customOpeningHour['opening_time'];
+			$b = $regularOpeningHour['regular_opening_hours' . $a];
+			$isHigherPrice = $b['higherPrice'];
+
+		}
+
+		$a =  $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]];
+		if ($a && !$customOpeningHour) {
+			$b = json_decode($a, true);
+			$c = array_keys($b);
+			$openingTime = $b[$c[0]];
+			$d = $regularOpeningHour[$openingTime];
+			$isHigherPrice = $d['higherPrice'];
+		}
+
+		return (int) $isHigherPrice;
 	}
 
 	public function getOrderHTML(){
@@ -217,12 +249,20 @@ class ReservationController extends AdminReservationController
 		$formFields = $this->input->get('jform', null, 'array');
 		$date         = HTMLHelper::_('date', $formFields['reservation_date'], 'Y-m-d');
 		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
+		$customPrice = $this->_checkPrice($date);
 
 		$app = Factory::getApplication();
 
 		$layout = new FileLayout('reservation.modal', JPATH_ROOT .'/components/com_dnbooking/layouts');
 
-		$orderData = $this->getReservationSoldData($formFields, $isHolidayOrWeekend);
+		if($customPrice || $isHolidayOrWeekend){
+			$price = 1;
+		}
+		else{
+			$price = 0;
+		}
+
+		$orderData = $this->getReservationSoldData($formFields, $price);
 
 		$html = $layout->render($orderData);
 
@@ -241,8 +281,16 @@ class ReservationController extends AdminReservationController
 		$formData = $input->get('jform', null, 'array');
 		$date         = HTMLHelper::_('date', $formData['reservation_date'], 'Y-m-d');
 		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
+		$customPrice = $this->_checkPrice($date);
+		if($customPrice || $isHolidayOrWeekend){
+			$price = 1;
+		}
+		else{
+			$price = 0;
+		}
 
-		$formData['holiday'] = $isHolidayOrWeekend;
+
+		$formData['holiday'] = $price;
 
 		$customerId = $model->saveReservationCustomer($formData);
 		$input->set('jform', $customerId);
@@ -252,6 +300,10 @@ class ReservationController extends AdminReservationController
 			$params = $this->params;
 			$menuItem    = $params->get('returnurl');
 
+			$reservationsModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservations', 'Administrator');
+			$items = $reservationsModel->getItems();
+			$items = ArrayHelper::pivot($items, 'reservation_token');
+			$rid = $items[$formData['reservation_token']]->id;
 
 			DnbookingHelper::sendMail($formData, true);
 
@@ -259,7 +311,7 @@ class ReservationController extends AdminReservationController
 				$this->setRedirect("/");
 			}
 			else{
-				$this->setRedirect(Route::_("index.php?Itemid=".$menuItem, false));
+				$this->setRedirect(Route::_("index.php?Itemid=" . $menuItem . "&rid=" . $rid, false));
 			}
 		}
 		else

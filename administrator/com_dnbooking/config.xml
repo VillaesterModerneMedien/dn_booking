@@ -46,6 +46,18 @@
                 />
                 <field name="openinghour_color" type="color" default="" label="COM_DNBOOKING_CONFIG_COLOR_LABEL"
                        description="COM_DNBOOKING_CONFIG_COLOR_DESC"/>
+
+                <field name="higherPrice"
+                       type="radio"
+                       label="COM_DNBOOKING_CONFIG_HIGHERPRICE_LABEL"
+                       description="COM_DNBOOKING_CONFIG_HIGHERPRICE_DESC"
+                       class="btn-group btn-group-yesno"
+                       default = "0"
+                       showon="activateCustomPrice:1">
+
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
             </form>
         </field>
         <field name="weekly_opening_hours" type="subform"
@@ -135,7 +147,6 @@
 
         <field type="note" name="myspacer" label="COM_DNBOOKING_SELECT_REGION_HINT"/>
 
-
         <field name="region"
                type="list"
                default=""
@@ -161,6 +172,17 @@
         </field>
 
         <field
+                name="selectHolidaysType"
+                type="checkboxes"
+                default=""
+                label="COM_DNBOOKING_SELECT_HOLIDAYS_TYPE_LABEL"
+                description="COM_DNBOOKING_SELECT_HOLIDAYS_TYPE_DESC"
+        >
+            <option value="publicHolidays">COM_DNBOOKING_SELECT_HOLIDAYS_TYPE_PUBLICHOLIDAYS</option>
+            <option value="holiday">COM_DNBOOKING_SELECT_HOLIDAYS_TYPE_HOLIDAY</option>
+        </field>
+
+        <field
                 name="holidays"
                 type="Holidays"
                 hiddenLabel="true"
@@ -181,7 +203,6 @@
                         filter="server_utc"
                         readonly="true"
                 />
-
                 <field
                         name="endDate"
                         type="calendar"
@@ -192,15 +213,12 @@
                         filter="server_utc"
                         readonly="true"
                 />
-
                 <field
                         name="title"
                         type="text"
                         label="COM_DNBOOKING_FIELD_HOLIDAYS_TITLE_LABEL"
                         readonly="true"
                 />
-
-
             </form>
         </field>
     </fieldset>
