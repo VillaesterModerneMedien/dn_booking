@@ -101,6 +101,7 @@ $counter=0;
 	                $images = json_decode($room->images, true);
 	                if(!empty($images))
 	                {
+
 		                $firstImage = '/' . $images['images0']['image'];
 		                $image = $view->el('image', [
 

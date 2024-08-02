@@ -15,46 +15,57 @@
         return $item['published'] == 4;
     });
     $items = $filteredItems;
-
+    $itemCount = 0;
+    $gridItems = [];
     $params = ComponentHelper::getParams('com_dnbooking');
+
     $reservationDate = HTMLHelper::_('date', $items[0]['reservation_date'], Text::_('DATE_FORMAT_LC4'));
     $holiday = $items[0]['holiday'];
     $packageprice = $params->get('packagepriceregular');
     $admissionprice = $params->get('admissionpriceregular');
 
     usort($items, function ($a, $b) {
-        return strtotime($a['reservation_date']) <=> strtotime($b['reservation_date']);
+        return $a['room']['ordering'] <=> $b['room']['ordering'];
     });
+
+    foreach ($items as $reservation){
+        while($itemCount < $reservation['room']['ordering']){
+            $gridItems[] = 'empty';
+            $itemCount++;
+        }
+        $gridItems[] = $reservation;
+	    $itemCount++;
+    }
+    $rows = array_chunk($gridItems, 7);
+    $rowsHeight = 277 / count($rows);
     if($holiday) {
         $packageprice = $params->get('packagepricecustom');
         $packageprice = $params->get('admissionpricecustom');
     }
-
-
     ?>
 
 
 <div class="daysheetGrid">
-
     <div class="gridHeader">
         <h1 class="h1-headline-pdf"><?= Text::sprintf('COM_DNBOOKING_HEADLINE_DAYDASHBOARDS' ,$reservationDate ); ?></h1>
     </div>
-
     <div class="daysheetBody">
-        <table class="reservationsGrid">
-	        <?php foreach (array_chunk($items, 7) as $row) : ?>
-            <?php  $itemCount = 0; ?>
-                <tr>
+        <table class="reservationsGrid" height="100%">
+	        <?php foreach ( $rows as $row) : ?>
+                <tr height="<?=$rowsHeight;?>mm">
                     <?php foreach ($row as $item) : ?>
-                    <?php $count++; ?>
-                        <?php if ($item['published'] !=4) {
-                            continue;
-                        } ?>
+	                    <?php $count++; ?>
+                        <?php if($item === "empty"):?>
+                            <td width="14.28%" height="<?=$rowsHeight;?>mm" class="emptyCell" style="min-height:<?=$rowsHeight;?>vh"><table height="<?=$rowsHeight;?>mm" width="100%"><tr></tr><td>&nbsp;</td></table></td>
+                        <?php else:?>
+                            <?php if ($item['published'] !=4):?>
+		                        <?php continue;?>
+                            <?php endif;?>
                         <?php $reservationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');?>
                         <?php $children = json_decode($item['additional_infos2'], true);?>
                         <?php $persons = json_decode($item['additional_info'], true);?>
-                        <td width="14.28%">
-                            <table class="singleReservation">
+                        <td width="14.28%" height="<?=$rowsHeight;?>mm">
+                            <table class="singleReservation" width="100%" height="<?=$rowsHeight;?>mm">
                                 <thead>
                                     <tr>
                                         <th>
@@ -144,7 +155,7 @@
                                 <?php endif;?>
                             </table>
                         </td>
-
+                        <?php endif;?>
                     <?php endforeach; ?>
                     <?php for ($i = $count; $i < 7; $i++) : ?>
                         <td width="14.28%" class="quarterCell emptyCell"></td>
@@ -153,5 +164,4 @@
 	        <?php endforeach; ?>
         </table>
     </div>
-
 </div>

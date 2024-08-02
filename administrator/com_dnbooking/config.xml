@@ -144,6 +144,14 @@
                 size="10"
                 default="0"
         />
+        <field
+                name="downpayment"
+                type="text"
+                label="COM_DNBOOKING_CONFIG_PRICESETTINGS_DOWNPAYMENT_LABEL"
+                description="COM_DNBOOKING_CONFIG_PRICESETTINGS_DOWNPAYMENT_DESC"
+                size="10"
+                default="0"
+        />
 
         <field type="note" name="myspacer" label="COM_DNBOOKING_SELECT_REGION_HINT"/>
 

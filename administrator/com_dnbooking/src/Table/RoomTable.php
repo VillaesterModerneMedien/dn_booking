@@ -95,7 +95,10 @@ class RoomTable extends Table implements VersionableTableInterface, TaggableTabl
 
 		return true;
 	}
-
+	private function isJson($string) {
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
 	/**
 	 * Method to store a row
 	 *
@@ -110,7 +113,9 @@ class RoomTable extends Table implements VersionableTableInterface, TaggableTabl
 
         $db     = $this->getDbo();
 
-		$this->images = json_encode($this->images);
+		if(is_array($this->images)){
+			$this->images = json_encode($this->images);
+		}
 
 		// Set created date if not set.
 		if (!(int) $this->created)
@@ -179,5 +184,7 @@ class RoomTable extends Table implements VersionableTableInterface, TaggableTabl
 	{
 		return $this->typeAlias;
 	}
+
+
 
 }

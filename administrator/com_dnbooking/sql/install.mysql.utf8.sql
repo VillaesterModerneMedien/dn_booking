@@ -51,6 +51,7 @@ CREATE TABLE if not exists `#__dnbooking_rooms`
     `images`       json                                                   NOT NULL,
     `personsmin`   int(11)                                                NOT NULL DEFAULT '0',
     `personsmax`   int(11)                                                NOT NULL DEFAULT '0',
+    `ordering`     int(11)                                                NOT NULL DEFAULT '0',
     `priceregular` varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `pricecustom`  varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `published`    tinyint(4)                                             NOT NULL DEFAULT '0',

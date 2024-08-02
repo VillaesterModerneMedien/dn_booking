@@ -87,22 +87,34 @@ h2 {
   position: absolute;
   top: 0;
   left: 0;
-  height: 1cm;
+  height: 2cm;
   padding: 0.5cm 0.5cm;
   background: $blue;
   color: white;
 }
 
-.daysheetBody table.reservationsGrid {
+.daysheetBody, .reservationsGrid {
   width: 100%;
-  border:none!important;
+  height:100%;
 }
-.reservationsGrid td{
-  max-width:25%;
-}
-table.singleReservation {
+.daysheetBody table{
   border-collapse: collapse;
+}
+.reservationsGrid td {
+  height:100%;
+  vertical-align: top;
+}
+
+.singleReservation {
+  height:100%;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.singleReservation {
+  width:100%;
   border:1px solid black;
+  border-collapse: collapse;
   th{
     background-color:#DDD;
   }

@@ -43,6 +43,7 @@ class RoomsModel extends ListModel
                 'published', 'a.published',
                 'created', 'a.created',
                 'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
 			);
 		}
 
