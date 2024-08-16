@@ -141,10 +141,15 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 				if (\count($cid)) {
 					$this->setMessage(Text::plural($ntext, \count($cid)));
 				}
+
+				$this->sendMails();
+
 			} catch (\Exception $e) {
 				$this->setMessage($e->getMessage(), 'error');
 			}
 		}
+
+
 
 		$this->setRedirect(
 			Route::_(
