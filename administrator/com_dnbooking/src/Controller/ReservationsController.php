@@ -11,11 +11,14 @@ namespace DnbookingNamespace\Component\Dnbooking\Administrator\Controller;
 \defined('_JEXEC') or die;
 
 use DnbookingNamespace\Component\Dnbooking\Administrator\Helper\DnbookingHelper;
+use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailerFactoryAwareInterface;
 use Joomla\CMS\Mail\MailerFactoryAwareTrait;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * The Reservations list controller class.
@@ -80,7 +83,77 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 
 		$this->setRedirect('index.php?option=com_dnbooking&view=reservations');
 	}
+	public function downpayment()
+	{
+		$this->publish();
+	}
+	/**
+	 * Method to publish a list of items
+	 *
+	 * @return  void
+	 *
+	 * @since   1.6
+	 */
+	public function publish()
+	{
+		// Check for request forgeries
+		$this->checkToken();
 
+		// Get items to publish from the request.
+		$cid   = (array) $this->input->get('cid', [], 'int');
+		$data  = ['publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3, "downpayment" => 4];		$task  = $this->getTask();
+		$value = ArrayHelper::getValue($data, $task, 0, 'int');
+
+		// Remove zero values resulting from input filter
+		$cid = array_filter($cid);
+
+		if (empty($cid)) {
+			$this->getLogger()->warning(Text::_($this->text_prefix . '_NO_ITEM_SELECTED'), ['category' => 'jerror']);
+		} else {
+			// Get the model.
+			$model = $this->getModel();
+
+			// Publish the items.
+			try {
+				$model->publish($cid, $value);
+				$errors = $model->getErrors();
+				$ntext  = null;
+
+				if ($value === 1) {
+					if ($errors) {
+						$this->app->enqueueMessage(
+							Text::plural($this->text_prefix . '_N_ITEMS_FAILED_PUBLISHING', \count($cid)),
+							CMSWebApplicationInterface::MSG_ERROR
+						);
+					} else {
+						$ntext = $this->text_prefix . '_N_ITEMS_PUBLISHED';
+					}
+				} elseif ($value === 0) {
+					$ntext = $this->text_prefix . '_N_ITEMS_UNPUBLISHED';
+				} elseif ($value === 2) {
+					$ntext = $this->text_prefix . '_N_ITEMS_ARCHIVED';
+				} elseif ($value === 4) {
+					$ntext = $this->text_prefix . '_N_ITEMS_DOWNPAYMENT';
+				} else {
+					$ntext = $this->text_prefix . '_N_ITEMS_TRASHED';
+				}
+
+				if (\count($cid)) {
+					$this->setMessage(Text::plural($ntext, \count($cid)));
+				}
+			} catch (\Exception $e) {
+				$this->setMessage($e->getMessage(), 'error');
+			}
+		}
+
+		$this->setRedirect(
+			Route::_(
+				'index.php?option=' . $this->option . '&view=' . $this->view_list
+				. $this->getRedirectToListAppend(),
+				false
+			)
+		);
+	}
 
 
 	public function sendMails(){

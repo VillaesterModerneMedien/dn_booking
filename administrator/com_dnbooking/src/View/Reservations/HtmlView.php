@@ -132,11 +132,21 @@ class HtmlView extends BaseHtmlView
 
 			$childBar = $dropdown->getChildToolbar();
 
-			$childBar->publish('reservations.publish')->listCheck(true);
+			$childBar->publish('reservations.publish')
+				->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED')
+				->listCheck(true);
 
-			$childBar->unpublish('reservations.unpublish')->listCheck(true);
+			$childBar->unpublish('reservations.unpublish')
+				->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED')
+				->listCheck(true);
 
-            $childBar->archive('reservations.archive')->listCheck(true);
+            $childBar->archive('reservations.archive')
+	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED')
+	            ->listCheck(true);
+
+            $childBar->publish('reservations.downpayment')
+	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE')
+	            ->listCheck(true);
 
             if ($this->state->get('filter.published') != -2)
 			{
