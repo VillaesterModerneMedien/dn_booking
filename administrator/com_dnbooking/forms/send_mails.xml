@@ -20,7 +20,7 @@
         <field name="sendMailCustomText"
                type="editor"
                label="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_LABEL"
-               description="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_DESC"
+               description="COM_DNBOdOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_DESC"
                showon="sendMailType:customMail"
                filter="safehtml"
         />

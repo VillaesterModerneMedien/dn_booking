@@ -21,6 +21,7 @@ use Joomla\CMS\Mail\Mail;
 use Joomla\CMS\Mail\MailerFactoryInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
+use JText;
 use Mpdf\Config\ConfigVariables;
 use Mpdf\Config\FontVariables;
 use Mpdf\HTMLParserMode;
@@ -216,6 +217,17 @@ class DnbookingHelper
 		    $sendMailFormValues['sendMailType'] = 'reservation_pending';
 	    }
 
+
+		if($sendMailFormValues['sendMailType'] === "0"){
+			$sendMailFormValues['sendMailType'] = match ($orderDataFlattened['published'])
+			{
+				0 => 'reservation_cancelled',
+				1 => 'reservation_pending',
+				2 => 'reservation_closed',
+				4 => 'reservation_downpayment',
+				default => 'reservation_statuschange',
+			};
+		}
 	    $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
 	    $mailer->addTemplateData($orderDataFlattened);
 
