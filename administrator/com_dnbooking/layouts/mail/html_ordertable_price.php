@@ -41,9 +41,8 @@ if($item['holiday']) {
 $packagepriceTotal = $packageprice * (int) $item['visitorsPackage'];
 $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
+$downpayment = $item['published'] === 4 ? $params->get('downpayment') : -1;
 
-
-//$totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $item['room'], $item['extras'], $item['holiday']);
 ?>
 <style>
     #orderTableSimple table {
@@ -66,6 +65,7 @@ $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
     }
 </style>
 <div id="orderTableSimple">
+    a
     <table>
         <tr>
             <td><?= Text::_('COM_DNBOOKING_MAIL_BOOKINGNUMBER') ?></td>
@@ -151,21 +151,54 @@ $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 		        <?= $roomprice ?> €
             </td>
         </tr>
+        <?php if(array_key_exists('extras', $item) && !empty($item['extras'])) :?>
         <tr>
             <td>
 				<?= Text::_('COM_DNBOOKING_MAIL_EXTRAS') ?>
             </td>
             <td >
-				<?php if(array_key_exists('extras', $item) && !empty($item['extras'])) :?>
+
 					<?php foreach ($item['extras'] as $extra => $value): ?>
 						<?= $value['amount'] . ' x ' . $value['name'] ?><br/>
 					<?php endforeach; ?>
-				<?php endif; ?>
+
             </td>
             <td style="vertical-align:bottom!important;">
 	            <?= $item['extras_price_total'] ?> €
             </td>
         </tr>
+        <?php endif; ?>
+        <?php if($downpayment >= 0):
+            $item['reservation_price'] -= $downpayment;
+            ?>
+        <tr>
+            <td>
+            </td>
+            <td style="text-align:right;">
+                <strong>
+				    <?= Text::_('COM_DNBOOKING_MAIL_DOWNPAYMENT') ?>
+                </strong>
+            </td>
+            <td>
+                <strong>
+				    - <?= $downpayment ?> €
+                </strong>
+            </td>
+        </tr>
+        <?php endif;?>
+	    <?php if($item['published'] === 3):?>
+            <tr>
+                <td>
+                </td>
+                <td style="text-align:right;">
+                    <strong>
+					    <?= Text::sprintf('COM_DNBOOKING_MAIL_DOWNPAYMENT_LOCALE', $params->get('downpayment')) ?>
+                    </strong>
+                </td>
+                <td>
+                </td>
+            </tr>
+	    <?php endif;?>
         <tr>
             <td>
             </td>
@@ -188,8 +221,5 @@ $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 				<?= $item['customer_notes'] ?>
             </td>
         </tr>
-
-
     </table>
-
 </div>

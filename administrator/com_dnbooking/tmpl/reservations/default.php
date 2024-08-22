@@ -80,6 +80,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 							$id = $item->id;
 							$reservationDate = HTMLHelper::_('date', $item->reservation_date, Text::_('DATE_FORMAT_LC5'));
+                            $reservationYear = HTMLHelper::_('date', $item->reservation_date, 'Y');
 							$customer = $item->firstname . ' ' . $item->lastname;
 							$admin_notes = $item->admin_notes;
 							$short_admin_notes = null;
@@ -100,12 +101,17 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 									break;
 								case 1:
 									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED';
-									$statusIcon  = 'fa-solid fa-arrows-rotate ';
+									$statusIcon  = 'fa-solid fa-arrows-rotate';
 									$btnClass    = 'btn-default';
 									break;
 								case 2:
 									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED';
 									$statusIcon  = 'icon-check';
+									$btnClass    = 'btn-success';
+									break;
+                                case 3:
+									$orderStatus = 'COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_LOCALE';
+									$statusIcon  = 'fa-solid fa-house';
 									$btnClass    = 'btn-success';
 									break;
 								case 4:
@@ -172,7 +178,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                     </button>
                                 </td>
                                 <td class="d-none d-md-table-cell">
-		                            <?php echo $item->id; ?>
+		                            <?php echo $reservationYear . '-' . $item->id; ?>
                                 </td>
                             </tr>
 						<?php endforeach; ?>

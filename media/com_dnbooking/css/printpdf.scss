@@ -38,15 +38,14 @@ h2 {
     left: 0;
     width:100%;
     padding-top: 5mm;
-    padding-left:0;
-    padding-right:0;
+    padding-left:5mm;
+    padding-right:5mm;
     padding-bottom: 0;
     background: $blue;
     color: white;
   }
 
   .daysheetBody {
-    padding: 0;
     font-family: 'chelvetica';
     table {
       width: 100%;
@@ -74,6 +73,9 @@ h2 {
     font-family: 'chelvetica';
   }
 
+.daysheetBody{
+  padding: 5mm!important;
+}
 /*Gridansicht*/
 .daysheetGrid{
   position: absolute;
@@ -93,9 +95,11 @@ h2 {
   color: white;
 }
 
-.daysheetBody, .reservationsGrid {
+.daysheetGrid, .daysheetGrid .daysheetBody, .daysheetGrid .reservationsGrid {
   width: 100%;
   height:100%;
+  padding:0!important;
+  border:0;
 }
 .daysheetBody table{
   border-collapse: collapse;

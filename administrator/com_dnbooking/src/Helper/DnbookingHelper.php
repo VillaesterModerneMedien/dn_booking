@@ -145,6 +145,52 @@ class DnbookingHelper
         return $reservationsToday;
     }
 
+	private static function _newMail($app, $recipient, $orderDataFlattened, $sendMailFormValues){
+		/** @var Mail $mail */
+		$mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+		$mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+
+		$mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
+		$mailer->addTemplateData($orderDataFlattened);
+
+		if ($recipient === 'admin')
+		{
+			$mailer->addRecipient($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+		}
+		else if ($recipient === 'user')
+		{
+			$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+		}
+
+		try
+		{
+			$mailSent = $mailer->send();
+		}
+		catch (MailDisabledException|phpMailerException $e)
+		{
+			return $app->enqueueMessage($e->getMessage(), 'error');
+		}
+
+		$methodName = Text::_('COM_DNBOOKING_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
+
+		if ($mailSent === true)
+		{
+			if ($mail->Mailer !== $app->get('mailer'))
+			{
+				$app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS_FALLBACK', $app->get('mailfrom'), $methodName), 'warning');
+			}
+			else
+			{
+				$app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
+			}
+
+			return true;
+		}
+		else {
+			$app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_ERROR', $recipient, $methodName), 'error');
+			return false;
+		}
+	}
 
     public static function sendMail($item, $isFrontend = false)
     {
@@ -184,6 +230,7 @@ class DnbookingHelper
 		$orderData['customText'] = $sendMailFormValues['sendMailCustomText'];
 		$orderData['stornoText'] = $sendMailFormValues['sendMailStornoText'];
 
+
         $layout                              = new FileLayout('mail.html_ordertable_simple', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
         $htmlOrderTableSimple                = $layout->render($orderData);
         $orderData['html_ordertable_simple'] = $htmlOrderTableSimple;
@@ -207,60 +254,58 @@ class DnbookingHelper
         $orderDataFlattened = ArrayHelper::flatten($orderData, '_');
 		$orderDataFlattened['reservation_timesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'H:i');
 		$orderDataFlattened['reservation_datesingle'] = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'd. F Y');
+	    $reservationYear = HTMLHelper::_('date', $orderDataFlattened['reservation_date'], 'Y');
 
-        /** @var Mail $mail */
-        $mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-
-        $mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+	    $orderDataFlattened['rID'] = $reservationYear . '-' . $orderData['id'];
 
 	    if($isFrontend){
 		    $sendMailFormValues['sendMailType'] = 'reservation_pending';
 	    }
 
-
 		if($sendMailFormValues['sendMailType'] === "0"){
-			$sendMailFormValues['sendMailType'] = match ($orderDataFlattened['published'])
-			{
+			$sendMailFormValues['sendMailType'] = match ($orderDataFlattened['published']) {
 				0 => 'reservation_cancelled',
 				1 => 'reservation_pending',
 				2 => 'reservation_closed',
+				3 => 'reservation_downpayment',
 				4 => 'reservation_downpayment',
 				default => 'reservation_statuschange',
 			};
 		}
-	    $mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
-	    $mailer->addTemplateData($orderDataFlattened);
 
-		$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+		$adminmails = match ($sendMailFormValues['sendMailType']) {
+		    'reservation_pending' => true,
+			default => false,
+	    };
+		$usermails = match ($sendMailFormValues['sendMailType']) {
+			'reservation_pending',
+			'reservation_downpayment',
+			'reservation_reservation_cancelled',
+			'reservation_cancelled',
+			'reservation_closed',
+			'customMail',
+			'reservation_statuschange' => true,
+			default => false,
+		};
 
-	    try
-        {
-            $mailSent = $mailer->send();
-        }
-        catch (MailDisabledException|phpMailerException $e)
-        {
-            $app->enqueueMessage($e->getMessage(), 'error');
+	    $error = [];
 
-            return false;
-        }
+	    if ($adminmails)
+	    {
+			array_push($error, self::_newMail($app, 'admin', $orderDataFlattened, $sendMailFormValues));
+	    }
 
-        if ($mailSent === true)
-        {
-            $methodName = Text::_('COM_DNBOOKING_SENDMAIL_METHOD_' . strtoupper($mail->Mailer));
+		if ($usermails)
+	    {
+			array_push($error, self::_newMail($app, 'user', $orderDataFlattened, $sendMailFormValues));
+	    }
 
-            if ($mail->Mailer !== $app->get('mailer'))
-            {
-                $app->enqueueMessage(Text::sprintf('COM_CONFIG_SENDMAIL_SUCCESS_FALLBACK', $app->get('mailfrom'), $methodName), 'warning');
-            }
-            else
-            {
-                $app->enqueueMessage(Text::sprintf('COM_DNBOOKING_SENDMAIL_SUCCESS', $app->get('mailfrom'), $methodName), 'message');
-            }
+		if (in_array($error, [false])){
+			return false;
+		}
 
-            return true;
-        }
+		return true;
     }
-
 
 	public static function checkPrice($date){
 		$params = ComponentHelper::getParams('com_dnbooking');
@@ -397,6 +442,11 @@ class DnbookingHelper
                         ]
                     ],
             );
+
+			if($model ==='reservation'){
+				$config['format'] = 'A4';
+				$config['orientation'] = 'P';
+			}
 
             $mpdf = new Mpdf($config);
             $mpdf->WriteHTML($stylesheet,HTMLParserMode::HEADER_CSS);

@@ -1,22 +1,10 @@
 TODO:
 
-- Nur Tage anzeigen Dayshboard, die auch gebucht sind
-
 - Idee Guido: Buchung erst "annnehmen" und auf Pending setzen nach Anclicken eines Bestätitgungslinks..... -->
 
-- ggf. Rechnung PDF
 
 -alle sprachvariablen ergänzen
--Tagesansicht zwei verschiedene views eine und mehrere buchungen
-
-Bugs:
-
-- wenn Geburstagskinder runtergesetzt wird, additionakl_infos2 auch anpassen und löschen (bzw macht das Sinn? ggf muss das manuell erfolgen)
-- Testen, wenn gleichtägige Buchung )´(oder ggf auch andere), dann leere Alertmeldung auch keine Anzeige der >räume
 
 
--
-Fehler beim Senden des Formulars
-Speichern fehlgeschlagen. Fehler: Data too long for column 'extras_ids' at row 1
 
-##- Filtern Reservations geht nicht richtig (Backend)
+

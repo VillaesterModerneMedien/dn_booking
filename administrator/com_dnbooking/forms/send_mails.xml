@@ -9,18 +9,17 @@
                default="0"
         >
             <option value="0">COM_DNBOOKING_MAILTYPE_OPTION0</option>
-            <!--<option value="reservation_statuschange">COM_DNBOOKING_MAILTYPE_OPTION1</option>-->
-            <option value="reservation_pending">COM_DNBOOKING_MAILTYPE_OPTION2</option>
-            <option value="reservation_confirmed">COM_DNBOOKING_MAILTYPE_OPTION3</option>
+            <option value="reservation_pending">COM_DNBOOKING_MAILTYPE_OPTION1</option>
+            <option value="reservation_downpayment">COM_DNBOOKING_MAILTYPE_OPTION2</option>
+            <option value="reservation_closed">COM_DNBOOKING_MAILTYPE_OPTION3</option>
             <option value="reservation_cancelled">COM_DNBOOKING_MAILTYPE_OPTION4</option>
-            <option value="reservation_downpayment">COM_DNBOOKING_MAILTYPE_OPTION6</option>
             <option value="customMail">COM_DNBOOKING_MAILTYPE_OPTION5</option>
         </field>
 
         <field name="sendMailCustomText"
                type="editor"
                label="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_LABEL"
-               description="COM_DNBOdOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_DESC"
+               description="COM_DNBOOKING_FIELD_SEND_MAIL_CUSTOMERTEXT_DESC"
                showon="sendMailType:customMail"
                filter="safehtml"
         />

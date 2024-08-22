@@ -207,7 +207,6 @@
                         label="COM_DNBOOKING_FIELD_HOLIDAYS_STARTDATE_LABEL"
                         translateformat="false"
                         showtime="false"
-                        required="true"
                         filter="server_utc"
                         readonly="true"
                 />
@@ -217,7 +216,6 @@
                         label="COM_DNBOOKING_FIELD_HOLIDAYS_ENDDATE_LABEL"
                         translateformat="false"
                         showtime="false"
-                        required="true"
                         filter="server_utc"
                         readonly="true"
                 />
@@ -231,7 +229,7 @@
         </field>
     </fieldset>
 
-
+<!--
     <fieldset
             name="additional_fields"
             label="COM_DNBOOKING_CONFIG_ADDITIONAL_FIELDS_LABEL"
@@ -354,7 +352,7 @@
         </field>
 
     </fieldset>
-
+-->
     <fieldset
             name="vendorsettings"
             label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_LABEL"

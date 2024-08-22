@@ -19,7 +19,9 @@ if(array_key_exists('room', $item)) {
     $room = $item['room'];
 }
 
-$id = $item['id'];
+$reservationDate = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
+$reservationYear = HTMLHelper::_('date', $item['reservation_date'], 'Y');
+$id = $reservationYear . '-' .$item['id'];
 $params = ComponentHelper::getParams('com_dnbooking');
 $additionalInfos2FieldKeys = $params->get('additional_info_form2');
 $fieldCount = count((array)$additionalInfos2FieldKeys);
@@ -71,7 +73,7 @@ $totalPrice = DnbookingHelper::calcPrice($item['additional_info'], $room, $item[
     <?php if($customer): ?>
     <p>
         <strong>
-	        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $item['reservation_date'], $customer['firstname'] . ' ' . $customer['lastname']) ?>
+	        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $reservationDate, $customer['firstname'] . ' ' . $customer['lastname']) ?>
         </strong>
     </p>
 

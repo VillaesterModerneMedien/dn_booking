@@ -280,6 +280,7 @@ class ReservationController extends AdminReservationController
 
 		$formData = $input->get('jform', null, 'array');
 		$date         = HTMLHelper::_('date', $formData['reservation_date'], 'Y-m-d');
+
 		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 		$customPrice = $this->_checkPrice($date);
 		if($customPrice || $isHolidayOrWeekend){
@@ -299,11 +300,11 @@ class ReservationController extends AdminReservationController
 		{
 			$params = $this->params;
 			$menuItem    = $params->get('returnurl');
-
+			$reservationYear = HTMLHelper::_('date', $formData['reservation_date'], 'Y');
 			$reservationsModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservations', 'Administrator');
 			$items = $reservationsModel->getItems();
 			$items = ArrayHelper::pivot($items, 'reservation_token');
-			$rid = $items[$formData['reservation_token']]->id;
+			$rid = $reservationYear . '-' . $items[$formData['reservation_token']]->id;
 
 			DnbookingHelper::sendMail($formData, true);
 

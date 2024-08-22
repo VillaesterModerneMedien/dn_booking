@@ -134,19 +134,27 @@ class HtmlView extends BaseHtmlView
 
 			$childBar->publish('reservations.publish')
 				->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED')
+	            ->icon('fa-solid fa-arrows-rotate')
+				->listCheck(true);
+
+            $childBar->publish('reservations.downpayment')
+	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE')
+	            ->icon('fa-solid fa-euro-sign')
+	            ->listCheck(true);
+
+			$childBar->publish('reservations.downpayment_locale')
+	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_LOCALE')
+	            ->icon('fa-solid fa-house')
+	            ->listCheck(true);
+
+			$childBar->archive('reservations.archive')
+				->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED')
+				->icon('icon-check')
 				->listCheck(true);
 
 			$childBar->unpublish('reservations.unpublish')
 				->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED')
 				->listCheck(true);
-
-            $childBar->archive('reservations.archive')
-	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED')
-	            ->listCheck(true);
-
-            $childBar->publish('reservations.downpayment')
-	            ->text('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE')
-	            ->listCheck(true);
 
             if ($this->state->get('filter.published') != -2)
 			{
@@ -162,10 +170,12 @@ class HtmlView extends BaseHtmlView
 				->listCheck(true);
 		}
 
-		$childBar->popupButton('sendMail', 'COM_DNBOOKING_SENDMAIL_LABEL')
+		/*
+		$toolbar->popupButton('sendMail', 'COM_DNBOOKING_SENDMAIL_LABEL')
 			->selector('sendMailModal')
 			->icon('icon-mail')
 			->listCheck(true);
+		*/
 
 		if ($user->authorise('core.admin', 'com_dnbooking') || $user->authorise('core.options', 'com_dnbooking'))
 		{

@@ -87,6 +87,10 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 	{
 		$this->publish();
 	}
+	public function downpayment_locale()
+	{
+		$this->publish();
+	}
 	/**
 	 * Method to publish a list of items
 	 *
@@ -101,7 +105,8 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 
 		// Get items to publish from the request.
 		$cid   = (array) $this->input->get('cid', [], 'int');
-		$data  = ['publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3, "downpayment" => 4];		$task  = $this->getTask();
+		$data  = ['publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3, "downpayment_locale" => 3, "downpayment" => 4];
+		$task  = $this->getTask();
 		$value = ArrayHelper::getValue($data, $task, 0, 'int');
 
 		// Remove zero values resulting from input filter
@@ -132,6 +137,8 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 					$ntext = $this->text_prefix . '_N_ITEMS_UNPUBLISHED';
 				} elseif ($value === 2) {
 					$ntext = $this->text_prefix . '_N_ITEMS_ARCHIVED';
+				} elseif ($value === 3) {
+					$ntext = $this->text_prefix . '_N_ITEMS_DOWNPAYMENT_LOCALE';
 				} elseif ($value === 4) {
 					$ntext = $this->text_prefix . '_N_ITEMS_DOWNPAYMENT';
 				} else {
@@ -180,7 +187,6 @@ class ReservationsController extends AdminController implements MailerFactoryAwa
 			// Get the model.
 			$model = $this->getModel();
 
-			$items = [];
 			foreach ($ids as $id)
 			{
 				$helper->sendMail($model->getItem($id));

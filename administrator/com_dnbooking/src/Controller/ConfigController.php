@@ -105,7 +105,7 @@ class ConfigController extends FormController
 			// Startdatum
 			$html .= '<td data-column="Startdatum&nbsp;*">';
 			$html .= '<div class="control-group"><div class="visually-hidden">';
-			$html .= '<label id="jform_holidays__' . $group . '__startDate-lbl" for="jform_holidays__' . $group . '__startDate" class="required">Startdatum<span class="star" aria-hidden="true">&nbsp;*</span></label>';
+			$html .= '<label id="jform_holidays__' . $group . '__startDate-lbl" for="jform_holidays__' . $group . '__startDate" >Startdatum</label>';
 			$html .= '</div><div class="controls"><div class="field-calendar">';
 			$html .= '<input type="text" id="jform_holidays__' . $group . '__startDate" name="jform[holidays][' . $group . '][startDate]" value="' . $holiday['startDate'] . '" class="form-control required" readonly="readonly" required="" data-alt-value="' . $holiday['startDate'] . '" autocomplete="off">';
 			$html .= '<button type="button" class="hidden btn btn-primary" id="jform_holidays__' . $group . '__startDate_btn" title="Kalender öffnen" data-inputfield="jform_holidays__' . $group . '__startDate" data-button="jform_holidays__' . $group . '__startDate_btn" data-date-format="%d.%m.%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0"><span class="icon-calendar" aria-hidden="true"></span><span class="visually-hidden">Kalender öffnen</span></button>';
@@ -114,7 +114,7 @@ class ConfigController extends FormController
 			// Enddatum
 			$html .= '<td data-column="Enddatum&nbsp;*">';
 			$html .= '<div class="control-group"><div class="visually-hidden">';
-			$html .= '<label id="jform_holidays__' . $group . '__endDate-lbl" for="jform_holidays__' . $group . '__endDate" class="required">Enddatum<span class="star" aria-hidden="true">&nbsp;*</span></label>';
+			$html .= '<label id="jform_holidays__' . $group . '__endDate-lbl" for="jform_holidays__' . $group . '__endDate">Enddatum</label>';
 			$html .= '</div><div class="controls"><div class="field-calendar">';
 			$html .= '<input type="text" id="jform_holidays__' . $group . '__endDate" name="jform[holidays][' . $group . '][endDate]" value="' . $holiday['endDate'] . '" class="form-control required" readonly="readonly" required="" data-alt-value="' . $holiday['endDate'] . '" autocomplete="off">';
 			$html .= '<button type="button" class="hidden btn btn-primary" id="jform_holidays__' . $group . '__endDate_btn" title="Kalender öffnen" data-inputfield="jform_holidays__' . $group . '__endDate" data-button="jform_holidays__' . $group . '__endDate_btn" data-date-format="%d.%m.%Y" data-firstday="1" data-weekend="0,6" data-today-btn="1" data-week-numbers="1" data-show-time="0" data-show-others="1" data-time24="24" data-only-months-nav="0"><span class="icon-calendar" aria-hidden="true"></span><span class="visually-hidden">Kalender öffnen</span></button>';
