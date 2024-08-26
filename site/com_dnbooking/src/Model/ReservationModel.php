@@ -11,6 +11,8 @@ namespace DnbookingNamespace\Component\Dnbooking\Site\Model;
 
 \defined('_JEXEC') or die;
 
+use DateInterval;
+use DateTime;
 use DnbookingNamespace\Component\Dnbooking\Administrator\Model\ReservationModel as AdminReservationModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -227,6 +229,42 @@ class ReservationModel extends AdminReservationModel
 		$data['customer_id'] = $customerID;
 
 		return $data;
+	}
+
+
+	protected function _getReservationsTimeslot($timeslotStart, $timeslotEnd){
+		$query = $this->db->getQuery(true);
+
+		$query->select('COUNT(*)')
+			->from($this->db->quoteName('#__dnbooking_reservations'))
+			->where($this->db->quoteName('reservation_date') . ' >= ' . $this->db->quote($timeslotStart))
+			->where($this->db->quoteName('reservation_date') . ' <= ' . $this->db->quote($timeslotEnd));
+
+		$this->db->setQuery($query);
+		return $this->db->loadResult();
+	}
+	public function getTimeslots($date){
+
+		$year = $date->input->get('year', '', 'INT');
+		$month = $date->input->get('month', '', 'INT');
+		$day = $date->input->get('day', '', 'INT');
+		$hours = $date->input->get('hours', '', 'INT');
+		$minutes = $date->input->get('minutes', '', 'INT');
+
+		$timeslotStart = HTMLHelper::date($year . '-' . $month . '-' . $day . ' ' . $hours . ':' . $minutes . ':00', 'Y-m-d H:i:s');;
+		$datetimeObject = new DateTime($timeslotStart);
+		$datetimeObject->add(new DateInterval('PT15M'));
+		$timeslotEnd = $datetimeObject->format('Y-m-d H:i:s');
+
+		while ($this->_getReservationsTimeslot($timeslotStart, $timeslotEnd) > 1) {
+			$timeslotStart = $timeslotEnd;
+			$datetimeObject = new DateTime($timeslotStart);
+			$datetimeObject->add(new DateInterval('PT15M'));
+			$timeslotEnd = $datetimeObject->format('Y-m-d H:i:s');
+		} ;
+
+		$nextTimeSlot = HTMLHelper::date($timeslotStart, 'd.m.Y H:i');
+		return $nextTimeSlot;
 	}
 
 	/**

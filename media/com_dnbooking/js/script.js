@@ -117,7 +117,6 @@
     function doubleDeko(roomID){
         let checkedItem = document.querySelector('.deko.checked');
         let input = checkedItem.querySelector('input[type="number"]');
-        console.log(roomID);
         if(roomID === '13'){
             input.value=2;
         }
@@ -127,6 +126,90 @@
         packageField.setAttribute('min', minPackage);
         packageField.value = minPackage;
     }
+
+    function checkTimeslot(dateInput)  {
+        return new Promise((resolve, reject) => {
+        let date = seperateDate(dateInput);
+        let xhr = new XMLHttpRequest();
+
+        let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getTimeslots';
+
+        xhr.open('POST', url, true);
+
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function() {
+            if (this.status === 200) {
+                resolve(this.responseText);
+            } else {
+                reject('Request failed with status ' + this.status);
+            }
+            xhr.onerror = function () {
+                console.log('Request failed');
+            };
+        };
+
+        xhr.send('day=' + date[0] + '&month=' + date[1] + '&year=' + date[2] + '&hours=' + date[3] + '&minutes=' + date[4]);
+        });
+    }
+
+    function setQuarters(dateInput){
+        let date = parseDateString(dateInput.value);
+        let minutes = date.getMinutes();
+
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        let remainder = minutes % 15;
+
+        if(remainder >= 8){
+            date.setMinutes(minutes + (15 - remainder));
+        }
+        else {
+            date.setMinutes(minutes - remainder);
+        }
+
+        let newDate = String(date.getDate()).padStart(2,'0') + '.' + String((date.getMonth()+1)).padStart(2,'0') + '.' + date.getFullYear() + ' ' + date.toTimeString().split(' ',)[0];
+
+        return newDate
+    }
+
+    function getAvailableTimeslot(dateInput) {
+        let chosenTime = dateInput.value;
+        let nextQuarter = setQuarters(dateInput);
+
+        if(chosenTime !== nextQuarter){
+            dateInput.value = nextQuarter;
+            dateInput.setAttribute('data-alt-value', nextQuarter);
+            dateInput.setAttribute('value', nextQuarter);
+            setMessage('Der gewählte Zeitpunkt wurde auf die nächste Viertelstunde gerundet');
+        }
+
+        checkTimeslot(dateInput).then(nextSlot => {
+            let nextTimeslot = nextSlot + ':00';
+
+            if (nextQuarter !== nextTimeslot) {
+                dateInput.value = nextTimeslot;
+                dateInput.setAttribute('data-alt-value', nextTimeslot);
+                dateInput.setAttribute('value', nextTimeslot);
+                setMessage('Der gewählte Zeitpunkt ist nicht verfügbar. Der nächste verfügbare Zeitpunkt wurde ausgewählt.');
+            }
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+    function seperateDate(dateInput){
+        let date = parseDateString(dateInput.value);
+        let day = date.getDate();
+        let month = date.getMonth()+1;
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        return [day, month, year, hours, minutes];
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+    });
 
     /**
      * @copyright  (C) Add your copyright here
@@ -172,7 +255,6 @@
         xhr.onload = function() {
             if (this.status === 200) {
                 let blocked = JSON.parse(this.responseText);
-                console.log(blocked);
                 let rooms = document.querySelectorAll('.roomList .room');
                     if(blocked.rooms !== undefined) {
                         let blockedRooms = blocked.rooms;
@@ -217,7 +299,6 @@
     function checkDate(date, visitors){
         // Create an AJAX request
         let xhr = new XMLHttpRequest();
-
         let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getBlockedRooms';
         let translation = Joomla.getOptions('com_dnbooking.translations');
         const time = extractTimeFromDateTime();
@@ -493,7 +574,6 @@
         maxSteps = uniqueSteps.size;
 
         checkBooking.addEventListener('click', function() {
-            document.querySelectorAll(".extraListItem.checked");
             if(checkRequiredFields() === true){
                 doubleDeko(roomID);
                 renderOrderHTML();
@@ -505,8 +585,11 @@
 
         dateInput.addEventListener('change', function() {
             dateValid = false;
-            step=1;
-            setStep(step);
+            getAvailableTimeslot(dateInput);
+            if(step > 1){
+                step=1;
+                setStep(step);
+            }
         });
 
         personsPackageInput.addEventListener('change', function() {
@@ -530,10 +613,12 @@
 
         checkStatus.addEventListener('click', function(event) {
             event.preventDefault();
+
             if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
                 dateValid = false;
             }
             else {
+
                 checkDate(dateInput.value, personsPackageInput.value);
             }
         });
@@ -548,11 +633,13 @@
         nextButton.addEventListener('click', event => {
             if (step < maxSteps && dateValid === true){
                 step++;
+                setStep(step);
             }
-            else {
+            if (dateValid === false){
                 setMessage('Bitte zuerst Verfügbarkeit prüfen');
+                step = 1;
+                setStep(step);
             }
-            setStep(step);
         });
 
 
@@ -563,16 +650,22 @@
             });
         });
 
+
         setStep(step);
         setMinPackage(personsPackageInput);
         setSubforms();
         setCustomExtras(extras);
     });
 
+    exports.checkTimeslot = checkTimeslot;
     exports.doubleDeko = doubleDeko;
     exports.filterSpecial = filterSpecial;
+    exports.getAvailableTimeslot = getAvailableTimeslot;
+    exports.parseDateString = parseDateString;
     exports.setCustomExtras = setCustomExtras;
+    exports.setMessage = setMessage;
     exports.setMinPackage = setMinPackage;
+    exports.setQuarters = setQuarters;
 
     return exports;
 

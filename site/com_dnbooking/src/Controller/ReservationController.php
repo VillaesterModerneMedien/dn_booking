@@ -114,7 +114,6 @@ class ReservationController extends AdminReservationController
 		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
 		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
 
-		//$this->input->set('isHoliday') = $isHolidayOrWeekend;
 		$time           = $this->input->get('time', null, 'string');
 
 		$personscount = $this->input->get('visitors', null, 'int');
@@ -272,7 +271,6 @@ class ReservationController extends AdminReservationController
 
 	}
 
-
 	public function sendForm()
 	{
 		$model = $this->getModel();
@@ -322,6 +320,14 @@ class ReservationController extends AdminReservationController
 				'error'
 			);
 		}
+	}
+
+	public function getTimeslots(){
+		$model = $this->getModel();
+		$input = $this->input;
+		$nextTimeslot = $model->getTimeslots($input);
+		echo $nextTimeslot;
+		Factory::getApplication()->close();
 	}
 
 	protected function _checkTime($time, $startTime, $endTime)

@@ -22,7 +22,6 @@ export function filterSpecial(blockedRooms) {
 export function doubleDeko(roomID){
     let checkedItem = document.querySelector('.deko.checked');
     let input = checkedItem.querySelector('input[type="number"]');
-    console.log(roomID);
     if(roomID === '13'){
         input.value=2;
     }

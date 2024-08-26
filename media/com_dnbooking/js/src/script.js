@@ -1,5 +1,7 @@
 import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
+import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot } from "./timeslots.js";
+
 
 /**
  * @copyright  (C) Add your copyright here
@@ -45,7 +47,6 @@ function updateRoomStatus(date, visitors){
     xhr.onload = function() {
         if (this.status === 200) {
             let blocked = JSON.parse(this.responseText);
-            console.log(blocked);
             let rooms = document.querySelectorAll('.roomList .room');
                 if(blocked.rooms !== undefined) {
                     let blockedRooms = blocked.rooms;
@@ -93,7 +94,6 @@ function updateRoomStatus(date, visitors){
 function checkDate(date, visitors){
     // Create an AJAX request
     let xhr = new XMLHttpRequest();
-
     let url = Joomla.getOptions('system.paths').base + '/index.php?option=com_dnbooking&task=reservation.getBlockedRooms';
     let translation = Joomla.getOptions('com_dnbooking.translations');
     const time = extractTimeFromDateTime();
@@ -136,7 +136,7 @@ function checkDate(date, visitors){
  * Displays a message to the user.
  * @param {string} message - The message to display.
  */
-function setMessage(message){
+export function setMessage(message){
     UIkit.notification({
         message: message,
         status: 'danger',
@@ -239,7 +239,7 @@ function extractTimeFromDateTime() {
     return timeString;
 }
 
-function parseDateString(dateString) {
+export function parseDateString(dateString) {
     let [datePart, timePart] = dateString.split(' ');
     let [day, month, year] = datePart.split('.');
     let [hours, minutes, seconds] = timePart.split(':');
@@ -369,7 +369,6 @@ document.addEventListener('DOMContentLoaded', function () {
     maxSteps = uniqueSteps.size;
 
     checkBooking.addEventListener('click', function() {
-        let checkedDeko = document.querySelectorAll(".extraListItem.checked");
         if(checkRequiredFields() === true){
             doubleDeko(roomID)
             renderOrderHTML();
@@ -381,8 +380,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     dateInput.addEventListener('change', function() {
         dateValid = false;
-        step=1;
-        setStep(step);
+        getAvailableTimeslot(dateInput);
+        if(step > 1){
+            step=1;
+            setStep(step);
+        }
     });
 
     personsPackageInput.addEventListener('change', function() {
@@ -406,10 +408,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
+
         if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
             dateValid = false;
         }
         else{
+
             checkDate(dateInput.value, personsPackageInput.value);
         }
     });
@@ -424,11 +428,13 @@ document.addEventListener('DOMContentLoaded', function () {
     nextButton.addEventListener('click', event => {
         if (step < maxSteps && dateValid === true){
             step++;
+            setStep(step);
         }
-        else {
+        if (dateValid === false){
             setMessage('Bitte zuerst Verfügbarkeit prüfen');
+            step = 1;
+            setStep(step);
         }
-        setStep(step);
     });
 
 
@@ -438,6 +444,7 @@ document.addEventListener('DOMContentLoaded', function () {
             roomList.classList.remove('errorField');
         });
     });
+
 
     setStep(step);
     setMinPackage(personsPackageInput);

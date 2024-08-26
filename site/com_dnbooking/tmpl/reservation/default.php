@@ -31,6 +31,7 @@ $translations = [
     'till' => Text::_('COM_DNBOOKING_TILL'),
     'btn_ok' => Text::_('COM_DNBOOKING_BTN_OK'),
     'btn_cancel' => Text::_('COM_DNBOOKING_BTN_CANCEL'),
+    'btn_accept' => Text::_('COM_DNBOOKING_BTN_ACCEPT'),
 ];
 
 Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.translations', $translations);
@@ -94,3 +95,5 @@ $this->form->setValue('reservation_token', null, $reservationToken);
 	<?php echo HTMLHelper::_('form.token'); ?>
 
 </form>
+
+

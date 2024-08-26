@@ -15,6 +15,7 @@
                 required="true"
                 filter="server_utc"
                 default="NOW-2"
+                todaybutton="false"
         />
 
         <field
