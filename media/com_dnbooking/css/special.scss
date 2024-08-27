@@ -2,6 +2,14 @@ $checkIcon : url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' v
 
 .extraListItem.checked{
   position: relative;
+
+  .el-item{
+    background-color:  #ffc808;
+    border: 5px solid #0a498f;
+    *{
+      color: #0a498f!important;
+    }
+  }
   &::after{
     position:absolute;
     bottom:0;

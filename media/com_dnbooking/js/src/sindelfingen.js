@@ -21,10 +21,13 @@ export function filterSpecial(blockedRooms) {
 
 export function doubleDeko(roomID){
     let checkedItem = document.querySelector('.deko.checked');
-    let input = checkedItem.querySelector('input[type="number"]');
-    if(roomID === '13'){
-        input.value=2;
+    if(checkedItem){
+        let input = checkedItem.querySelector('input[type="number"]');
+        if(roomID === '13'){
+            input.value=2;
+        }
     }
+
 }
 export function setMinPackage(packageField){
     const minPackage = 5;

@@ -77,24 +77,32 @@
                 name="phone"
                 type="text"
                 label="COM_DNBOOKING_PHONE_LABEL"
+                required="true"
+
         />
 
         <field
                 name="address"
                 type="text"
                 label="COM_DNBOOKING_STREET_LABEL"
+                required="true"
+
         />
 
         <field
                 name="city"
                 type="text"
                 label="COM_DNBOOKING_CITY_LABEL"
+                required="true"
+
         />
 
         <field
                 name="zip"
                 type="text"
                 label="COM_DNBOOKING_ZIPCODE_LABEL"
+                required="true"
+
         />
 
         <field

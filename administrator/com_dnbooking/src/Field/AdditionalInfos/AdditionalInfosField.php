@@ -79,7 +79,7 @@ class AdditionalInfosField extends SubformField
 			switch($field->fieldType) {
 				case 'list':
 					$options = explode(',', $field->fieldOptions);
-					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"  class="' . $firstClass . '">';
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"  class="' . $firstClass . '" required="true">';
 					$formXML .= '<option value="">' . Text::_('COM_DNBOOKING_LABEL_CHOOSE') . '</option>';
 					foreach ($options as $option) {
 						list($value, $text) = explode(':', trim($option));
@@ -89,14 +89,14 @@ class AdditionalInfosField extends SubformField
 					break;
 				case 'calendar':
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '" 
-	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="NOW" filterformat="%d.%m.%Y"  class="' . $firstClass . '" />';
+	showtime="false" todaybutton="false" filltable="false" translateformat="true" default="" filterformat="%d.%m.%Y"  class="' . $firstClass . '"  required="true"/>';
 
 					break;
 				case 'number':
 					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '"  default="0" min="0"/>';
 					break;
 				default:
-					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '" />';
+					$formXML .= '<field name="' . $field->fieldName . '" type="' . $field->fieldType . '" label="' . $field->fieldLabel . '"   class="' . $firstClass . '" required="true"/>';
 			}
 
 		}

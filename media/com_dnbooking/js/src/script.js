@@ -1,6 +1,6 @@
 import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
-import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot } from "./timeslots.js";
+import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeOptions } from "./timeslots.js";
 
 
 /**
@@ -276,29 +276,34 @@ function checkRequiredFields()
     const radioButtons = document.querySelectorAll('#jform_room_id input[type="radio"]');
     const roomList = document.getElementById('jform_room_id');
 
-    let valid = true;
+    let valid = false;
+    let inputsValid = true;
+    let roomsValid = false;
 
     requiredFields.forEach(function(field){
-    if(field.value === ''){
+        if(field.value === ''){
             field.classList.add('errorField');
-            field.addEventListener('input', function(){
+                field.addEventListener('change', function(){
                 field.classList.remove('errorField');
             });
-            valid = false;
+            inputsValid = false;
         }
     });
     for (const radioButton of radioButtons) {
         if (radioButton.checked) {
-            valid = true;
+            roomList.classList.remove('errorField');
+            roomsValid = true;
             break;
         }
         else {
             roomList.classList.add('errorField');
-            valid = false;
         }
     }
 
-  return valid;
+    if(roomsValid == true && inputsValid != false){
+        return true;
+    }
+    return false;
 }
 
 function setSubforms() {
@@ -354,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll("button");
     const extras = document.querySelectorAll(".extraListItem");
     const nextButton = document.getElementById('dnnext');
-
+    const reservationdateButton = document.getElementById('jform_reservation_date_btn');
     const uniqueSteps = new Set();
     const elements = document.querySelectorAll('[data-step]');
 
@@ -445,6 +450,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    reservationdateButton.addEventListener('click', event => {
+        removeOptions();
+    });
 
     setStep(step);
     setMinPackage(personsPackageInput);

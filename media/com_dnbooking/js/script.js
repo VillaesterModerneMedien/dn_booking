@@ -1,6 +1,43 @@
 (function (exports) {
     'use strict';
 
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
+    }
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
+
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -93,40 +130,6 @@
         });
     }
 
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function doubleDeko(roomID){
-        let checkedItem = document.querySelector('.deko.checked');
-        let input = checkedItem.querySelector('input[type="number"]');
-        if(roomID === '13'){
-            input.value=2;
-        }
-    }
-    function setMinPackage(packageField){
-        const minPackage = 5;
-        packageField.setAttribute('min', minPackage);
-        packageField.value = minPackage;
-    }
-
     function checkTimeslot(dateInput)  {
         return new Promise((resolve, reject) => {
         let date = seperateDate(dateInput);
@@ -153,6 +156,17 @@
         });
     }
 
+    function removeOptions(){
+        const selectElement = document.querySelector('.time.time-minutes.form-control.form-select');
+        const options = selectElement.querySelectorAll('option');
+
+        options.forEach(option => {
+            const value = parseInt(option.value, 10);
+            if (value % 15 !== 0) {
+                option.remove();
+            }
+        });
+    }
     function setQuarters(dateInput){
         let date = parseDateString(dateInput.value);
         let minutes = date.getMinutes();
@@ -181,7 +195,7 @@
             dateInput.value = nextQuarter;
             dateInput.setAttribute('data-alt-value', nextQuarter);
             dateInput.setAttribute('value', nextQuarter);
-            setMessage('Der gewählte Zeitpunkt wurde auf die nächste Viertelstunde gerundet');
+
         }
 
         checkTimeslot(dateInput).then(nextSlot => {
@@ -480,30 +494,33 @@
         const requiredFields = document.querySelectorAll('.required');
         const radioButtons = document.querySelectorAll('#jform_room_id input[type="radio"]');
         const roomList = document.getElementById('jform_room_id');
-
-        let valid = true;
+        let inputsValid = true;
+        let roomsValid = false;
 
         requiredFields.forEach(function(field){
-        if(field.value === ''){
+            if(field.value === ''){
                 field.classList.add('errorField');
-                field.addEventListener('input', function(){
+                    field.addEventListener('change', function(){
                     field.classList.remove('errorField');
                 });
-                valid = false;
+                inputsValid = false;
             }
         });
         for (const radioButton of radioButtons) {
             if (radioButton.checked) {
-                valid = true;
+                roomList.classList.remove('errorField');
+                roomsValid = true;
                 break;
             }
             else {
                 roomList.classList.add('errorField');
-                valid = false;
             }
         }
 
-      return valid;
+        if(roomsValid == true && inputsValid != false){
+            return true;
+        }
+        return false;
     }
 
     function setSubforms() {
@@ -559,7 +576,7 @@
         const buttons = document.querySelectorAll("button");
         const extras = document.querySelectorAll(".extraListItem");
         const nextButton = document.getElementById('dnnext');
-
+        const reservationdateButton = document.getElementById('jform_reservation_date_btn');
         const uniqueSteps = new Set();
         const elements = document.querySelectorAll('[data-step]');
 
@@ -650,6 +667,9 @@
             });
         });
 
+        reservationdateButton.addEventListener('click', event => {
+            removeOptions();
+        });
 
         setStep(step);
         setMinPackage(personsPackageInput);
@@ -662,6 +682,7 @@
     exports.filterSpecial = filterSpecial;
     exports.getAvailableTimeslot = getAvailableTimeslot;
     exports.parseDateString = parseDateString;
+    exports.removeOptions = removeOptions;
     exports.setCustomExtras = setCustomExtras;
     exports.setMessage = setMessage;
     exports.setMinPackage = setMinPackage;

@@ -69,7 +69,7 @@ $tableHead = "
     </h4>
     <h4><?= Text::_('COM_DNBOOKING_ADRESS_LABEL'); ?></h4>
     <p><?= Text::_($data['salutation']) . ' ' . $data['firstname'] . ' ' . $data['lastname']; ?><br/>
-        <?= isset($data['adress']) ? $data['address'] . '<br/>' : ''; ?>
+        <?= isset($data['address']) ? $data['address'] . '<br/>' : ''; ?>
         <?= isset($data['zip']) ? $data['zip'] . ' ' : '';?><?=  isset($data['city']) ? $data['city'] : ''; ?>
     </p>
     <p>
@@ -138,6 +138,11 @@ $tableHead = "
             <td class="uk-table-small amount"><h4><?= Text::_('COM_DNBOOKING_TOTAL_LABEL'); ?></h4></td>
             <td class="uk-table-expand description"></td>
             <td class="uk-table-shrink price"><?= number_format($total, 2, ",", ".")?> €</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align:left!important;">
+	            <?= Text::_('COM_DNBOOKING_TOTAL_NOTICE'); ?>
+            </td>
         </tr>
     </table>
 

@@ -1,6 +1,13 @@
 .extraListItem.checked {
   position: relative;
 }
+.extraListItem.checked .el-item {
+  background-color: #ffc808;
+  border: 5px solid #0a498f;
+}
+.extraListItem.checked .el-item * {
+  color: #0a498f !important;
+}
 .extraListItem.checked::after {
   position: absolute;
   bottom: 0;
@@ -29,10 +36,13 @@
 .room, .extraList {
   transition: 0.5s opacity ease-in-out;
 }
+.room *, .extraList * {
+  color: #FFF !important;
+}
 .room .el-item, .extraList .el-item {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 5px solid #ffc808;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: #0a498f;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   transition: all 0.3s ease-in-out;
   padding: 10px;
@@ -53,16 +63,17 @@
   position: relative;
 }
 .room.disabled::after, .extraList.disabled::after {
-  content: "Reserviert";
+  content: "nicht buchbar";
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: calc(50% + 15px);
   width: fit-content;
   height: auto;
   font-size: 3.5rem;
   transform: rotate(-45deg) translate(-50%, -50%);
   transform-origin: top left;
-  color: #1f5098;
+  text-align: center;
+  color: #0a498f;
   font-family: Chewy;
 }
 .room.disabled .el-item, .extraList.disabled .el-item {
@@ -86,7 +97,11 @@
 }
 
 .activeRoom .el-item {
-  border: 2px solid green;
+  background-color: #ffc808;
+  border: 5px solid #0a498f;
+}
+.activeRoom .el-item * {
+  color: #0a498f !important;
 }
 
 .uk-modal-dialog {

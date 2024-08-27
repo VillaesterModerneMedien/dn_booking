@@ -27,6 +27,17 @@ export function checkTimeslot(dateInput)  {
     });
 }
 
+export function removeOptions(){
+    const selectElement = document.querySelector('.time.time-minutes.form-control.form-select');
+    const options = selectElement.querySelectorAll('option');
+
+    options.forEach(option => {
+        const value = parseInt(option.value, 10);
+        if (value % 15 !== 0) {
+            option.remove();
+        }
+    });
+}
 export function setQuarters(dateInput){
     let date = parseDateString(dateInput.value);
     let minutes = date.getMinutes();
@@ -55,7 +66,7 @@ export function getAvailableTimeslot(dateInput) {
         dateInput.value = nextQuarter;
         dateInput.setAttribute('data-alt-value', nextQuarter);
         dateInput.setAttribute('value', nextQuarter);
-        setMessage('Der gewählte Zeitpunkt wurde auf die nächste Viertelstunde gerundet');
+
     }
 
     checkTimeslot(dateInput).then(nextSlot => {
