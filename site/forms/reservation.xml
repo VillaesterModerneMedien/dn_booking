@@ -22,6 +22,7 @@
                 type="text"
                 label="COM_DNBOOKING_MEALTIME_LABEL"
                 required="true"
+                default="sindelfingen"
         />
         <field
                 name="additional_info"
