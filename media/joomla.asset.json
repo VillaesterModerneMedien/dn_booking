@@ -1,0 +1,48 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_dnbooking",
+  "version": "4.0.0",
+  "description": "Joomla CMS",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+	{
+      "name": "com_dnbooking.script",
+      "type": "script",
+      "uri": "com_dnbooking/script.js"
+    },
+	{
+      "name": "com_dnbooking.calendar",
+      "type": "script",
+      "uri": "com_dnbooking/calendar.js"
+    },
+	{
+      "name": "com_dnbooking.weekdashboard",
+      "type": "script",
+      "uri": "com_dnbooking/weekdashboard.js",
+      "dependencies": ["core"]
+    },
+    {
+      "name": "com_dnbooking.booking",
+      "type": "style",
+      "uri": "com_dnbooking/booking.css"
+    },
+    {
+      "name": "com_dnbooking.admin-calendar",
+      "type": "style",
+      "uri": "com_dnbooking/admin-calendar.css"
+    },
+    {
+      "name": "com_dnbooking.daydashboards",
+      "type": "style",
+      "uri": "com_dnbooking/daydashboards.css"
+    },
+    {
+      "name": "com_dnbooking.reservation",
+      "type": "style",
+      "uri": "com_dnbooking/reservation.css",
+      "dependencies": [
+        "template.atum.ltr"
+      ]
+    }
+  ]
+}

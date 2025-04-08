@@ -1,0 +1,14 @@
+@import "./utils/bootswatch_vmm";
+
+.daydashboardsContainer{
+  grid-template-columns: 1fr 1fr 1fr !important;
+
+  .alignRight{
+    text-align: right;
+  }
+}
+.view-daydashboards{
+  .btn-action.dropdown-toggle{
+
+  }
+}
