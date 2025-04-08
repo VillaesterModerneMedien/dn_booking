@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--master-->
 <extension type="component" method="upgrade">
 	<name>com_dnbooking</name>
 	<author>Mario Hewera</author>
