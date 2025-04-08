@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="choose_daysheet">
+        <field name="currentDate"
+               type="calendar"
+               label="COM_DNBOOKING_FIELD_CURRENDATE_LABEL"
+               default="NOW"
+               translateformat="false"
+               showtime="false"
+               filter="user_utc"
+        />
+    </fieldset>
+</form>

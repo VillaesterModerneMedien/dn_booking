@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <config>
+        <inlinehelp button="show"/>
+    </config>
+
+    <fieldset name="reservationfieldset_data1">
+
+        <field
+                name="reservation_date"
+                type="calendar"
+                label="COM_DNBOOKING_FIELD_RESERVATION_DATE_LABEL"
+                translateformat="true"
+                showtime="true"
+                required="true"
+                filter="server_utc"
+                default="NOW"
+        />
+        <field
+                name="meal_time"
+                type="text"
+                label="COM_DNBOOKING_FIELD_MEAL_TIME_LABEL"
+                default=""
+        />
+
+        <field
+                name="room_id"
+                type="sql"
+                label="COM_DNBOOKING_FIELD_ROOM_ID_LABEL"
+                description="COM_DNBOOKING_FIELD_ROOM_ID_DESC"
+                default="0"
+                required="true"
+                query="SELECT id, title FROM #__dnbooking_rooms"
+                key_field="id"
+                value_field="title"
+                header="COM_DNBOOKING_FIELD_SELECT_ROOM"
+        />
+
+        <field
+                name="additional_info"
+                type="AdditionalInfos"
+                label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL"
+                description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC"
+                min="1"
+                max="1"
+                multiple="false"
+                hiddenLabel="true"
+        />
+
+    </fieldset>
+
+    <fieldset name="reservationfieldset_data2" addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
+
+        <field
+                name="reservation_price"
+                type="text"
+                label="COM_DNBOOKING_FIELD_RESERVATION_PRICE_LABEL"
+                description="COM_DNBOOKING_FIELD_RESERVATION_PRICE_DESC"
+                default="0"
+                required="true"
+                readonly="true"
+        />
+        <field
+                name="discount"
+                type="number"
+                label="COM_DNBOOKING_FIELD_DISCOUNT_LABEL"
+                description="COM_DNBOOKING_FIELD_DISCOUNT_DESC"
+                default="0"
+                filter="float"
+        />
+        <field
+                name="holiday"
+                type="list"
+                label="COM_DNBOOKING_FIELD_RESERVATION_HOLIDAY_LABEL"
+                default="0"
+                required="true"
+                validate="options"
+                readonly="true"
+        >
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+                name="published"
+                type="list"
+                label="COM_DNBOOKING_FIELD_RESERVATION_STATUS_LABEL"
+                description="COM_DNBOOKING_FIELD_RESERVATION_STATUS_DESC"
+                default="1"
+                class="form-select-color-state"
+                validate="options"
+                readonly="true"
+        >
+            <option value="0">COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED</option>
+            <option value="1">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED</option>
+            <option value="3">COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_LOCALE</option>
+            <option value="4">COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE</option>
+            <option value="2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED</option>
+            <option value="-2">COM_DNBOOKING_FIELD_RESERVATION_STATUS_TRASHED</option>
+        </field>
+
+    </fieldset>
+
+    <fieldset name="reservationfieldset_data3">
+
+        <field
+                name="additional_infos2"
+                type="AdditionalInfos"
+                label="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_LABEL2"
+                description="COM_DNBOOKING_FIELD_ADDITIONAL_INFO_DESC2"
+                min="1"
+                max="1"
+                multiple="false"
+                hiddenLabel="true"
+        />
+
+    </fieldset>
+
+
+    <fieldset name="customerfieldset">
+
+        <field
+                name="customer_id"
+                type="sql"
+                default="0"
+                label="COM_DNBOOKING_FIELD_CUSTOMER_LABEL"
+                description="COM_DNBOOKING_FIELD_CUSTOMER_DESC"
+                required="true"
+                query="SELECT id, CONCAT(lastname, ', ', firstname, ' (' , id , ')') AS text FROM #__dnbooking_customers"
+                key_field="id"
+                value_field="text"
+                header="COM_DNBOOKING_FIELD_SELECT_CUSTOMER"
+        />
+
+    </fieldset>
+
+    <fieldset name="reservationfieldset_extras">
+
+        <field
+                name="extras_ids"
+                type="subform"
+                label="COM_DNBOOKING_FIELD_EXTRAS_LABEL"
+                multiple="true"
+                min="1"
+                max="50"
+                hiddenLabel="true"
+                layout="joomla.form.field.subform.repeatable-table"
+        >
+            <form>
+                <field
+                        name="extra_count"
+                        type="text"
+                        label="COM_DNBOOKING_FIELD_EXTRA_COUNT_LABEL"
+                />
+                <field
+                        name="extra_id"
+                        type="sql"
+                        label="COM_DNBOOKING_FIELD_EXTRA_LABEL"
+                        multiple="false"
+                        layout="joomla.form.field.list-fancy-select"
+                        query="SELECT id, title FROM #__dnbooking_extras"
+                        key_field="id"
+                        value_field="title"
+                />
+            </form>
+        </field>
+
+    </fieldset>
+
+    <fieldset name="reservationfieldset_notes">
+
+        <field
+                name="admin_notes"
+                type="textarea"
+                label="COM_DNBOOKING_FIELD_ADMIN_NOTES_LABEL"
+                rows="10"
+                cols="50"
+            />
+
+        <field
+                name="customer_notes"
+                type="textarea"
+                label="COM_DNBOOKING_FIELD_CUSTOMER_NOTES_LABEL"
+                rows="10"
+                cols="50"
+                readonly="true"
+            />
+
+    </fieldset>
+
+    <fieldset name="mybasic"
+              addfieldprefix="DnbookingNamespace\Component\Dnbooking\Administrator\Field\AdditionalInfos">
+
+        <field
+                name="id"
+                type="text"
+                label="JGLOBAL_FIELD_ID_LABEL"
+                default="0"
+                class="readonly"
+                readonly="true"
+        />
+
+        <field
+                name="created"
+                type="calendar"
+                label="COM_CONTENT_FIELD_CREATED_LABEL"
+                translateformat="true"
+                showtime="true"
+                filter="user_utc"
+        />
+
+        <field
+                name="modified"
+                type="calendar"
+                label="JGLOBAL_FIELD_MODIFIED_LABEL"
+                class="form-control"
+                translateformat="true"
+                showtime="true"
+                readonly="true"
+                filter="user_utc"
+        />
+
+        <field
+                name="reservation_token"
+                type="hidden"
+        />
+
+    </fieldset>
+
+</form>

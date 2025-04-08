@@ -1,0 +1,37 @@
+@import "./utils/bootswatch_vmm";
+
+.firstCard{
+    margin-top: 20px;
+}
+
+.card-header-reservation{
+    display: flex;
+    justify-content: space-between;
+}
+
+.addInfos2Tab {
+    .subform-repeatable-wrapper{
+
+    }
+    margin-bottom: 80px;
+}
+.js-calendar.open{
+    position: static !important;
+}
+.alignRight{
+    text-align: right;
+}
+.navbar.navbar-expand-lg{
+    margin-bottom: -28px;
+
+}
+#navbarNav.nav-link.active{
+    background-color: var(--card-bg);
+}
+
+.form-select.form-select-success, .form-select-success.custom-select, .form-select.custom-select-success, .custom-select-success.custom-select {
+    color: #FFF;
+}
+.form-select.form-select-danger, .form-select-danger.custom-select, .form-select.custom-select-danger, .custom-select-danger.custom-select {
+    color: #FFF;
+}
