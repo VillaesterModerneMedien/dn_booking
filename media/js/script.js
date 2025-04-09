@@ -26,30 +26,26 @@
             extra.classList.remove('checked');
         });
     }
-    function createOptionsCheck(extraOptions){
-        extraOptions.forEach(extra => {
-            const input = extra.querySelector('input[type="number"]');
-            const label = extra.querySelector('label');
-            input.setAttribute('hidden', 'true');
-            label.setAttribute('hidden', 'true');
-            extra.classList.add('deko');
+    function createOptionsCheck(extra, extraOptions){
+        const input = extra.querySelector('input[type="number"]');
+        const label = extra.querySelector('label');
+        input.setAttribute('hidden', 'true');
+        label.setAttribute('hidden', 'true');
+        extra.classList.add('deko');
 
-            extra.addEventListener('click', function(){
-                const value = input.value;
-                if (value === '0') {
-                    resetExtraOptions(extraOptions);
-                    input.value = '1';
-                    extra.classList.add('checked');
-                } else {
-                    input.value = '0';
-                    extra.classList.remove('checked');
-                }
-            });
+        extra.addEventListener('click', function(){
+            const value = input.value;
+            if (value == '0') {
+                resetExtraOptions(extraOptions);
+                input.value = '1';
+                extra.classList.add('checked');
+            } else {
+                input.value = '0';
+                extra.classList.remove('checked');
+            }
         });
     }
     function setCustomExtras(extras) {
-        const singleCheck = [14];
-        const optionsCheck = [16, 17, 18, 19, 20];
         let extraOptions = [];
 
         // Die ursprüngliche UL-Liste referenzieren
@@ -76,19 +72,21 @@
         ulOptionsCheck.parentNode.insertBefore(optionsCheckHeading, ulOptionsCheck);
 
         extras.forEach(extra => {
-            let extraID = extra.getAttribute('data-extra-id');
-            if (singleCheck.includes(parseInt(extraID))) {
-                createSingleCheck(extra);
-                ulSingleCheck.appendChild(extra);
-            } else if (optionsCheck.includes(parseInt(extraID))) {
+            let extraType = extra.getAttribute('data-extra-type');
+            if (extraType === 'decoration') {
                 if (!extraOptions.includes(extra)) {
                     extraOptions.push(extra);
                 }
             }
+            else if (extraType === 'other') {
+                createSingleCheck(extra);
+                ulSingleCheck.appendChild(extra);
+            }
+
         });
 
         extraOptions.forEach(extra => {
-            createOptionsCheck(extraOptions);
+            createOptionsCheck(extra, extraOptions);
             ulOptionsCheck.appendChild(extra);
         });
     }
@@ -547,14 +545,6 @@
                 subformElement.removeRow(row);
             }
         }
-       /* if(numberOfChildren == 0){
-            childrenContainer.style.display = 'none';
-
-        }
-        else{
-            childrenContainer.style.display = 'flex';
-        }*/
-
     }
 
     /**

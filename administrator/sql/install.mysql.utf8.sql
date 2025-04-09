@@ -75,6 +75,7 @@ CREATE TABLE if not exists `#__dnbooking_extras`
     `title`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `description` mediumtext COLLATE utf8mb4_unicode_ci,
     `image`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
+    `type`       varchar(255) COLLATE utf8mb4_unicode_ci                 NOT NULL DEFAULT 'regular',
     `price`       float                                                  NOT NULL DEFAULT '0',
     `published`   tinyint(4)                                             NOT NULL DEFAULT '0',
     `created`     datetime                                               NOT NULL,

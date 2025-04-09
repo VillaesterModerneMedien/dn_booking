@@ -69,6 +69,16 @@
     </fieldset>
     <fieldset name="extrafieldset">
         <field
+                name="type"
+                type="list"
+                label="COM_DNBOOKING_FIELD_ART_LABEL"
+                default="regular"
+                >
+            <option value="regular">COM_DNBOOKING_FIELD_ART_REGULAR</option>
+            <option value="other">COM_DNBOOKING_FIELD_ART_OTHER</option>
+            <option value="decoration">COM_DNBOOKING_FIELD_ART_DECORATION</option>
+        </field>
+        <field
                 name="image"
                 type="media"
                 label="COM_DNBOOKING_FIELD_IMAGE_LABEL"
@@ -81,13 +91,11 @@
                 default="0"
 
         />
-
         <field
                 name="description"
                 type="textarea"
                 label="COM_DNBOOKING_FIELD_DESC_LABEL"
                 rows="20"
         />
-
     </fieldset>
 </form>
