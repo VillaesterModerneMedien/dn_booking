@@ -32,6 +32,9 @@
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
+	<updateservers>
+		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/tree/kehl/update.xml</server>
+	</updateservers>
 
 	<media destination="com_dnbooking" folder="media">
 		<filename>index.html</filename>
@@ -51,11 +54,8 @@
 	</files>
 
 	<languages folder="site/language">
-
 			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
-
 			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
-
 	</languages>
 
 	<administration>
@@ -135,9 +135,5 @@
     <dashboards>
 		<dashboard title="COM_DNBOOKING_DASHBOARD_TITLE" icon="icon-file-alt">dnbooking</dashboard>
 	</dashboards>
-
-	<updateservers>
-		<server type="extension" priority="1" name="dnbooking Updates">https://YOUR-UPDATE-URL.COM/com_dnbooking/extension.xml</server>
-	</updateservers>
 
 </extension>
