@@ -113,7 +113,6 @@ class ReservationController extends AdminReservationController
 
 		$date         = HTMLHelper::_('date', $this->input->get('date', null, 'string'), 'Y-m-d');
 		$weekdayNumber = !empty($date) ? DnbookingHelper::getWeekdayNumber($date) : -1;
-
 		$time           = $this->input->get('time', null, 'string');
 
 		$personscount = $this->input->get('visitors', null, 'int');
@@ -126,7 +125,6 @@ class ReservationController extends AdminReservationController
 		$customOpeningHour = isset($openingHours['opening_hours'][0]) ? $openingHours['opening_hours'][0] : false;
 		$regularOpeningHour = $openingHours['regular_opening_hours'];
 		$weeklyOpeningHour = $openingHours['weekly_opening_hours'];
-
 
 		$weeklyOpeningHourKeys = array_keys($weeklyOpeningHour);
 
@@ -151,10 +149,10 @@ class ReservationController extends AdminReservationController
 					$blockedRooms['start'] = $startTime;
 					$blockedRooms['end'] = $endTime;
 				}
-
 			}
 
 			$a = ($weekdayNumber != -1) ? $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]] : false;
+
 			if ($a && !$customOpeningHour) {
 				$b = json_decode($a, true);
 				$c = array_keys($b);
@@ -209,7 +207,6 @@ class ReservationController extends AdminReservationController
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);
 
 		$app->close();
-
 	}
 
 	protected function _checkPrice($date){
@@ -222,15 +219,14 @@ class ReservationController extends AdminReservationController
 		$weeklyOpeningHourKeys = array_keys($weeklyOpeningHour);
 
 		if ($customOpeningHour) {
-
 			$openingCount = count($regularOpeningHour);
 			$a = $customOpeningHour['opening_time'];
 			$b = $regularOpeningHour['regular_opening_hours' . $a];
 			$isHigherPrice = $b['higherPrice'];
-
 		}
 
 		$a =  $weeklyOpeningHour[$weeklyOpeningHourKeys[$weekdayNumber]];
+
 		if ($a && !$customOpeningHour) {
 			$b = json_decode($a, true);
 			$c = array_keys($b);
@@ -238,7 +234,6 @@ class ReservationController extends AdminReservationController
 			$d = $regularOpeningHour[$openingTime];
 			$isHigherPrice = $d['higherPrice'];
 		}
-
 		return (int) $isHigherPrice;
 	}
 

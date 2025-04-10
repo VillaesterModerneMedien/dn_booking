@@ -81,8 +81,6 @@ if ($saveOrder && !empty($this->items)) {
 							$canEdit    = $user->authorise('core.edit',       'com_dnbooking.room.' . $item->id);
                             $canEditOwn = $user->authorise('core.edit.own',   'com_dnbooking.room.' . $item->id);
 							$canChange  = $user->authorise('core.edit.state', 'com_dnbooking.room.' . $item->id);
-
-
                         ?>
                             <tr class="row<?php echo $i % 2; ?>"  data-draggable-group="raum">
                                 <td class="center">

@@ -71,10 +71,12 @@ CREATE TABLE if not exists `#__dnbooking_rooms`
 CREATE TABLE if not exists `#__dnbooking_extras`
 (
     `id`          int(11) unsigned                                       NOT NULL AUTO_INCREMENT,
+    `ordering`    int(11)                                                NOT NULL DEFAULT '0',
     `alias`       varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
     `title`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
     `description` mediumtext COLLATE utf8mb4_unicode_ci,
     `image`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
+    `type`       varchar(255) COLLATE utf8mb4_unicode_ci                 NOT NULL DEFAULT 'regular',
     `price`       float                                                  NOT NULL DEFAULT '0',
     `published`   tinyint(4)                                             NOT NULL DEFAULT '0',
     `created`     datetime                                               NOT NULL,

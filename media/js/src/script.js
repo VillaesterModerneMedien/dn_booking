@@ -335,14 +335,6 @@ function setSubforms() {
             subformElement.removeRow(row);
         }
     }
-   /* if(numberOfChildren == 0){
-        childrenContainer.style.display = 'none';
-
-    }
-    else{
-        childrenContainer.style.display = 'flex';
-    }*/
-
 }
 
 /**
