@@ -70,6 +70,7 @@ class RoomsField extends RadiobasicField
 				'personsmin'   => $room->personsmin,
 				'personsmax'   => $room->personsmax,
 				'description'  => $room->description,
+				'published'    => $room->published,
 			];
 		}
 

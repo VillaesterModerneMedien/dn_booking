@@ -44,8 +44,8 @@ $image = $view->el('image', [
 ]);
 
 ?>
-
-<li data-extra-id="<?= $subformItem['id'] ?>" class="extraListItem subform-repeatable-group" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
+<?php if($subformItem['published'] == '1') : ?>
+<li data-extra-id="<?= $subformItem['id'] ?>" data-extra-type="<?= $subformItem['type'] ?>" class="extraListItem subform-repeatable-group" data-base-name="<?php echo $basegroup; ?>" data-group="<?php echo $group; ?>">
     <div class="el-item uk-panel uk-margin-remove-first-child">
         <div class="uk-grid-small uk-flex-middle" uk-grid>
             <div class="uk-width-1-1 uk-text-center">
@@ -69,6 +69,5 @@ $image = $view->el('image', [
             </div>
         </div>
     </div>
-
-
 </li>
+<?php endif;?>

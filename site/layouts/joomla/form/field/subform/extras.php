@@ -12,6 +12,7 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use DnbookingNamespace\Component\Dnbooking\Site\Model\ReservationModel;
 
 
 extract($displayData);
@@ -47,6 +48,7 @@ $class = $class ? ' ' . $class : '';
 
 $sublayout = empty($groupByFieldset) ? 'section' : 'section-byfieldsets';
 
+/** @var ReservationModel $model */
 $model  = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservation', 'Site');
 $extras = $model->getOrderFeatures('Extras');
 
@@ -68,6 +70,7 @@ foreach ($extras as $key => $extra)
 		'id'          => $extra->id,
 		'title'       => $extra->title,
 		'description' => $extra->description,
+        'type'        => $extra->type,
 		'price'       => $extra->price,
 		'image'       => $extra->image,
 		'published'   => $extra->published,

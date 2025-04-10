@@ -43,6 +43,7 @@ class ExtrasModel extends ListModel
 				'title', 'a.title',
                 'published', 'a.published',
                 'created', 'a.created',
+                'ordering', 'a.ordering',
                 'created_by', 'a.created_by',
 			);
 		}
@@ -144,6 +145,11 @@ class ExtrasModel extends ListModel
                 $query->bind(':description', $search);
 			}
 		}
+
+        // Add the list ordering clause
+        $orderCol = $this->state->get('list.ordering', 'a.ordering');
+        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
 	}
