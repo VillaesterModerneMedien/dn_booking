@@ -112,7 +112,7 @@ CREATE TABLE if not exists `#__dnbooking_customers`
   COLLATE = utf8mb4_unicode_ci;
 
 
-INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`,
+INSERT IGNORE INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`,
                                  `params`)
 VALUES
        ('com_dnbooking.reservation_downpayment', 'com_dnbooking', '',
