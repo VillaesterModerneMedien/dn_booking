@@ -33,7 +33,7 @@
 		</schemas>
 	</update>
 	<updateservers>
-		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/tree/kehl/update.xml</server>
+		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/refs/heads/kehl/update.xml</server>
 	</updateservers>
 
 	<media destination="com_dnbooking" folder="media">
