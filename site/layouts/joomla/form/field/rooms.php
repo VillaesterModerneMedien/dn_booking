@@ -81,10 +81,11 @@ $counter=0;
 
     <ul class="roomList uk-grid uk-child-width-1-1 uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-match" uk-grid="">
         <?php foreach ($options as $i => $room) : ?>
+            <?php if ($room->published != 1) : continue; endif; ?>
+
             <?php
                 // Initialize some option attributes.
                 $checked     = ((string) $room->value === $value) ? 'checked="checked"' : '';
-
                 $oid        = $id . $i;
                 $ovalue     = htmlspecialchars($room->value, ENT_COMPAT, 'UTF-8');
                 $attributes = array_filter([$checked]);
