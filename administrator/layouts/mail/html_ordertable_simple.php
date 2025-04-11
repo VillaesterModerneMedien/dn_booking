@@ -61,7 +61,7 @@ foreach ($item['additional_info'] as $key => $value) {
             </td>
             <td>
                 <?= $item['customer']['firstname'] . '  ' . $item['customer']['lastname'] ?> <br/>
-                <?= $item['customer']['adress'] ?> <br/>
+                <?= $item['customer']['address'] ?> <br/>
                 <?= $item['customer']['zip'] . ' ' . $item['customer']['city'] ?> <br/>
                 <?= $item['customer']['email'] ?> <br/>
             </td>

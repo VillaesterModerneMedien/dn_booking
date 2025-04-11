@@ -85,7 +85,7 @@ $discountPrice = $totalPrice - $discountValue;
             </td>
             <td colspan="2">
                 <?= $item['customer']['firstname'] . '  ' . $item['customer']['lastname'] ?> <br/>
-                <?= $item['customer']['adress'] ?> <br/>
+                <?= $item['customer']['address'] ?> <br/>
                 <?= $item['customer']['zip'] . ' ' . $item['customer']['city'] ?> <br/>
                 <?= $item['customer']['email'] ?> <br/>
             </td>
