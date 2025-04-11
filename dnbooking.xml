@@ -8,26 +8,26 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@diginerds.de</authorEmail>
 	<authorUrl>https://www.diginerds.de</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
     <namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
 	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
 
 	<scriptfile>script.php</scriptfile>
 
-	<install> <!-- Runs on install -->
+	<install>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
 
-	<uninstall> <!-- Runs on uninstall -->
+	<uninstall>
 		<sql>
 			<file charset="utf8" driver="mysql">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
 
-	<update> <!-- Runs on update -->
+	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 		</schemas>
@@ -37,9 +37,9 @@
 		<filename>index.html</filename>
         <filename>joomla.asset.json</filename>
 		<folder>css</folder>
+		<folder>fonts</folder>
         <folder>images</folder>
 		<folder>js</folder>
-		<folder>scss</folder>
 	</media>
 
 	<files folder="site">
@@ -51,11 +51,8 @@
 	</files>
 
 	<languages folder="site/language">
-
-			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
-
-			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
-
+		<language tag="de-DE">de-DE/com_dnbooking.ini</language>
+		<language tag="en-GB">en-GB/com_dnbooking.ini</language>
 	</languages>
 
 	<administration>
@@ -111,15 +108,14 @@
 			<filename>access.xml</filename>
 			<filename>config.xml</filename>
 			<filename>dnbooking.xml</filename>
-
 			<filename>script.php</filename>
-            <folder>presets</folder>
-			<folder>sql</folder>
             <folder>forms</folder>
+			<folder>layouts</folder>
+            <folder>presets</folder>
             <folder>services</folder>
+			<folder>sql</folder>
 			<folder>src</folder>
 			<folder>tmpl</folder>
-			<folder>misc</folder>
 		</files>
 
 		<languages folder="administrator/language">
@@ -137,7 +133,7 @@
 	</dashboards>
 
 	<updateservers>
-		<server type="extension" priority="1" name="dnbooking Updates">https://YOUR-UPDATE-URL.COM/com_dnbooking/extension.xml</server>
+		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/refs/heads/kehl/update.xml</server>
 	</updateservers>
 
 </extension>

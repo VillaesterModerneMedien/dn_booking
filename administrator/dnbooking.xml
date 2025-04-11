@@ -8,7 +8,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@diginerds.de</authorEmail>
 	<authorUrl>https://www.diginerds.de</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
     <namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
 	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
@@ -119,14 +119,21 @@
 		</files>
 
 		<languages folder="administrator/language">
+
 			<language tag="de-DE">de-DE/com_dnbooking.ini</language>
 			<language tag="de-DE">de-DE/com_dnbooking.sys.ini</language>
 
 			<language tag="en-GB">en-GB/com_dnbooking.ini</language>
 			<language tag="en-GB">en-GB/com_dnbooking.sys.ini</language>
+
 		</languages>
 	</administration>
     <dashboards>
 		<dashboard title="COM_DNBOOKING_DASHBOARD_TITLE" icon="icon-file-alt">dnbooking</dashboard>
 	</dashboards>
+
+	<updateservers>
+		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/refs/heads/kehl/update.xml</server>
+	</updateservers>
+
 </extension>

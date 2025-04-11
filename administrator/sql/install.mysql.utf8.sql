@@ -1,133 +1,138 @@
---
--- Table structure for table `#__dnbooking_reservations`
---
-CREATE TABLE if not exists `#__dnbooking_reservations`
-(
-    `id`                int(11) unsigned                        NOT NULL AUTO_INCREMENT,
-    `admin_notes`       mediumtext COLLATE utf8mb4_unicode_ci            DEFAULT NULL,
-    `customer_notes`    mediumtext COLLATE utf8mb4_unicode_ci            DEFAULT NULL,
-    `general_notes`     mediumtext COLLATE utf8mb4_unicode_ci            DEFAULT NULL,
-    `reservation_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `holiday`           int(1)                                  NOT NULL DEFAULT '0',
-    `customer_id`       int(11)                                 NOT NULL DEFAULT '0',
-    `room_id`           int(11)                                 NOT NULL DEFAULT '0',
-    `extras_ids`        json                                    NOT NULL,
-    `additional_info`   json                                    NOT NULL,
-    `additional_infos2`  json                                    NOT NULL,
-    `reservation_date`  datetime                                NOT NULL,
-    `reservation_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
-    `published`         tinyint(4)                              NOT NULL DEFAULT '0',
-    `created`           datetime                                NOT NULL,
-    `modified`          datetime                                NOT NULL,
-    `discount`          float(6)                                NOT NULL DEFAULT '0',
-    `meal_time`         varchar(100)                            NOT NULL,
-
-    PRIMARY KEY (`id`),
-    KEY `idx_customer_id` (`customer_id`),
-    KEY `published` (`published`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
-
---
--- Table structure for table `#__dnbooking_openinghours`
---
-CREATE TABLE if not exists `#__dnbooking_openinghours`
-(
-    `id`           int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `day`          date             NOT NULL,
-    `opening_time` int(11)          NULL,
-    `notes`        mediumtext COLLATE utf8mb4_unicode_ci,
-
+-- Tabelle #__dnbooking_reservations erstellen oder aktualisieren
+CREATE TABLE IF NOT EXISTS `#__dnbooking_reservations` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
+-- Spalten für #__dnbooking_reservations hinzufügen
+ALTER TABLE `#__dnbooking_reservations`
+    ADD COLUMN IF NOT EXISTS `admin_notes` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS `customer_notes` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS `general_notes` mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    ADD COLUMN IF NOT EXISTS `reservation_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `holiday` int(1) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `customer_id` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `room_id` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `extras_ids` json NOT NULL,
+    ADD COLUMN IF NOT EXISTS `additional_info` json NOT NULL,
+    ADD COLUMN IF NOT EXISTS `additional_infos2` json NOT NULL,
+    ADD COLUMN IF NOT EXISTS `reservation_date` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `reservation_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `published` tinyint(4) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `created` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `modified` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `discount` float(6) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `meal_time` varchar(100) NOT NULL;
 
-CREATE TABLE if not exists `#__dnbooking_rooms`
-(
-    `id`           int(11) unsigned                                       NOT NULL AUTO_INCREMENT,
-    `alias`        varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    `title`        varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `description`  mediumtext COLLATE utf8mb4_unicode_ci,
-    `images`       json                                                   NOT NULL,
-    `personsmin`   int(11)                                                NOT NULL DEFAULT '0',
-    `personsmax`   int(11)                                                NOT NULL DEFAULT '0',
-    `ordering`     int(11)                                                NOT NULL DEFAULT '0',
-    `priceregular` varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `pricecustom`  varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `published`    tinyint(4)                                             NOT NULL DEFAULT '0',
-    `created`      datetime                                               NOT NULL,
-    `modified`     datetime                                               NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `published` (`published`),
-    KEY `idx_alias` (`alias`)
-
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
-
-CREATE TABLE if not exists `#__dnbooking_extras`
-(
-    `id`          int(11) unsigned                                       NOT NULL AUTO_INCREMENT,
-    `ordering`    int(11)                                                NOT NULL DEFAULT '0',
-    `alias`       varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-    `title`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `description` mediumtext COLLATE utf8mb4_unicode_ci,
-    `image`       varchar(255) COLLATE utf8mb4_unicode_ci                NOT NULL DEFAULT '',
-    `type`       varchar(255) COLLATE utf8mb4_unicode_ci                 NOT NULL DEFAULT 'regular',
-    `price`       float                                                  NOT NULL DEFAULT '0',
-    `published`   tinyint(4)                                             NOT NULL DEFAULT '0',
-    `created`     datetime                                               NOT NULL,
-    `modified`    datetime                                               NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `published` (`published`),
-    KEY `idx_alias` (`alias`)
-
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
-
-CREATE TABLE if not exists `#__dnbooking_customers`
-(
-    `id`         int(11) unsigned                        NOT NULL AUTO_INCREMENT,
-    `salutation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `firstname`  varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `lastname`   varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `email`      varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `phone`      varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `address`    varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `city`       varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `zip`        varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `country`    varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-    `published`  tinyint(4)                              NOT NULL DEFAULT '0',
-    `created`    datetime                                NOT NULL,
-    `modified`   datetime                                NOT NULL,
-    PRIMARY KEY (`id`),
-    KEY `published` (`published`)
-
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_unicode_ci;
+-- Indizes für #__dnbooking_reservations hinzufügen
+ALTER TABLE `#__dnbooking_reservations`
+    ADD INDEX IF NOT EXISTS `idx_customer_id` (`customer_id`),
+    ADD INDEX IF NOT EXISTS `published` (`published`);
 
 
-INSERT INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`,
-                                 `params`)
+-- Tabelle #__dnbooking_openinghours erstellen oder aktualisieren
+CREATE TABLE IF NOT EXISTS `#__dnbooking_openinghours` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Spalten für #__dnbooking_openinghours hinzufügen
+ALTER TABLE `#__dnbooking_openinghours`
+    ADD COLUMN IF NOT EXISTS `day` date NOT NULL,
+    ADD COLUMN IF NOT EXISTS `opening_time` int(11) NULL,
+    ADD COLUMN IF NOT EXISTS `notes` mediumtext COLLATE utf8mb4_unicode_ci;
+
+-- Tabelle #__dnbooking_rooms erstellen oder aktualisieren
+CREATE TABLE IF NOT EXISTS `#__dnbooking_rooms` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Spalten für #__dnbooking_rooms hinzufügen
+ALTER TABLE `#__dnbooking_rooms`
+    ADD COLUMN IF NOT EXISTS `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+    ADD COLUMN IF NOT EXISTS `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `description` mediumtext COLLATE utf8mb4_unicode_ci,
+    ADD COLUMN IF NOT EXISTS `images` json NOT NULL,
+    ADD COLUMN IF NOT EXISTS `personsmin` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `personsmax` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `ordering` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `priceregular` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `pricecustom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `published` tinyint(4) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `created` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `modified` datetime NOT NULL;
+
+-- Indizes für #__dnbooking_rooms hinzufügen
+ALTER TABLE `#__dnbooking_rooms`
+    ADD INDEX IF NOT EXISTS `published` (`published`),
+    ADD INDEX IF NOT EXISTS `idx_alias` (`alias`);
+
+-- Tabelle #__dnbooking_extras erstellen oder aktualisieren
+CREATE TABLE IF NOT EXISTS `#__dnbooking_extras` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Spalten für #__dnbooking_extras hinzufügen
+ALTER TABLE `#__dnbooking_extras`
+    ADD COLUMN IF NOT EXISTS `ordering` int(11) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+    ADD COLUMN IF NOT EXISTS `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `description` mediumtext COLLATE utf8mb4_unicode_ci,
+    ADD COLUMN IF NOT EXISTS `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'regular',
+    ADD COLUMN IF NOT EXISTS `price` float NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `published` tinyint(4) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `created` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `modified` datetime NOT NULL;
+
+-- Indizes für #__dnbooking_extras hinzufügen
+ALTER TABLE `#__dnbooking_extras`
+    ADD INDEX IF NOT EXISTS `published` (`published`),
+    ADD INDEX IF NOT EXISTS `idx_alias` (`alias`);
+
+-- Tabelle #__dnbooking_customers erstellen oder aktualisieren
+CREATE TABLE IF NOT EXISTS `#__dnbooking_customers` (
+    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Spalten für #__dnbooking_customers hinzufügen
+ALTER TABLE `#__dnbooking_customers`
+    ADD COLUMN IF NOT EXISTS `salutation` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `firstname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `lastname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `zip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `country` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS `published` tinyint(4) NOT NULL DEFAULT '0',
+    ADD COLUMN IF NOT EXISTS `created` datetime NOT NULL,
+    ADD COLUMN IF NOT EXISTS `modified` datetime NOT NULL;
+
+-- Index für #__dnbooking_customers hinzufügen
+ALTER TABLE `#__dnbooking_customers`
+    ADD INDEX IF NOT EXISTS `published` (`published`);
+
+-- E-Mail-Templates einfügen (nur wenn sie noch nicht existieren)
+INSERT IGNORE INTO `#__mail_templates` (`template_id`, `extension`, `language`, `subject`, `body`, `htmlbody`, `attachments`, `params`)
 VALUES
-       ('com_dnbooking.reservation_downpayment', 'com_dnbooking', '',
-        'Bestätigung Zahlungseingang für Geburtstagsraum:{ROOM_TITLE}',
-        'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
-        '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\", \"html_ordertable_simple\"]}'),
-       ('com_dnbooking.reservation_closed', 'com_dnbooking', '',
-        'Ihre Buchung vom: {RESERVATION_DATE} wurde abgeschlossen',
-        'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
-        '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\", \"html_ordertable_simple\"]}'),
-       ('com_dnbooking.reservation_pending', 'com_dnbooking', '',
-        'Reservierung eingegangen von {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}',
-        'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
-        '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}'),
-       ('com_dnbooking.reservation_cancelled', 'com_dnbooking', '',
-        'Reservierung ID {ID}  für den {RESERVATION_DATE} storniert.',
-        'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
-        '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
+    ('com_dnbooking.reservation_downpayment', 'com_dnbooking', '',
+     'Bestätigung Zahlungseingang für Geburtstagsraum:{ROOM_TITLE}',
+     'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
+     '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\", \"html_ordertable_simple\"]}'),
+    ('com_dnbooking.reservation_closed', 'com_dnbooking', '',
+     'Ihre Buchung vom: {RESERVATION_DATE} wurde abgeschlossen',
+     'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
+     '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\", \"html_ordertable_simple\"]}'),
+    ('com_dnbooking.reservation_pending', 'com_dnbooking', '',
+     'Reservierung eingegangen von {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}',
+     'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
+     '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}'),
+    ('com_dnbooking.reservation_cancelled', 'com_dnbooking', '',
+     'Reservierung ID {ID}  für den {RESERVATION_DATE} storniert.',
+     'Name: {CUSTOMER_FIRSTNAME} {CUSTOMER_LASTNAME}\r\nEmail: {CUSTOMER_EMAIL}', '', '',
+     '{\"tags\":[\"customer_firstname\",\"customer_lastname\",\"admin_notes\",\"customer_email\"]}');
