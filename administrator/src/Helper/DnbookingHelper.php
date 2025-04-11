@@ -233,6 +233,7 @@ class DnbookingHelper
 		$orderData['stornoText'] = $sendMailFormValues['sendMailStornoText'];
 
 
+
         $layout                              = new FileLayout('mail.html_ordertable_simple', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
         $htmlOrderTableSimple                = $layout->render($orderData);
         $orderData['html_ordertable_simple'] = $htmlOrderTableSimple;
