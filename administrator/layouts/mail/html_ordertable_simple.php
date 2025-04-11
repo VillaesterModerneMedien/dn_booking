@@ -54,7 +54,17 @@ foreach ($item['additional_info'] as $key => $value) {
         <tr>
             <td><?= Text::_('COM_DNBOOKING_MAIL_BOOKINGNUMBER') ?></td>
             <td><?= $id; ?> </td>
-
+        </tr>
+        <tr>
+            <td>
+                <?= Text::_('COM_DNBOOKING_MAIL_CUSTOMER') ?>
+            </td>
+            <td>
+                <?= $item['customer_firstname'] . '  ' . $item['customer_lastname'] ?> <br/>
+                <?= $item['customer_address'] ?> <br/>
+                <?= $item['customer_zip'] . ' ' . $item['customer_city'] ?> <br/>
+                <?= $item['customer_email'] ?> <br/>
+            </td>
         </tr>
         <tr>
             <td>

@@ -81,6 +81,17 @@ $discountPrice = $totalPrice - $discountValue;
         </tr>
         <tr>
             <td>
+                <?= Text::_('COM_DNBOOKING_MAIL_CUSTOMER') ?>
+            </td>
+            <td colspan="2">
+                <?= $item['customer_firstname'] . '  ' . $item['customer_lastname'] ?> <br/>
+                <?= $item['customer_address'] ?> <br/>
+                <?= $item['customer_zip'] . ' ' . $item['customer_city'] ?> <br/>
+                <?= $item['customer_email'] ?> <br/>
+            </td>
+        </tr>
+        <tr>
+            <td>
 				<?= Text::_('COM_DNBOOKING_MAIL_BOOKINGDATE') ?>
             </td>
             <td colspan="2">
