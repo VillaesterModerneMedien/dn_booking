@@ -45,7 +45,7 @@ class OpeninghoursModel extends ListModel
 	 *
 	 * @since version
 	 */
-	public function checkMonth($date)
+	public function checkMonth($year, $month)
 	{
 
 		$db = Factory::getContainer()->get('DatabaseDriver');
@@ -53,7 +53,7 @@ class OpeninghoursModel extends ListModel
 
 		$query->select('*')
 			->from($db->quoteName($this->getTable()->getTableName()))
-			->where($db->quoteName('day') . ' LIKE ' . $db->quote('%-' . $date . '-%'));
+			->where($db->quoteName('day') . ' LIKE ' . $db->quote($year . '-' . $month . '-%'));
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
@@ -76,33 +76,51 @@ class OpeninghoursModel extends ListModel
 	}
     public function updateDay($data)
     {
-        $data['dayID'] = $data['dayID'];
 		$table = $this->getTable();
-        $table->load($data['dayID']);
+        $table->load($data['day']);
         $table->bind($data);
         return $table->store();
     }
 
     public function addDay($data)
     {
-        $table = $this->getTable();
-        $dayToAdd = [
-            'day' => $data['dayID'],
+	    $db = $this->getDbo();
+	    $table = $this->getTable();
+		$dayToAdd = [
+            'day' => $data['day'],
             'opening_time' => $data['opening_time'],
         ];
 
+	    $columns = array('day', 'opening_time');
+	    $values  = array(
+		    $db->quote($data['day']),
+		    $db->quote($data['opening_time'])
+	    );
+
+	    $query = $db->getQuery(true)
+		    ->insert($db->quoteName('#__dnbooking_openinghours'))
+		    ->columns(implode(',', $db->quoteName($columns)))
+		    ->values(implode(',', $values));
+
+		try {
+			$db->setQuery($query);
+			$db->execute();
+			return true;
+		} catch (\Exception $e) {
+			$this->setError($e->getMessage());
+			return false;
+		}
+		/*
+		$data = ArrayHelper::toObject($dayToAdd, 'stdClass'); //??funktioniert genauso nicht
         if (!$table->bind($dayToAdd)) {
-            // Fehlerbehandlung
 	        Factory::getApplication()->enqueueMessage($table->getError(), 'warning');
             return false;
         }
 
         if (!$table->store()) {
-            // Fehlerbehandlung
 	        Factory::getApplication()->enqueueMessage($table->getError(), 'warning');
             return false;
-        }
-
+        }*/
         return true;
     }
 

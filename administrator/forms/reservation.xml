@@ -89,7 +89,6 @@
                 default="1"
                 class="form-select-color-state"
                 validate="options"
-                readonly="true"
         >
             <option value="0">COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED</option>
             <option value="1">COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED</option>

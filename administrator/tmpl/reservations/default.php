@@ -62,13 +62,13 @@ $params = ComponentHelper::getParams('com_dnbooking');
 								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_TITLE'); ?>
                             </th>
                             <th scope="col">
-								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'); ?>
+	                            <?php echo HTMLHelper::_('searchtools.sort', Text::_('COM_DNBOOKING_HEADING_RESERVATION_DATE'), 'a.reservation_date', $listDirn, $listOrder); ?>
                             </th>
                             <th scope="col">
 								<?php echo Text::_('COM_DNBOOKING_HEADING_RESERVATION_PRICE'); ?>
                             </th>
                             <th scope="col">
-								<?php echo Text::_('COM_DNBOOKING_HEADING_ROOM_ID'); ?>
+	                            <?php echo Text::_('COM_DNBOOKING_HEADING_ROOM_ID'); ?>
                             </th>
                             <th scope="col" class="w-1 text-center">
 								<?php echo HTMLHelper::_('searchtools.sort', Text::_('JSTATUS'), 'a.published', $listDirn, $listOrder); ?>

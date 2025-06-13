@@ -63,17 +63,18 @@ class OpeninghoursController extends AdminController
 
 		$app = Factory::getApplication();
 		$input = $app->input;
-		$date = $input->get('date', '', 'INT');
-		if($date < 10)
-		{
-			$date = '0'.$date;
-		}
+		$month = $input->get('date', '', 'INT');
+		$year = $input->get('year', '', 'INT');
+
 		$model = $this->getModel();
-//		$a = $model->checkMonth($date);
-		echo json_encode($model->checkMonth($date));
+
+		if($month < 10)
+		{
+			$month = '0'.$month;
+		}
+
+		echo json_encode($model->checkMonth($year, $month));
 		JFactory::getApplication()->close();
-
-
 	}
 
 	public function edit()
@@ -82,18 +83,8 @@ class OpeninghoursController extends AdminController
 		$app = Factory::getApplication();
 		$input = $app->input;
 
-        $dayID =  $input->get('dayID', 0, 'INT');
-
-		if (empty($dayID))
-		{
-			JError::raiseWarning(500, Text::_('COM_DNBOOKING_NO_DAY_SELECTED'));
-		}
-		else
-		{
-			// Get the model.
-			$model = $this->getModel();
-            $model->updateDay($input->post->getArray());
-		}
+		$model = $this->getModel();
+        $model->updateDay($input->post->getArray());
 
 		$this->setRedirect('index.php?option=com_dnbooking&view=openinghours');
 	}
@@ -103,6 +94,7 @@ class OpeninghoursController extends AdminController
 		Session::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
 		$app = Factory::getApplication();
 		$input = $app->input;
+
 		$model = $this->getModel();
 		$model->addDay($input->post->getArray());
 

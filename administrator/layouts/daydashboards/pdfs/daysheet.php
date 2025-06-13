@@ -85,7 +85,7 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 		    <?= $customer['phone']; ?>
         </p><br/>
         <p><strong><?= Text::_('COM_DNBOOKING_BIRTHDAYCHILDREN_LABEL') ?>:</strong></p>
-        <table class="table table-striped">
+        <table class="table table-striped orderTable">
 		    <?php
 		    $additionalInfos2FieldKeys = $params->get('additional_info_form2');
 		    $fieldCount = count((array)$additionalInfos2FieldKeys);
@@ -122,12 +122,12 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
         </table>
 
         <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
-        <table class="table table-striped">
+        <table class="table table-striped orderTable">
             <thead>
             <tr>
-                <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
             </tr>
             </thead>
             <tr>
@@ -147,12 +147,12 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 	    <?php foreach ($item as $key => $value): ?>
 		    <?php if ($key == 'room'): ?>
                 <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
-                <table class="table table-striped">
+                <table class="table table-striped orderTable">
                     <thead>
                     <tr>
-                        <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                        <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                        <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                        <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+                        <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                        <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
                     </thead>
                     <tr>
@@ -163,12 +163,13 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
                 </table>
 		    <?php elseif ($key == 'extras'): ?>
                 <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
-                <table class="table table-striped">
+                <table class="table table-striped orderTable">
                     <thead>
                     <tr>
-                        <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                        <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                        <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                        <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+
+                        <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                        <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
                     </thead>
 				    <?php foreach ($value as $extra => $value): ?>

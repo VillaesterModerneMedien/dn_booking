@@ -164,7 +164,7 @@ class ReservationModel extends AdminReservationModel
 	{
 		$table = $this->getTable('Customer', 'Administrator');
 		$customer      = [
-			'salutation' => $data['firstname'],
+			'salutation' => $data['salutation'],
 			'firstname'  => $data['firstname'],
 			'lastname'   => $data['lastname'],
 			'email'      => $data['email'],
