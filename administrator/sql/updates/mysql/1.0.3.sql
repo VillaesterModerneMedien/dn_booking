@@ -3,8 +3,8 @@
 -- Drop specific columns if they exist
 ALTER TABLE `#__dnbooking_openinghours`
     DROP PRIMARY KEY,
-    DROP COLUMN IF EXISTS `id`,
-    DROP COLUMN IF EXISTS `notes`;
+    DROP COLUMN IF `id`,
+    DROP COLUMN IF `notes`;
 
 -- Add required columns if they don't exist
 ALTER TABLE `#__dnbooking_openinghours`
