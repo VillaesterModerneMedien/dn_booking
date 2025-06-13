@@ -40,6 +40,8 @@
 				validate="options"
 		>
 			<option value="">JGLOBAL_SORT_BY</option>
+			<option value="a.reservation_date ASC">COM_DNBOOKING_DATE_ORDERING_ASC</option>
+			<option value="a.reservation_date DESC">COM_DNBOOKING_DATE_ORDERING_DESC</option>
 			<option value="a.published ASC">JGRID_STATUS_ORDERING_ASC</option>
 			<option value="a.published DESC">JGRID_STATUS_ORDERING_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>

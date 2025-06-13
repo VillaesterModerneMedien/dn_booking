@@ -145,6 +145,37 @@
                                     </td>
                                 </tr>
                                 <?php endif;?>
+                                <tr>
+                                    <td colspan="2" class="border-top">
+                                        <h4><?= Text::_('COM_DNBOOKING_HEADING_STATE'); ?></h4>
+                                        <p>
+                                            <?php switch ($item['published'])
+                                            {
+                                                case -2:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_TRASHED');
+                                                    break;
+                                                case 0:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED');
+                                                    break;
+                                                case 1:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED');
+                                                    break;
+                                                case 2:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED');
+                                                    break;
+                                                case 3:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_LOCALE');
+                                                    break;
+                                                case 4:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE');
+                                                    break;
+                                                default:
+                                                    echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED');
+                                                    break;
+                                            }?>
+                                        </p>
+                                    </td>
+                                </tr>
                                 <?php if($item['admin_notes'] != null) :?>
                                 <tr>
                                     <td colspan="2" class="border-top">

@@ -22,8 +22,6 @@
             label="COM_DNBOOKING_CONFIG_PREFIX_LABEL"
             description="COM_DNBOOKING_CONFIG_PREFIX_DESC"
         />
-
-
     </fieldset>
     <fieldset
             name="openighourssetting"
@@ -377,9 +375,9 @@
 
         <field
                 name="vendor_address"
-                type="textarea"
+                type="editor"
                 label="COM_DNBOOKING_CONFIG_VENDORSETTINGS_ADDRESS_LABEL"
-                rows="5"
+                filter="safehtml"
                 default=""
         />
 
@@ -424,6 +422,12 @@
             name="emailsettings"
             label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_LABEL"
     >
+        <field
+                name="send_admin_email"
+                type="checkbox"
+                label="COM_DNBOOKING_CONFIG_SEND_ADMIN_EMAIL_LABEL"
+                description="COM_DNBOOKING_CONFIG_SEND_ADMIN_EMAIL_DESC"
+        />
         <field
                 name="emailheader"
                 label="COM_DNBOOKING_CONFIG_EMAILSETTINGS_HEADER_LABEL"

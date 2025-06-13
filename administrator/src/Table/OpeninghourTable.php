@@ -58,7 +58,7 @@ class OpeninghourTable extends Table implements VersionableTableInterface, Tagga
 	{
 		$this->typeAlias = 'com_dnbooking.openinghour';
 
-		parent::__construct('#__dnbooking_openinghours', 'id', $db);
+		parent::__construct('#__dnbooking_openinghours', 'day', $db);
 	}
 
 	/**
@@ -75,27 +75,10 @@ class OpeninghourTable extends Table implements VersionableTableInterface, Tagga
 		{
 			parent::check();
 		}
-		catch (\Exception $e)
+        catch (\Exception $e)
 		{
 			$this->setError($e->getMessage());
-
 			return false;
-		}
-
-		// Add your checks here
-
-
-        // Generate a valid alias
-		$this->generateAlias();
-
-        if (!$this->modified)
-		{
-			$this->modified = $this->created;
-		}
-
-		if (empty($this->modified_by))
-		{
-			$this->modified_by = $this->created_by;
 		}
 
 		return true;
@@ -108,16 +91,15 @@ class OpeninghourTable extends Table implements VersionableTableInterface, Tagga
 	 *
 	 * @return  boolean  True on success, false on failure.
 	 */
-	public function store($updateNulls = false)
+
+	public function store($updateNulls = true)
 	{
-		$date   = Factory::getDate()->toSql();
-		$userId = Factory::getApplication()->getIdentity()->id;
+		//$date   = Factory::getDate()->toSql();
+		//$userId = Factory::getApplication()->getIdentity()->id;
 
         $db     = $this->getDbo();
 
-
-        // Verify that the alias is unique
-		$table = Table::getInstance('OpeninghourTable', __NAMESPACE__ . '\\', array('dbo' => $db));
+		//$table = Table::getInstance('OpeninghourTable', __NAMESPACE__ . '\\', array('dbo' => $db));
 
         return parent::store($updateNulls);
 	}

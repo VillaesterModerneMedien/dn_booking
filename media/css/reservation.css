@@ -12642,6 +12642,23 @@ textarea.form-control-lg {
   text-align: right;
 }
 
+.uk-table-small {
+  max-width: 80px;
+}
+.uk-table-shrink {
+  min-width: 120px;
+  max-width: 120px;
+}
+.uk-table-expand {
+  width: 100%;
+}
+.uk-table-medium {
+  max-width: 60px;
+}
+.uk-table-large {
+  max-width: 100px;
+}
+
 .navbar.navbar-expand-lg {
   margin-bottom: -28px;
 }

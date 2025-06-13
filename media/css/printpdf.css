@@ -22,6 +22,14 @@ h2 {
   height: 40px;
 }
 
+.uk-table-small {
+  width: 2cm;
+}
+
+.uk-table-shrink {
+  width: 3cm;
+}
+
 /**SingleAnsicht**/
 .daysheetItem {
   position: absolute;

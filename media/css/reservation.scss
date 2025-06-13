@@ -21,6 +21,25 @@
 .alignRight{
     text-align: right;
 }
+.uk-table-{
+    &small{
+        max-width:80px;
+    }
+    &shrink{
+        min-width:120px;
+        max-width: 120px;
+    }
+    &expand{
+        width:100%;
+    }
+    &medium{
+        max-width:60px;
+    }
+    &large{
+        max-width:100px;
+    }
+
+}
 .navbar.navbar-expand-lg{
     margin-bottom: -28px;
 

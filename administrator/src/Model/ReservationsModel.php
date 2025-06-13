@@ -137,6 +137,12 @@ class ReservationsModel extends ListModel
 				$query->bind(':admin_notes', $search);
 			}
 		}
+
+        // Add the list ordering clause
+        $orderCol = $this->state->get('list.reservation_date', 'a.reservation_date');
+        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $query->order($db->escape($orderCol . ' ' . $orderDirn));
+
 		return $query;
 	}
 
@@ -154,7 +160,7 @@ class ReservationsModel extends ListModel
 	 *
 	 * @since   1.0.0
 	 */
-	protected function populateState($ordering = 'a.id', $direction = 'desc')
+	protected function populateState($ordering = 'a.reservation_date', $direction = 'desc')
 	{
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
