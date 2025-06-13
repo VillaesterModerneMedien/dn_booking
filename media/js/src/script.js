@@ -255,11 +255,11 @@ function checkDateInput(dateInput) {
 
     const minDate = new Date();
     const minDateText = new Date();
-    minDate.setDate(minDate.getDate() + 3);
+    minDate.setDate(minDate.getDate() + 3); // min 3 Tage im Voraus reservieren
     minDateText.setDate(minDate.getDate())
 
     const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() + 6);
+    maxDate.setMonth(maxDate.getDate() + 90);  // max 90 Tage im Voraus reservieren
 
     if((selectedDate >= minDate) && (selectedDate <= maxDate))
     {
