@@ -34,12 +34,10 @@ CREATE TABLE if not exists `#__dnbooking_reservations`
 --
 CREATE TABLE if not exists `#__dnbooking_openinghours`
 (
-    `id`           int(11) unsigned NOT NULL AUTO_INCREMENT,
     `day`          date             NOT NULL,
     `opening_time` int(11)          NULL,
-    `notes`        mediumtext COLLATE utf8mb4_unicode_ci,
 
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`day`)
 
     ) ENGINE = InnoDB
     DEFAULT CHARSET = utf8mb4

@@ -110,7 +110,7 @@ $discountPrice = $totalPrice - $discountValue;
             </table>
 
             <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
-            <table class="table table-striped">
+            <table class="table table-striped orderTable">
                 <thead>
                     <tr>
                         <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
@@ -137,7 +137,7 @@ $discountPrice = $totalPrice - $discountValue;
             <?php foreach ($item as $key => $value): ?>
                 <?php if ($key == 'room'): ?>
                     <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
-                    <table class="table table-striped">
+                    <table class="table table-striped orderTable">
                         <thead>
                         <tr>
                             <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
@@ -153,7 +153,7 @@ $discountPrice = $totalPrice - $discountValue;
                     </table>
                 <?php elseif ($key == 'extras'): ?>
                     <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
-                    <table class="table table-striped">
+                    <table class="table table-striped orderTable">
                         <thead>
                         <tr>
                             <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
@@ -201,6 +201,35 @@ $discountPrice = $totalPrice - $discountValue;
             <p>
 		        <?= $item['admin_notes']; ?>
             </p>
+                <h4><?= Text::_('COM_DNBOOKING_HEADING_STATE'); ?></h4>
+                <div class="uk-card uk-card-default uk-card-body">
+                    <p>
+				        <?php switch ($item['published'])
+				        {
+					        case -2:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_TRASHED');
+						        break;
+					        case 0:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED');
+						        break;
+					        case 1:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_PUBLISHED');
+						        break;
+					        case 2:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_ARCHIVED');
+						        break;
+					        case 3:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_LOCALE');
+						        break;
+					        case 4:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_DOWN_PAYMENT_MADE');
+						        break;
+					        default:
+						        echo Text::_('COM_DNBOOKING_FIELD_RESERVATION_STATUS_UNPUBLISHED');
+						        break;
+				        }?>
+                    </p>
+                </div>
         </div>
     </div>
 </div>

@@ -136,12 +136,13 @@ $discountPrice = $totalPrice - $discountValue;
 
     <p><strong><?= Text::_('COM_DNBOOKING_PACKAGE_LABEL') ?></strong></p>
     <?php if($customer && $room): ?>
-        <table class="table table-striped">
+        <table class="table table-striped orderTable">
             <thead>
             <tr>
-                <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+
+                <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
             </tr>
             </thead>
             <tr>
@@ -161,12 +162,13 @@ $discountPrice = $totalPrice - $discountValue;
         <?php foreach ($item as $key => $value): ?>
             <?php if ($key == 'room'): ?>
                 <p><strong><?= Text::_('COM_DNBOOKING_ROOM_LABEL') ?>:</strong></p>
-                <table class="table table-striped">
+                <table class="table table-striped orderTable orderTable">
                     <thead>
                     <tr>
-                        <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                        <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                        <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                        <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+
+                        <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                        <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
                     </thead>
                     <tr>
@@ -182,12 +184,13 @@ $discountPrice = $totalPrice - $discountValue;
                 </table>
             <?php elseif ($key == 'extras'): ?>
                 <p><strong><?= Text::_('COM_DNBOOKING_EXTRAS_LABEL') ?>:</strong></p>
-                <table class="table table-striped">
+                <table class="table table-striped orderTable">
                     <thead>
                     <tr>
-                        <th><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-                        <th><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
-                        <th class="alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
+                        <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
+
+                        <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
+                        <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
                     </thead>
                     <?php foreach ($value as $extra => $value): ?>

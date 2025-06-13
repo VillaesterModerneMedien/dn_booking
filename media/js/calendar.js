@@ -20,18 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let modalSelect = document.getElementById('timeSelect');
     currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth());
 
-    checkMonth(currentDate.getMonth());
-
+    checkMonth(currentDate.getFullYear(), currentDate.getMonth());
     function afterAjaxSuccess(response) {
         response.forEach(element => {
-            let date = new Date(element.day);
-            let day = date.getDate();
-            element.dayID = day;
-            customTimes[day] = element;
+            customTimes[element.day] = element.opening_time;
         });
         generateCalendar(currentDate); // Jetzt generieren wir den Kalender, nachdem die Daten verfügbar sind
     }
-    function checkMonth(date) {
+    function checkMonth(year, date) {
+
         date+=1;
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.checkMonth');
@@ -49,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
             }
         };
-        xhr.send('date=' + date + '&token=' + token);
+        xhr.send('year=' + year + '&date=' + date + '&token=' + token);
     }
 
 
-    function sendTaskRequest(task, dayId, time) {
+    function sendTaskRequest(task, day, time) {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'index.php?option=com_dnbooking&task=openinghours.' + task);
         let token = Joomla.getOptions('csrf.token', '');
@@ -79,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(taskText + ' ' + text.failed);
             }
         };
-        xhr.send('dayID=' + dayId + '&opening_time=' + time  + '&token=' + token); // Senden Sie die notwendigen Daten
+        xhr.send('day=' + day + '&opening_time=' + time  + '&token=' + token); // Senden Sie die notwendigen Daten
     }
 
 
@@ -99,9 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return day + "." + month + "." + year;
     }
     function isDateCustom(dateString) {
-        return customTimes.some(function(bookedDay) {
-            return bookedDay.day === dateString;
-        });
+        return customTimes.hasOwnProperty(dateString);
     }
     function generateCalendar(d) {
         let month =d.getMonth();
@@ -115,7 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
             months: months,
         };
 
-        let start = new Date(d.getFullYear(), d.getMonth()).getDay()-1;
+        let start = new Date(d.getFullYear(), d.getMonth()).getDay();
+        if (start === 0) start = 7;
+        start = start - 1;
+
         let cal = [];
         let day = 1;
 
@@ -136,13 +134,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     let dateString = formatDate(date);
                     let customDate = isDateCustom(dateString);
 
-                    let dayId = customTimes[day] ? customTimes[day].id : false;
                     let dayName = details.weekDays[j];
                     let classes ="day";
                     let style = "";
 
                     if(customDate){
-                        let customOpeningtimesColor = farben[keysFarben[customTimes[day].opening_time]].openinghour_color;
+                        let customOpeningtimesColor = farben[keysFarben[customTimes[dateString]]].openinghour_color;
                         style ="background-color: " + customOpeningtimesColor;
                         classes += ' customTime';
                     }
@@ -153,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                     let icons = '<div class="icons"><span class="icon-edit editOpeningHour" data-id="false" data-custom-date="' + customDate + '" aria-hidden="true"></span></div>';
 
-                    cal[i].push(`<td class="${classes}" style="${style}" data-date="${dateString}" data-day="${details.weekDays[j]}" ${dayId ? 'data-id="' + dayId + '"' : ''}><div
+                    cal[i].push(`<td class="${classes}" style="${style}" data-date="${dateString}" data-day="${details.weekDays[j]}"><div
 class="dayInner">${day++}${icons}</div></td>`);
                 }
             }
@@ -168,7 +165,7 @@ class="dayInner">${day++}${icons}</div></td>`);
         document.querySelectorAll('.day').forEach(function(dayElement) {
             dayElement.addEventListener('click', function(event) {
                 let date = dayElement.getAttribute('data-date');
-                editingDayID = dayElement.getAttribute('data-id');
+                editingDayID = dayElement.getAttribute('data-date');
                 editingDate = date;
                 modalTitle.innerText = readifyDate(date);
                 if (isDateCustom(date)){
@@ -176,7 +173,7 @@ class="dayInner">${day++}${icons}</div></td>`);
                     day = day.getDate();
                     let options = modalSelect.options;
                     for (var i = 0; i < options.length; i++) {
-                        if (options[i].value == 'regular_opening_hours' + customTimes[day].opening_time) {
+                        if (options[i].value == 'regular_opening_hours' + customTimes[editingDate]) {
                             options[i].selected = true;
                             break;
                         }
@@ -193,24 +190,26 @@ class="dayInner">${day++}${icons}</div></td>`);
     });
 
     document.getElementById('saveChanges').addEventListener('click', function () {
-        if(editingDayID){
+        if(isDateCustom(editingDayID)){
+            console.log('edit');
             sendTaskRequest('edit', editingDayID, editingTime);
         }
         else{
-            sendTaskRequest('add', editingDate, editingTime);
+            console.log('add');
+            sendTaskRequest('add', editingDayID, editingTime);
         }
     });
 
     document.getElementById('left').addEventListener('click', function () {
         document.querySelector('table').innerHTML = '';
         currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
-        checkMonth(currentDate.getMonth());
+        checkMonth(currentDate.getFullYear(), currentDate.getMonth());
     });
 
     document.getElementById('right').addEventListener('click', function () {
         document.querySelector('table').innerHTML = '';
         currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
-        checkMonth(currentDate.getMonth());
+        checkMonth(currentDate.getFullYear(),  currentDate.getMonth());
     });
 
 

@@ -31,7 +31,7 @@
 			<hr/>
 			<p class="card-text"><strong><?= Text::_('COM_DNBOOKING_FIELD_LASTNAME_LABEL') ?>:</strong> <?= $customer->lastname; ?></p>
 			<hr/>
-			<p class="card-text"><strong>E-<?= Text::_('COM_DNBOOKING_FIELD_EMAIL_LABEL') ?>:</strong> <?= $customer->email; ?></p>
+			<p class="card-text"><strong><?= Text::_('COM_DNBOOKING_FIELD_EMAIL_LABEL') ?>:</strong> <?= $customer->email; ?></p>
 			<hr/>
 			<p class="card-text"><strong><?= Text::_('COM_DNBOOKING_FIELD_PHONE_LABEL') ?>:</strong> <?= $customer->phone; ?></p>
 			<hr/>

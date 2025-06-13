@@ -295,7 +295,7 @@ class DnbookingHelper
 
 	    $error = [];
 
-	    if ($adminmails)
+	    if ($adminmails && $componentParams['send_admin_email'])
 	    {
 			array_push($error, self::_newMail($app, 'admin', $orderDataFlattened, $sendMailFormValues));
 	    }
