@@ -8,9 +8,9 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@diginerds.de</authorEmail>
 	<authorUrl>https://www.diginerds.de</authorUrl>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
-    <namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
+	<namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
 	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
 
 	<scriptfile>script.php</scriptfile>
@@ -35,16 +35,16 @@
 
 	<media destination="com_dnbooking" folder="media">
 		<filename>index.html</filename>
-        <filename>joomla.asset.json</filename>
+		<filename>joomla.asset.json</filename>
 		<folder>css</folder>
 		<folder>fonts</folder>
-        <folder>images</folder>
+		<folder>images</folder>
 		<folder>js</folder>
 	</media>
 
 	<files folder="site">
 		<folder>forms</folder>
-        <folder>helpers</folder>
+		<folder>helpers</folder>
 		<folder>layouts</folder>
 		<folder>src</folder>
 		<folder>tmpl</folder>
@@ -56,46 +56,46 @@
 	</languages>
 
 	<administration>
-        <menu img="class:comment">
+		<menu img="class:comment">
 			COM_DNBOOKING			<params>
-				<dashboard>dnbooking</dashboard>
-			</params>
+			<dashboard>dnbooking</dashboard>
+		</params>
 		</menu>
 		<submenu>
 			<menu view="weekdashboard">
 				COM_DNBOOKING_SUBMENU_WEEKDASHBOARD
 			</menu>
 			<menu view="daydashboards">
-                COM_DNBOOKING_SUBMENU_DAYDASHBOARD
-            </menu>
+				COM_DNBOOKING_SUBMENU_DAYDASHBOARD
+			</menu>
 			<menu view="reservations">
-                COM_DNBOOKING_SUBMENU_RESERVATIONS
-                <params>
+				COM_DNBOOKING_SUBMENU_RESERVATIONS
+				<params>
 					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_RESERVATION</menu-quicktask-title>
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=reservation.add</menu-quicktask>
 				</params>
-            </menu>
+			</menu>
 			<menu view="customers">
-                COM_DNBOOKING_SUBMENU_CUSTOMERS
-                <params>
+				COM_DNBOOKING_SUBMENU_CUSTOMERS
+				<params>
 					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_CUSTOMER</menu-quicktask-title>
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=customer.add</menu-quicktask>
 				</params>
-            </menu>
+			</menu>
 			<menu view="rooms">
-                COM_DNBOOKING_SUBMENU_ROOMS
-                <params>
+				COM_DNBOOKING_SUBMENU_ROOMS
+				<params>
 					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_ROOM</menu-quicktask-title>
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=room.add</menu-quicktask>
 				</params>
-            </menu>
+			</menu>
 			<menu view="extras">
-                COM_DNBOOKING_SUBMENU_EXTRAS
-                <params>
+				COM_DNBOOKING_SUBMENU_EXTRAS
+				<params>
 					<menu-quicktask-title>COM_DNBOOKING_SUBMENU_NEW_EXTRA</menu-quicktask-title>
 					<menu-quicktask>index.php?option=com_dnbooking&amp;task=extra.add</menu-quicktask>
 				</params>
-            </menu>
+			</menu>
 			<menu view="openinghours">
 				COM_DNBOOKING_SUBMENU_OPENING_HOURS
 			</menu>
@@ -109,10 +109,10 @@
 			<filename>config.xml</filename>
 			<filename>dnbooking.xml</filename>
 			<filename>script.php</filename>
-            <folder>forms</folder>
+			<folder>forms</folder>
 			<folder>layouts</folder>
-            <folder>presets</folder>
-            <folder>services</folder>
+			<folder>presets</folder>
+			<folder>services</folder>
 			<folder>sql</folder>
 			<folder>src</folder>
 			<folder>tmpl</folder>
@@ -128,7 +128,7 @@
 
 		</languages>
 	</administration>
-    <dashboards>
+	<dashboards>
 		<dashboard title="COM_DNBOOKING_DASHBOARD_TITLE" icon="icon-file-alt">dnbooking</dashboard>
 	</dashboards>
 
