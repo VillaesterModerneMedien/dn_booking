@@ -22,7 +22,11 @@ $app   = Factory::getApplication();
 
     $wa = $this->document->getWebAssetManager();
     $wa->useScript('joomla.dialog-autocreate');
-    $wa->useStyle('com_dnbooking.reservation');
+
+    if ($app->isClient('administrator')) {
+        $wa->useStyle('com_dnbooking.reservation.admin');
+    }
+
     $reservation     = $this->item;
     $customer = $this->customer;
 

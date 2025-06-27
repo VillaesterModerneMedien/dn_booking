@@ -39,6 +39,7 @@ class ReservationsModel extends ListModel
 		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
+                'reservation_date', 'a.reservation_date',
                 'published', 'a.published',
                 'created', 'a.created',
 			);
@@ -139,8 +140,8 @@ class ReservationsModel extends ListModel
 		}
 
         // Add the list ordering clause
-        $orderCol = $this->state->get('list.reservation_date', 'a.reservation_date');
-        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $orderCol = $this->state->get('list.ordering', 'a.reservation_date');
+        $orderDirn = $this->state->get('list.direction', 'DESC');
         $query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
@@ -160,7 +161,7 @@ class ReservationsModel extends ListModel
 	 *
 	 * @since   1.0.0
 	 */
-	protected function populateState($ordering = 'a.reservation_date', $direction = 'desc')
+	protected function populateState($ordering = 'a.reservation_date', $direction = 'DESC')
 	{
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
