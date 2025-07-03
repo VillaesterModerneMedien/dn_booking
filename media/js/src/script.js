@@ -256,10 +256,11 @@ function checkDateInput(dateInput) {
     const minDate = new Date();
     const minDateText = new Date();
     minDate.setDate(minDate.getDate() + 3);
-    minDateText.setDate(minDate.getDate())
+    minDateText.setDate(minDate.getDate());
 
     const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() + 6);
+    maxDate.setMonth(maxDate.getDate() + 90);
+
 
     if((selectedDate >= minDate) && (selectedDate <= maxDate))
     {

@@ -239,15 +239,7 @@ $discountPrice = $totalPrice - $discountValue;
             <td class="alignRight" style="text-align:right;"><strong><?= number_format((float) $discountPrice, 2, ",", ".") ?> €</strong></td>
         </tr>
 	    <?php if($item['published'] === 3):?>
-            <tr>
-                <td>
-                </td>
-                <td style="text-align:right;" colspan="2">
-                    <strong>
-					    <?= Text::sprintf('COM_DNBOOKING_MAIL_DOWNPAYMENT_LOCALE', $params->get('downpayment')) ?>
-                    </strong>
-                </td>
-            </tr>
+
 	    <?php endif;?>
         <tr>
             <td>
