@@ -8,7 +8,7 @@
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
 	<authorEmail>info@diginerds.de</authorEmail>
 	<authorUrl>https://www.diginerds.de</authorUrl>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<description>COM_DNBOOKING_XML_DESCRIPTION</description>
 	<namespace path="src">DnbookingNamespace\Component\Dnbooking</namespace>
 	<help key="com_dnbooking" url="COM_DNBOOKING_HELPURL" />
