@@ -1,10 +1,13 @@
 # Conversion to utf8mb4
 
+--
+-- ALTER TABLE `#__dnbooking_ ...`
+--
 -- Drop specific columns if they exist
 ALTER TABLE `#__dnbooking_openinghours`
     DROP PRIMARY KEY,
-    DROP COLUMN IF `id`,
-    DROP COLUMN IF `notes`;
+    DROP COLUMN `id`,
+    DROP COLUMN `notes`;
 
 -- Add required columns if they don't exist
 ALTER TABLE `#__dnbooking_openinghours`
