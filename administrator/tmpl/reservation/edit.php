@@ -22,7 +22,7 @@ $input = $app->input;
 
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('joomla.dialog-autocreate');
-$wa->useStyle('com_dnbooking.reservation');
+$wa->useStyle('com_dnbooking.reservation.admin');
 $reservation     = $this->item;
 $customer = $this->customer;
 
