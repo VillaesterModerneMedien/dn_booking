@@ -202,6 +202,7 @@ class ReservationController extends AdminReservationController
 			$blockedRooms['rooms'][] = 'all available';
 		}
 
+		$isHolidayOrWeekend = DnbookingHelper::checkHolidays($date);
 		$blockedRooms['isHolidayOrWeekend'] = $isHolidayOrWeekend;
 		$blockedRooms['isHigherPrice'] = $isHigherPrice;
 		echo json_encode($blockedRooms, JSON_PRETTY_PRINT);

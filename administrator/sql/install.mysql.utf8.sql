@@ -11,7 +11,7 @@ CREATE TABLE if not exists `#__dnbooking_reservations`
     `holiday`           int(1)                                  NOT NULL DEFAULT '0',
     `customer_id`       int(11)                                 NOT NULL DEFAULT '0',
     `room_id`           int(11)                                 NOT NULL DEFAULT '0',
-    `extras_ids`        json                                    NOT NULL,
+    `extras_ids`        longtext                                    NOT NULL,
     `additional_info`   json                                    NOT NULL,
     `additional_infos2`  json                                    NOT NULL,
     `reservation_date`  datetime                                NOT NULL,
