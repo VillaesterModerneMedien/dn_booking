@@ -56,4 +56,18 @@
         </tags>
         <targetplatform name="joomla" version="5"/>
     </update>
+    <update>
+        <name>DN Booking Updateserver</name>
+        <description></description>
+        <element>com_dnbooking</element>
+        <type>component</type>
+        <version>1.0.5</version>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/VillaesterModerneMedien/dn_booking/releases/download/k1.0.4/com_dnbooking_kehl_1.0.5.zip</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <targetplatform name="joomla" version="5"/>
+    </update>
 </updates>
