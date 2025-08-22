@@ -26,15 +26,9 @@ $prefix =$params->get('prefix');
 $id = $prefix . '-' . $reservationYear . '-' .$item['id'];
 $additionalInfos2FieldKeys = $params->get('additional_info_form2');
 $fieldCount = count((array)$additionalInfos2FieldKeys);
-
-if($id) {
-    $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
-}
-
-/**
- * siehe Settings in der Konfiguration
- * visitors, visitorsPackage, birthdayChild
- */
+$createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
+$packageprice = $params->get('packagepriceregular');
+$admissionprice = $params->get('admissionpriceregular');
 
 if(!empty($item['additional_info'])) {
     foreach (json_decode($item['additional_info']) as $key => $value) {
@@ -44,9 +38,6 @@ if(!empty($item['additional_info'])) {
 else{
     $item['additional_info'] = [];
 }
-
-$packageprice = $params->get('packagepriceregular');
-$admissionprice = $params->get('admissionpriceregular');
 
 if($item['holiday']) {
 	$packageprice = $params->get('packagepricecustom');
@@ -81,8 +72,8 @@ $discountPrice = $totalPrice - $discountValue;
 	        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION', $id , $reservationDate, $customer['firstname'] . ' ' . $customer['lastname']) ?>
         </strong>
     </p>
-
-    <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
+    <p>
+        <?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
 		<?= $customer['address']; ?><br/>
 		<?= $customer['zip'] . ' ' . $customer['city']; ?><br/>
 	    <?= $customer['country']; ?><br/>
@@ -140,7 +131,6 @@ $discountPrice = $totalPrice - $discountValue;
             <thead>
             <tr>
                 <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-
                 <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
                 <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
             </tr>
@@ -166,7 +156,6 @@ $discountPrice = $totalPrice - $discountValue;
                     <thead>
                     <tr>
                         <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-
                         <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
                         <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
@@ -188,7 +177,6 @@ $discountPrice = $totalPrice - $discountValue;
                     <thead>
                     <tr>
                         <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-
                         <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
                         <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
@@ -236,6 +224,5 @@ $discountPrice = $totalPrice - $discountValue;
 			    <?= $item['admin_notes']; ?>
             </p>
         </div>
-
     <?php endif; ?>
 </div>

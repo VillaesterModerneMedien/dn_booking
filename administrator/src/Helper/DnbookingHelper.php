@@ -456,8 +456,6 @@ class DnbookingHelper
             $mpdf = new Mpdf($config);
             $mpdf->WriteHTML($stylesheet,HTMLParserMode::HEADER_CSS);
 
-            //hier view checken und diverse layouts laden//
-
             $itemsCount = count($items);
             if($model === 'daydashboards'){
 				$htmlLayout = new FileLayout('daydashboards.pdfs.daysheet_grid', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
