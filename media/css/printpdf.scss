@@ -11,17 +11,6 @@ h2 {
   font-family: 'chelvetica';
 }
 
-.header .text{
-  font-family: 'chelvetica';
-  color:#FFF;
-  vertical-align: bottom;
-  width:100%;
-}
-
-.header .logo{
-  width:auto;
-  height:40px;
-}
 
 .uk-table-small{
   width:2cm;
@@ -29,31 +18,25 @@ h2 {
 .uk-table-shrink{
   width:3cm;
 }
-
-
-/**SingleAnsicht**/
 .daysheetItem{
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 80%;
+  top:3cm;
+  left:0;
+  width:100%;
 }
+/**SingleAnsicht**/
 
-  .header {
+  .daysheetHeader{
     position: absolute;
-    top: 0;
-    left: 0;
+    top:0;
+    left:0;
     width:100%;
-    padding-top: 5mm;
-    padding-left:5mm;
-    padding-right:5mm;
-    padding-bottom: 0;
+    height:2cm;
     background: $blue;
-    color: white;
+    padding:5mm;
   }
-
   .daysheetBody {
+    padding: 5mm!important;
     font-family: 'chelvetica';
     table {
       width: 100%;
@@ -74,16 +57,15 @@ h2 {
     }
 
   }
-  table.footer {
+
+  .daysheetFooter {
     width: 100%;
     display: block;
     border-top: 1px solid #000;
     font-family: 'chelvetica';
+    padding:5mm;
   }
 
-.daysheetBody{
-  padding: 5mm!important;
-}
 /*Gridansicht*/
 .daysheetGrid{
   position: absolute;

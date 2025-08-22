@@ -44,28 +44,15 @@
 
     $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 ?>
-
+<div class="daysheetHeader">
+    <img class="logo" src="<?=$logo?>" alt="Sensapolis Logo" >
+</div>
 <div class="daysheetItem">
-    <div class="header">
-        <table width="100%">
-            <tr>
-                <td >
-                    <img class="logo" src="<?=$logo?>" alt="Sensapolis Logo" >
-                </td>
-            </tr>
-            <tr >
-                <td class="text">
-                    <span>
-                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?> -
-                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?>
-                    </span>
-                </td>
-            </tr>
-        </table>
-    </div>
-
     <div class="daysheetBody">
-
+        <span>
+            <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?> -
+            <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?>
+        </span>
         <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
 		    <?= $customer['address']; ?><br/>
 		    <?= $customer['zip'] . ' ' . $customer['city']; ?><br/>
@@ -193,4 +180,25 @@
             </p>
         </div>
     </div>
+    <div class="daysheetFooter">
+        <table width="100%">
+            <tr>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_ADDRESS_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_address'); ?>
+                </td>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_CONTACT_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_email'); ?><br />
+                    <?php echo $params->get('vendor_from'); ?><br />
+                    <?php echo $params->get('vendor_phone'); ?>
+                </td>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_ACCOUNT_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_accountdata'); ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </div>
