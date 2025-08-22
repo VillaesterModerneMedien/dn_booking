@@ -418,9 +418,6 @@ class DnbookingHelper
 
         $date = date('Y-m-d'); // Verwende das heutige Datum
 
-        $footerHTMLLayout = new FileLayout('daydashboards.pdfs.daysheet_footer', JPATH_ADMINISTRATOR . '/components/com_dnbooking/layouts');
-        $footerHTML = $footerHTMLLayout->render();
-
         $stylesheet = file_get_contents(JPATH_SITE . '/media/com_dnbooking/css/printpdf.css');
         $defaultConfig = (new ConfigVariables())->getDefaults();
         $fontDirs = $defaultConfig['fontDir'];
@@ -469,7 +466,6 @@ class DnbookingHelper
 	            {
 		            $html = $htmlLayout->render($items[$x]);
 		            $mpdf->WriteHTML($html);
-		            $mpdf->SetHTMLFooter($footerHTML);
 		            if ($x < ($itemsCount -1))
 		            {
 			            $mpdf->AddPage();
