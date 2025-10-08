@@ -1,4 +1,4 @@
-import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
+import { setMinPackage } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
 import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeOptions } from "./timeslots.js";
 
@@ -12,6 +12,7 @@ import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeO
  * State if chosen date and time is valid
  * @type {boolean}
  */
+
 let dateValid = false;
 
 /**
