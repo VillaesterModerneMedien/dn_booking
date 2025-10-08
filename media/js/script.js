@@ -237,7 +237,7 @@
 
     let roomID = 'null';
 
-    /**
+    /*
      * Updates the room status based on the selected date and number of visitors.
      * @param {string} date - The selected date.
      * @param {number} visitors - The number of visitors.
