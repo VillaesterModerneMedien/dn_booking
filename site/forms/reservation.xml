@@ -19,7 +19,7 @@
         />
         <field
                 name="meal_time"
-                type="hidden"
+                type="text"
                 label="COM_DNBOOKING_MEALTIME_LABEL"
                 required="false"
                 default="---"

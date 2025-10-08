@@ -11,6 +11,7 @@
 
         let result = [];
 
+        console.log("blockedrooms", blockedRooms);
         roomSets.forEach(set => {
             if (blockedRooms.some(room => set.partRooms.includes(room))) {
                 result.push(set.fullRoom);
@@ -31,11 +32,6 @@
             }
         }
 
-    }
-    function setMinPackage(packageField){
-        const minPackage = 5;
-        packageField.setAttribute('min', minPackage);
-        packageField.value = minPackage;
     }
 
     function createSingleCheck(extra){
@@ -314,7 +310,9 @@
 
         xhr.onload = function() {
             if (this.status === 200) {
+                console.log(this.responseText);
                 let blocked = JSON.parse(this.responseText);
+                console.log(blocked);
 
                 document.querySelectorAll('.roomList .room');
                 if((blocked.times === undefined || blocked.times === '') && date !== '' && time !== ''){
@@ -460,31 +458,35 @@
         return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
     function checkDateInput(dateInput) {
-
         let selectedDate = parseDateString(dateInput);
-
+        const today = new Date();
         const minDate = new Date();
-        const minDateText = new Date();
-        minDate.setDate(minDate.getDate() + 3);
-        minDateText.setDate(minDate.getDate());
-
         const maxDate = new Date();
-        maxDate.setMonth(maxDate.getDate() + 90);
 
+        minDate.setDate(today.getDate() + 3);
+        maxDate.setDate(today.getDate() + 90);
+
+        let minDateString = formatDate(minDate);
+        let maxDateString = formatDate(maxDate);
 
         if((selectedDate >= minDate) && (selectedDate <= maxDate))
         {
             return true;
         }
-        let minDateString = formatDate(minDateText);
-        let maxDateString = formatDate(maxDate);
+
         setMessage('Bitte wählen Sie ein Datum, welches zwischen dem ' + minDateString + ' und dem ' + maxDateString + ' liegt');
         return false;
     }
 
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
 
     function checkRequiredFields()
     {
+
         const requiredFields = document.querySelectorAll('.required');
         const radioButtons = document.querySelectorAll('#jform_room_id input[type="radio"]');
         const roomList = document.getElementById('jform_room_id');

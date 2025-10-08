@@ -133,7 +133,7 @@
 	</dashboards>
 
 	<updateservers>
-		<server type="extension" priority="1" name="DN Booking - Sindelfingen">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/refs/heads/sindelfingen/update.xml</server>
+		<server type="extension" priority="1" name="DN Booking - Kehl">https://raw.githubusercontent.com/VillaesterModerneMedien/dn_booking/refs/heads/kehl/update.xml</server>
 	</updateservers>
 
 </extension>

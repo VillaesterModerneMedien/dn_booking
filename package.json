@@ -1,0 +1,19 @@
+{
+  "name": "booking",
+  "version": "1.0.0",
+  "description": "Joomla! CMS™",
+  "main": "rollup.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-multi-entry": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rollup": "^4.52.4"
+  }
+}
