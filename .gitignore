@@ -27,7 +27,7 @@ vendor/*
 administrator/vendor/
 
 .idea/
-
+./node_modules
 templates/administrator/atum/css/system/
 
 templates/administrator/atum/css/vendor/
