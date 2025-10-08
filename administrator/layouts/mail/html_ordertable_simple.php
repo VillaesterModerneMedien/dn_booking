@@ -11,7 +11,7 @@ $params = ComponentHelper::getParams('com_dnbooking');
 
 $item = $displayData;
 $reservationDate = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC4'));
-$reservationYear = HTMLHelper::_('date', $item->reservation_date, 'Y');
+$reservationYear = HTMLHelper::_('date', $item['reservation_date'], 'Y');
 $reservationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');
 $prefix =$params->get('prefix');
 $id = $prefix . '-' . $reservationYear . '-' .$item['id'];
