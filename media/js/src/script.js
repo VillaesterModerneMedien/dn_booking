@@ -1,4 +1,4 @@
-import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
+import { filterSpecial,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
 import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeOptions } from "./timeslots.js";
 
@@ -271,6 +271,13 @@ function checkDateInput(dateInput) {
     setMessage('Bitte wählen Sie ein Datum, welches zwischen dem ' + minDateString + ' und dem ' + maxDateString + ' liegt');
     return false;
 }
+
+export function setMinPackage(packageField){
+    const minPackage = 5;
+    packageField.setAttribute('min', minPackage);
+    packageField.value = minPackage;
+}
+
 function checkRequiredFields()
 {
 

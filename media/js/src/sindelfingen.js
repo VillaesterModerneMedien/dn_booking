@@ -30,10 +30,5 @@ export function doubleDeko(roomID){
     }
 
 }
-export function setMinPackage(packageField){
-    const minPackage = 5;
-    packageField.setAttribute('min', minPackage);
-    packageField.value = minPackage;
-}
 
 
