@@ -43,7 +43,7 @@ if (empty($this->form->getValue('reservation_token')))
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const tabs = document.querySelectorAll('#myTabs .nav-link');
+        const tabs = document.querySelectorAll('#dnbTabs .nav-link');
         const tabPanes = document.querySelectorAll('.tab-pane');
 
         tabs.forEach(tab => {
@@ -70,7 +70,6 @@ if (empty($this->form->getValue('reservation_token')))
 <div class="dnbooking dnbooking_reservation">
     <form action="<?php echo Route::_('index.php?option=com_dnbooking&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
         <div class="row">
-
             <div class="col-md-6">
                 <div class="card bg-secondary mb-3">
                     <div class="card-header"><h3><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_EDIT_HEADLINE'); ?></h3>
@@ -79,13 +78,12 @@ if (empty($this->form->getValue('reservation_token')))
                         <nav class="navbar navbar-expand-lg" data-bs-theme="light">
                             <div class="container-fluid">
                                 <div class="collapse navbar-collapse" id="navbarNav">
-                                    <ul class="navbar-nav nav-tabs" id="myTabs" role="tablist">
+                                    <ul class="navbar-nav nav-tabs" id="dnbTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1"
                                                     aria-selected="true"><?= Text::_('COM_DNBOOKING_HEADING_RESERVATION_VIEW_HEADLINE'); ?></button>
                                         </li>
-
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="tab2-tab" data-bs-toggle="tab"
                                                     data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2"
@@ -119,15 +117,12 @@ if (empty($this->form->getValue('reservation_token')))
                                 </div>
                             </div>
                         </nav>
-
-                        <div class="tab-content" id="meineTabsContent">
-
+                        <div class="tab-content" id="tabsContent">
 	                        <?php echo LayoutHelper::render('reservation.reservation_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.customer_tab', $customer); ?>
 	                        <?php echo LayoutHelper::render('reservation.extras_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.addinfos2_tab', $this); ?>
 	                        <?php echo LayoutHelper::render('reservation.notes_tab', $this); ?>
-
                         </div>
                     </div>
                 </div>

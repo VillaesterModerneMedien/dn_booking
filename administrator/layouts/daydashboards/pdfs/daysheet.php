@@ -15,28 +15,20 @@
     $id = $item['id'];
     $params = ComponentHelper::getParams('com_dnbooking');
     $prefix =$params->get('prefix');
-    if($id) {
-        $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
-    }
+    $admissionprice = $params->get('admissionpriceregular');
+    $packageprice = $params->get('packagepriceregular');
+    $createdHeadline = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC5'));
 
-    /**
-     * siehe Settings in der Konfiguration
-     * visitors, visitorsPackage, birthdayChild
-     */
     foreach (json_decode($item['additional_info']) as $key => $value) {
         $item[$key] = $value;
     }
 
-    $packageprice = $params->get('packagepriceregular');
     if($item['holiday']) {
         $packageprice = $params->get('packagepricecustom');
+        $admissionprice = $params->get('admissionpricecustom');
     }
-    $packagepriceTotal = $packageprice * (int) $item['visitorsPackage'];
 
-    $admissionprice = $params->get('admissionpriceregular');
-    if($item['holiday']) {
-        $packageprice = $params->get('admissionpricecustom');
-    }
+    $packagepriceTotal = $packageprice * (int) $item['visitorsPackage'];
     $admissionpriceTotal = $admissionprice * (int) $item['visitors'];
 
     $item['extras_price_total'] ?? ($item['extras_price_total'] = 0);
@@ -50,33 +42,17 @@
     $resevationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');
     $id = $prefix . '-' . $reservationYear . '-' .$item['id'];
 
-
-$logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
+    $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 ?>
-
+<div class="daysheetHeader">
+    <img class="logo" src="<?=$logo?>" alt="Sensapolis Logo" >
+</div>
 <div class="daysheetItem">
-
-    <div class="header">
-        <table width="100%">
-            <tr>
-                <td >
-                    <img class="logo" src="<?=$logo?>" alt="Sensapolis Logo" >
-                </td>
-            </tr>
-            <tr >
-                <td class="text">
-                    <span>
-                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?> -
-                        <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?>
-                    </span>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-
     <div class="daysheetBody">
-
+        <span>
+            <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DAYDASHBOARD', $id) ?> -
+            <?= Text::sprintf('COM_DNBOOKING_HEADLINE_RESERVATION_DATE_PDF', $resevationDate , $resevationTime); ?>
+        </span>
         <p><?= Text::_($customer['salutation']) . ' ' . $customer['firstname'] . ' ' . $customer['lastname']; ?><br/>
 		    <?= $customer['address']; ?><br/>
 		    <?= $customer['zip'] . ' ' . $customer['city']; ?><br/>
@@ -94,13 +70,11 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 		    $children = ArrayHelper::fromObject($children);
 		    foreach($children as $child){
 			    foreach ($child as $key => $value) {
-
 				    $currentField = 1;
 				    echo "<tr>";
                         echo "<td>";
                         foreach ($additionalInfos2FieldKeys as $fieldKey)
                         {
-
                             if (isset($value[$fieldKey->fieldName])){
                                 if (DateTime::createFromFormat('Y-m-d H:i:s', $value[$fieldKey->fieldName]) !== false) {
                                     echo date('d.m.Y', strtotime($value[$fieldKey->fieldName]));
@@ -112,7 +86,6 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
                                     echo ", ";
                                 }
                             }
-
                             $currentField++;
                         }
                         echo "</td>";
@@ -136,7 +109,6 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
                 <td class="alignRight"><?= number_format($packagepriceTotal, 2, ",", ".") ?> €</td>
             </tr>
 		    <?php if($item['visitors'] > 0): ?>
-                <tr>
                 <tr>
                     <td><?= $item['visitors'] ?> x </td>
                     <td><?= Text::_('COM_DNBOOKING_TICKET_TEXT') ?></td>
@@ -167,7 +139,6 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
                     <thead>
                     <tr>
                         <th class="uk-table-small"><?= Text::_('COM_DNBOOKING_AMOUNT_LABEL') ?></th>
-
                         <th class="uk-table-expand"><?= Text::_('COM_DNBOOKING_NAME_LABEL') ?></th>
                         <th class="uk-table-shrink alignRight"><?= Text::_('COM_DNBOOKING_TOTAL_LABEL') ?></th>
                     </tr>
@@ -200,7 +171,6 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
                 </tr>
             <?php endif; ?>
             </tbody>
-
         </table>
 
         <h4><?= Text::_('COM_DNBOOKING_COMMENTS_LABEL'); ?></h4>
@@ -209,5 +179,25 @@ $logo = JPATH_ROOT . '/' .  strtok($params->get('vendor_logo'), '#');
 			    <?= $item['customer_notes']; ?>
             </p>
         </div>
+    </div>
+    <div class="daysheetFooter">
+        <table width="100%">
+            <tr>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_ADDRESS_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_address'); ?>
+                </td>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_CONTACT_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_email'); ?><br />
+                    <?php echo $params->get('vendor_from'); ?><br />
+                    <?php echo $params->get('vendor_phone'); ?>
+                </td>
+                <td>
+                    <h4><?php echo Text::_('COM_DNBOOKING_EMAIL_FOOTER_ACCOUNT_LABEL'); ?></h4>
+                    <?php echo $params->get('vendor_accountdata'); ?>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
