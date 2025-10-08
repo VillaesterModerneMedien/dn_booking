@@ -1,4 +1,4 @@
-import { filterSpecial,setMinPackage,doubleDeko } from "./sindelfingen.js";
+import { filterSpecial,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
 import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeOptions } from "./timeslots.js";
 
@@ -33,6 +33,11 @@ let roomID = 'null';
  * @param {string} date - The selected date.
  * @param {number} visitors - The number of visitors.
  */
+export function setMinPackage(packageField){
+    const minPackage = 5;
+    packageField.setAttribute('min', minPackage);
+    packageField.value = minPackage;
+}
 
 function updateRoomStatus(date, visitors){
     let xhr = new XMLHttpRequest();
