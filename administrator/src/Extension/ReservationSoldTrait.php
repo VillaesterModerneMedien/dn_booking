@@ -9,14 +9,11 @@
 
 namespace DnbookingNamespace\Component\Dnbooking\Administrator\Extension;
 
-
-
-// phpcs:disable PSR1.Files.SideEffects
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 
 \defined('_JEXEC') or die;
-// phpcs:enable PSR1.Files.SideEffects
+
 
 /**
  * Trait to implement AssociationServiceInterface
@@ -25,9 +22,7 @@ use Joomla\CMS\Factory;
  */
 trait ReservationSoldTrait
 {
-
 	protected static $orderFeatures;
-
 	public function getOrderFeatures($model, $id = null)
 	{
 		if(!empty(self::$orderFeatures[$model])) {
@@ -81,17 +76,27 @@ trait ReservationSoldTrait
 
 					if(is_array($value)){
 						foreach ($value as $key => $extra){
-							if($extra['extra_count'] > 0){
-								$extras = (array) $model->getOrderFeatures('Extra', $extra['extra_id']);
-								$orderData['extras'][$extras['alias']]['name'] = $extras['title'];
-								$orderData['extras'][$extras['alias']]['price_single'] = $extras['price'];
-								$orderData['extras'][$extras['alias']]['amount'] =  (int) $extra['extra_count'];
-								$orderData['extras'][$extras['alias']]['price_total'] = $extras['price'] * $extra['extra_count'];
-								$orderData['extras_price_total'] += $extras['price'] * $extra['extra_count'];
+							if ($extra['extra_count'] > 0) {
+								$extraItem = $model->getOrderFeatures('Extra', (int)$extra['extra_id']);
+
+								if (!$extraItem) {
+									continue;
+								}
+
+								$alias = $extraItem->alias ?? ('extra_' . ($extraItem->id ?? $extra['extra_id']));
+								$price = isset($extraItem->price) ? (float)$extraItem->price : 0.0;
+
+								$orderData['extras'][$alias] = [
+									'name'        => $extraItem->title ?? '',
+									'price_single'=> $price,
+									'amount'      => (int)$extra['extra_count'],
+									'price_total' => $price * (int)$extra['extra_count'],
+								];
+
+								$orderData['extras_price_total'] += $orderData['extras'][$alias]['price_total'];
 							}
 						}
 					}
-
 					continue;
 				}
 

@@ -1,6 +1,39 @@
 (function (exports) {
     'use strict';
 
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        console.log("blockedrooms", blockedRooms);
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
+    }
+
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -89,44 +122,6 @@
             createOptionsCheck(extra, extraOptions);
             ulOptionsCheck.appendChild(extra);
         });
-    }
-
-    function filterSpecial$1(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        console.log("blockedrooms", blockedRooms);
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function doubleDeko$1(roomID){
-        let checkedItem = document.querySelector('.deko.checked');
-        if(checkedItem){
-            let input = checkedItem.querySelector('input[type="number"]');
-            if(roomID === '13'){
-                input.value=2;
-            }
-        }
-
-    }
-    function setMinPackage(packageField){
-        const minPackage = 5;
-        packageField.setAttribute('min', minPackage);
-        packageField.value = minPackage;
     }
 
     function checkTimeslot(dateInput)  {
@@ -226,7 +221,6 @@
      * State if chosen date and time is valid
      * @type {boolean}
      */
-
     let dateValid = false;
 
     /**
@@ -483,6 +477,13 @@
         setMessage('Bitte wählen Sie ein Datum, welches zwischen dem ' + minDateString + ' und dem ' + maxDateString + ' liegt');
         return false;
     }
+
+    function setMinPackage(packageField){
+        const minPackage = 5;
+        packageField.setAttribute('min', minPackage);
+        packageField.value = minPackage;
+    }
+
     function checkRequiredFields()
     {
 
@@ -670,8 +671,8 @@
     });
 
     exports.checkTimeslot = checkTimeslot;
-    exports.doubleDeko = doubleDeko$1;
-    exports.filterSpecial = filterSpecial$1;
+    exports.doubleDeko = doubleDeko;
+    exports.filterSpecial = filterSpecial;
     exports.getAvailableTimeslot = getAvailableTimeslot;
     exports.parseDateString = parseDateString;
     exports.removeOptions = removeOptions;
