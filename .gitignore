@@ -28,6 +28,7 @@ administrator/vendor/
 
 .idea/
 ./node_modules
+node_modules/
 templates/administrator/atum/css/system/
 
 templates/administrator/atum/css/vendor/
@@ -43,3 +44,4 @@ templates/administrator/atum/css/template.css
 templates/administrator/atum/css/template.min.css
 
 templates/administrator/atum/css/template.min.css.gz
+/node_modules/
