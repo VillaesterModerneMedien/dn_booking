@@ -302,7 +302,7 @@ function checkRequiredFields()
         }
     }
 
-    if(roomsValid == true && inputsValid != false){
+    if (roomsValid === true && inputsValid !== false){
         return true;
     }
     return false;
