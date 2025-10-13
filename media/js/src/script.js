@@ -275,7 +275,7 @@ function checkDateInput(dateInput) {
     return false;
 }
 
-export function setMinPackage(packageField){
+function setMinPackage(packageField){
     const minPackage = 5;
     packageField.setAttribute('min', minPackage);
     packageField.value = minPackage;

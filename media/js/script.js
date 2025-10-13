@@ -1,6 +1,39 @@
 (function (exports) {
     'use strict';
 
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        console.log("blockedrooms", blockedRooms);
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
+    }
+
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -686,7 +719,6 @@
     exports.removeOptions = removeOptions;
     exports.setCustomExtras = setCustomExtras;
     exports.setMessage = setMessage;
-    exports.setMinPackage = setMinPackage;
     exports.setQuarters = setQuarters;
 
     return exports;
