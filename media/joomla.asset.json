@@ -37,6 +37,11 @@
       "uri": "com_dnbooking/daydashboards.css"
     },
     {
+      "name": "com_dnbooking.weekdashboard",
+      "type": "style",
+      "uri": "com_dnbooking/weekdashboard.css"
+    },
+    {
       "name": "com_dnbooking.reservation.admin",
       "type": "style",
       "uri": "com_dnbooking/reservation.css",

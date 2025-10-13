@@ -168,7 +168,7 @@ $discountPrice = $totalPrice - $discountValue;
                         <?php else: ?>
                             <?php $roomPrice = $value['priceregular']; ?>
                         <?php endif; ?>
-                            <td class="alignRight"><?= number_format((float) $roomPrice, 2, ",", ".") ?> €</td>
+                        <td class="alignRight"><?= number_format((float) $roomPrice, 2, ",", ".") ?> €</td>
                     </tr>
                 </table>
             <?php elseif ($key == 'extras'): ?>

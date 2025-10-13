@@ -21,7 +21,9 @@ use Joomla\CMS\User\UserHelper;
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.script');
 $wa->useStyle('com_dnbooking.booking');
-// $wa->useAsset('script', 'jquery');
+$componentParams = ComponentHelper::getParams('com_dnbooking');
+$frontendParams ['minDate'] = $componentParams->get('minDate');
+$frontendParams ['maxDate'] = $componentParams->get('maxDate');
 
 $translations = [
 	'timeclosed' => Text::_('COM_DNBOOKING_TIME_CLOSED'),
@@ -35,6 +37,7 @@ $translations = [
 ];
 
 Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.translations', $translations);
+Factory::getApplication()->getDocument()->addScriptOptions('com_dnbooking.frontendparams', $frontendParams);
 
 $dateformat = 'Y-m-d';
 $params = ComponentHelper::getParams('com_dnbooking');
