@@ -27,12 +27,6 @@
 		</sql>
 	</uninstall>
 
-	<update>
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
-	</update>
-
 	<media destination="com_dnbooking" folder="media">
 		<filename>index.html</filename>
         <filename>joomla.asset.json</filename>
