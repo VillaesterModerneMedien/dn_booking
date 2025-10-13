@@ -91,39 +91,6 @@
         });
     }
 
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        console.log("blockedrooms", blockedRooms);
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function doubleDeko(roomID){
-        let checkedItem = document.querySelector('.deko.checked');
-        if(checkedItem){
-            let input = checkedItem.querySelector('input[type="number"]');
-            if(roomID === '13'){
-                input.value=2;
-            }
-        }
-
-    }
-
     function checkTimeslot(dateInput)  {
         return new Promise((resolve, reject) => {
         let date = seperateDate(dateInput);
@@ -221,6 +188,7 @@
      * State if chosen date and time is valid
      * @type {boolean}
      */
+
     let dateValid = false;
 
     /**
@@ -677,9 +645,42 @@
         setCustomExtras(extras);
     });
 
+    function filterSpecial$1(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        console.log("blockedrooms", blockedRooms);
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko$1(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
+    }
+
     exports.checkTimeslot = checkTimeslot;
-    exports.doubleDeko = doubleDeko;
-    exports.filterSpecial = filterSpecial;
+    exports.doubleDeko = doubleDeko$1;
+    exports.filterSpecial = filterSpecial$1;
     exports.getAvailableTimeslot = getAvailableTimeslot;
     exports.parseDateString = parseDateString;
     exports.removeOptions = removeOptions;

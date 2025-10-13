@@ -1,4 +1,3 @@
-import { filterSpecial,doubleDeko } from "./sindelfingen.js";
 import { setCustomExtras } from "./extrasfilter.js";
 import { checkTimeslot, setQuarters, seperateDate, getAvailableTimeslot, removeOptions } from "./timeslots.js";
 
