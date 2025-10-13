@@ -10,6 +10,7 @@ use Joomla\CMS\Router\Route;
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('com_dnbooking.weekdashboard');
+$wa->useStyle('com_dnbooking.weekdashboard');
 
 $params = ComponentHelper::getParams('com_dnbooking');
 $prefix = $params->get('prefix');
@@ -49,7 +50,7 @@ $prefix = $params->get('prefix');
                             $bookingId = $prefix . '-' . date('Y', strtotime($item->reservation_date)) . '-' . $item->id;
 							$children = json_decode($item->additional_infos2, true);
                             ?>
-                            <tr>
+                            <tr <?= $item->admin_notes == '' ? 'class="bottomBorderBold"' : ''; ?>>
                                 <td><?php echo $date; ?></td>
                                 <td><?php echo $time; ?></td>
                                 <td><?php echo $item->room_title; ?></td>
@@ -117,6 +118,14 @@ $prefix = $params->get('prefix');
                                 </td>
 
                             </tr>
+                        <?php if($item->admin_notes != ''):?>
+                            <tr class="bottomBorderBold">
+                                <td colspan="10">
+                                    Interne Notizen:<br />
+									<?= $item->admin_notes;?>
+                                </td>
+                            </tr>
+                        <?php endif;?>
 						<?php endforeach; ?>
                         </tbody>
                     </table>

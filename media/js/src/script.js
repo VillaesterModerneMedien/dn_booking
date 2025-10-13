@@ -257,18 +257,21 @@ function formatDate(date) {
     return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 function checkDateInput(dateInput) {
+    const options = Joomla.getOptions('com_dnbooking.frontendparams');
+    const minDays = parseInt(options.minDate);
+    const maxDays = parseInt(options.maxDate);
     let selectedDate = parseDateString(dateInput);
     const today = new Date();
-    const minDate = new Date();
-    const maxDate = new Date();
+    const min = new Date();
+    const max = new Date();
 
-    minDate.setDate(today.getDate() + 3);
-    maxDate.setDate(today.getDate() + 90);
+    min.setDate(today.getDate() + minDays);
+    max.setDate(today.getDate() + maxDays);
 
-    let minDateString = formatDate(minDate);
-    let maxDateString = formatDate(maxDate);
+    let minDateString = formatDate(min);
+    let maxDateString = formatDate(max);
 
-    if((selectedDate >= minDate) && (selectedDate <= maxDate))
+    if((selectedDate >= min) && (selectedDate <= max))
     {
         return true;
     }
@@ -422,11 +425,15 @@ document.addEventListener('DOMContentLoaded', function () {
     checkStatus.addEventListener('click', function(event) {
         event.preventDefault();
 
+        if (personsPackageInput.value < 5) {
+            setMessage('Es müssen mindestens 5 Geburtstagspakete gebucht werden');
+            personsPackageInput.value = 5;
+        }
+
         if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
             dateValid = false;
         }
         else{
-
             checkDate(dateInput.value, personsPackageInput.value);
         }
     });

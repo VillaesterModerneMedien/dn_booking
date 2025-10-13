@@ -58,7 +58,7 @@ $weekEnd = $dto->format('d.m.Y');
             $bookingId = $prefix . '-' . $reservationYear . '-' . $item->id;
             $children = json_decode($item->additional_infos2, true);
             ?>
-            <tr>
+            <tr <?= $item->admin_notes == '' ? 'class="bottomBorderBold"' : ''; ?>>
                 <td><?php echo $date; ?></td>
                 <td><?php echo $time; ?></td>
                 <td><?php echo $item->room_title; ?></td>
@@ -125,6 +125,14 @@ $weekEnd = $dto->format('d.m.Y');
                     }?>
                 </td>
             </tr>
+        <?php if($item->admin_notes != ''):?>
+            <tr class="bottomBorderBold">
+                <td colspan="10">
+                    Interne Notizen:<br />
+                    <?= $item->admin_notes;?>
+                </td>
+            </tr>
+        <?php endif;?>
         <?php endforeach; ?>
         </tbody>
     </table>

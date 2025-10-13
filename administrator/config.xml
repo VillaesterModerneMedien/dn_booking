@@ -22,6 +22,18 @@
             label="COM_DNBOOKING_CONFIG_PREFIX_LABEL"
             description="COM_DNBOOKING_CONFIG_PREFIX_DESC"
         />
+        <field
+            name="minDate"
+            type="number"
+            label="COM_DNBOOKING_CONFIG_MINDATE_LABEL"
+            description="COM_DNBOOKING_CONFIG_MINDATE_DESC"
+        />
+        <field
+            name="maxDate"
+            type="number"
+            label="COM_DNBOOKING_CONFIG_MAXDATE_LABEL"
+            description="COM_DNBOOKING_CONFIG_MINDATE_DESC"
+        />
     </fieldset>
     <fieldset
             name="openighourssetting"
