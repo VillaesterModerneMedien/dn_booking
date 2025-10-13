@@ -1,0 +1,9 @@
+tr.bottomBorderBold td {
+  border-bottom-width: 2px;
+  border-top: 1px solid #eee;
+}
+tr:not(.bottomBorderBold) td {
+  border-bottom-width: 0;
+}
+
+/*# sourceMappingURL=weekdashboard.css.map */

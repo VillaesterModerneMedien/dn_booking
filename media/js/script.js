@@ -1,39 +1,6 @@
 (function (exports) {
     'use strict';
 
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        console.log("blockedrooms", blockedRooms);
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function doubleDeko(roomID){
-        let checkedItem = document.querySelector('.deko.checked');
-        if(checkedItem){
-            let input = checkedItem.querySelector('input[type="number"]');
-            if(roomID === '13'){
-                input.value=2;
-            }
-        }
-
-    }
-
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -122,6 +89,39 @@
             createOptionsCheck(extra, extraOptions);
             ulOptionsCheck.appendChild(extra);
         });
+    }
+
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        console.log("blockedrooms", blockedRooms);
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
     }
 
     function checkTimeslot(dateInput)  {
@@ -458,18 +458,21 @@
         return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
     function checkDateInput(dateInput) {
+        const options = Joomla.getOptions('com_dnbooking.frontendparams');
+        const minDays = parseInt(options.minDate);
+        const maxDays = parseInt(options.maxDate);
         let selectedDate = parseDateString(dateInput);
         const today = new Date();
-        const minDate = new Date();
-        const maxDate = new Date();
+        const min = new Date();
+        const max = new Date();
 
-        minDate.setDate(today.getDate() + 3);
-        maxDate.setDate(today.getDate() + 90);
+        min.setDate(today.getDate() + minDays);
+        max.setDate(today.getDate() + maxDays);
 
-        let minDateString = formatDate(minDate);
-        let maxDateString = formatDate(maxDate);
+        let minDateString = formatDate(min);
+        let maxDateString = formatDate(max);
 
-        if((selectedDate >= minDate) && (selectedDate <= maxDate))
+        if((selectedDate >= min) && (selectedDate <= max))
         {
             return true;
         }
@@ -623,11 +626,15 @@
         checkStatus.addEventListener('click', function(event) {
             event.preventDefault();
 
+            if (personsPackageInput.value < 5) {
+                setMessage('Es müssen mindestens 5 Geburtstagspakete gebucht werden');
+                personsPackageInput.value = 5;
+            }
+
             if(checkDateInput(dateInput.getAttribute('data-alt-value')) === false){
                 dateValid = false;
             }
             else {
-
                 checkDate(dateInput.value, personsPackageInput.value);
             }
         });

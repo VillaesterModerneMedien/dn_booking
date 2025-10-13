@@ -118,6 +118,14 @@ table.singleReservation th {
   border-bottom: 1px solid black;
 }
 
+tr.bottomBorderBold td {
+  border-bottom-width: 2px;
+  border-top: 1px solid #eee;
+}
+tr:not(.bottomBorderBold) td {
+  border-bottom-width: 0;
+}
+
 .border-top {
   border-top: 1px solid black;
 }

@@ -39,7 +39,6 @@ class ReservationController extends FormController
 	 */
 	protected $text_prefix = 'COM_DNBOOKING_RESERVATION';
 
-
 	/**
 	 * Method to save a record.
 	 *

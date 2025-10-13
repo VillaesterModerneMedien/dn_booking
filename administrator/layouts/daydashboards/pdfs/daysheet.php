@@ -130,7 +130,12 @@
                     <tr>
                         <td>1 x</td>
                         <td><?= $value['title'] ?></td>
-                        <td class="alignRight"><?= number_format((float) $value['priceregular'], 2, ",", ".") ?> €</td>
+		                <?php if($item['holiday']): ?>
+			                <?php $roomPrice = $value['pricecustom']; ?>
+		                <?php else: ?>
+			                <?php $roomPrice = $value['priceregular']; ?>
+		                <?php endif; ?>
+                        <td class="alignRight"><?= number_format((float) $roomPrice, 2, ",", ".") ?> €</td>
                     </tr>
                 </table>
 		    <?php elseif ($key == 'extras'): ?>

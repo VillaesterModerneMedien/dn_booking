@@ -12,7 +12,7 @@ $params = ComponentHelper::getParams('com_dnbooking');
 
 $item = $displayData;
 $reservationDate = HTMLHelper::_('date', $item['reservation_date'], Text::_('DATE_FORMAT_LC4'));
-$reservationYear = HTMLHelper::_('date', $item->reservation_date, 'Y');
+$reservationYear = HTMLHelper::_('date', $item['reservation_date'], 'Y');
 $reservationTime = HTMLHelper::_('date', $item['reservation_date'], 'H:i');
 
 $prefix =$params->get('prefix');
@@ -84,10 +84,14 @@ $discountPrice = $totalPrice - $discountValue;
                 <?= Text::_('COM_DNBOOKING_MAIL_CUSTOMER') ?>
             </td>
             <td colspan="2">
-                <?= $item['customer']['firstname'] . '  ' . $item['customer']['lastname'] ?> <br/>
-                <?= $item['customer']['address'] ?> <br/>
-                <?= $item['customer']['zip'] . ' ' . $item['customer']['city'] ?> <br/>
-                <?= $item['customer']['email'] ?> <br/>
+                <?php if (isset($item['customer'])): ?>
+                    <?= isset($item['customer']['firstname']) ? $item['customer']['firstname'] : '' ?> <?= isset($item['customer']['lastname']) ? $item['customer']['lastname'] : '' ?><br/>
+                    <?= isset($item['customer']['address']) ? $item['customer']['address'] : '' ?><br/>
+                    <?= isset($item['customer']['zip']) ? $item['customer']['zip'] : '' ?> <?= isset($item['customer']['city']) ? $item['customer']['city'] : '' ?><br/>
+                    <?= isset($item['customer']['email']) ? $item['customer']['email'] : '' ?><br/>
+                <?php else: ?>
+                    <span style="color:red;">Keine Kundendaten vorhanden!</span>
+                <?php endif; ?>
             </td>
         </tr>
         <tr>
@@ -164,10 +168,10 @@ $discountPrice = $totalPrice - $discountValue;
 				<?= Text::_('COM_DNBOOKING_MAIL_ROOM') ?>
             </td>
             <td>
-				<?= $item['room']['title'] ?>
+                <?= isset($item['room']['title']) ? $item['room']['title'] : '' ?>
             </td>
             <td style="text-align:right;">
-		        <?= $roomprice ?> €
+                <?= isset($roomprice) ? $roomprice : '' ?> €
             </td>
         </tr>
         <?php if(array_key_exists('extras', $item) && !empty($item['extras'])) :?>
@@ -183,7 +187,7 @@ $discountPrice = $totalPrice - $discountValue;
 
             </td>
             <td style="vertical-align:bottom!important; text-align:right;">
-	            <?= $item['extras_price_total'] ?> €
+                <?= isset($item['extras_price_total']) ? $item['extras_price_total'] : '' ?> €
             </td>
         </tr>
         <?php endif; ?>
@@ -197,7 +201,7 @@ $discountPrice = $totalPrice - $discountValue;
             </td>
             <td style="text-align:right;">
                 <strong>
-				    <?= $item['reservation_price'] ?> €
+                    <?= isset($item['reservation_price']) ? $item['reservation_price'] : '' ?> €
                 </strong>
             </td>
         </tr>
