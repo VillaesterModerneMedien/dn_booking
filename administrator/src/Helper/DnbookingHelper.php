@@ -148,18 +148,49 @@ class DnbookingHelper
 	private static function _newMail($app, $recipient, $orderDataFlattened, $sendMailFormValues){
 		/** @var Mail $mail */
 		$mail = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
-		$mail->setSender($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+		$adminMail = $app->get('mailfrom');
+		$adminFrom = $app->get('fromname');
+		$mail->setSender($adminMail, $adminFrom);
 
 		$mailer = new DnbookingMailTemplate('com_dnbooking.' . $sendMailFormValues['sendMailType'], 'de-DE', $mail);
 		$mailer->addTemplateData($orderDataFlattened);
+		$userMail = '';
+		$userFrom = '';
+		$firstname = '';
+		$lastname = '';
+
+		if (!empty($orderDataFlattened['customer_email'])) {
+			$userMail = $orderDataFlattened['customer_email'];
+		} elseif (!empty($orderDataFlattened['email'])) {
+			$userMail = $orderDataFlattened['email'];
+		}
+		else {
+			$app->enqueueMessage(Text::_('keine Mailadresse gefunden'), 'error');
+			return false;
+		}
+
+		if (!empty($orderDataFlattened['customer_firstname'])) {
+			$firstname = $orderDataFlattened['customer_firstname'];
+		} elseif (!empty($orderDataFlattened['firstname'])) {
+			$firstname = $orderDataFlattened['firstname'];
+		}
+
+		if (!empty($orderDataFlattened['customer_lastname'])) {
+			$lastname = $orderDataFlattened['customer_lastname'];
+		} elseif (!empty($orderDataFlattened['lastname'])) {
+			$lastname = $orderDataFlattened['lastname'];
+		}
+
+		$userFrom = trim($firstname . ' ' . $lastname);
 
 		if ($recipient === 'admin')
 		{
-			$mailer->addRecipient($orderDataFlattened['vendor_email'], $orderDataFlattened['vendor_from']);
+			$mailer->addRecipient($adminMail, $adminFrom, 'to');
 		}
-		else if ($recipient === 'user')
+
+		else if ($recipient === 'user' && $userMail !== '')
 		{
-			$mailer->addRecipient($orderDataFlattened['customer_email'], $orderDataFlattened['customer_firstname'] . ' ' . $orderDataFlattened['customer_lastname']);
+			$mailer->addRecipient($userMail, $userFrom, 'to');
 		}
 
 		try
@@ -231,7 +262,6 @@ class DnbookingHelper
 
 		$orderData['customText'] = $sendMailFormValues['sendMailCustomText'];
 		$orderData['stornoText'] = $sendMailFormValues['sendMailStornoText'];
-
 
 
         $layout                              = new FileLayout('mail.html_ordertable_simple', JPATH_ROOT . '/administrator/components/com_dnbooking/layouts');
