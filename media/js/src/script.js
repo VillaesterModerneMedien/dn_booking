@@ -33,6 +33,11 @@ let roomID = 'null';
  * @param {string} date - The selected date.
  * @param {number} visitors - The number of visitors.
  */
+function setMinPackage(packageField){
+    const minPackage = 5;
+    packageField.setAttribute('min', minPackage);
+    packageField.value = minPackage;
+}
 
 function updateRoomStatus(date, visitors){
     let xhr = new XMLHttpRequest();
@@ -311,7 +316,7 @@ function checkRequiredFields()
         }
     }
 
-    if(roomsValid == true && inputsValid != false){
+    if (roomsValid === true && inputsValid !== false){
         return true;
     }
     return false;
