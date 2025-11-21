@@ -287,8 +287,10 @@ class ReservationController extends AdminReservationController
 
 		$formData['holiday'] = $price;
 
-		$customerId = $model->saveReservationCustomer($formData);
-		$input->set('jform', $customerId);
+		$reservationData = $model->saveReservationCustomer($formData);
+
+		$input->set('jform', $reservationData);
+
 
 		if ($this->save())
 		{
@@ -297,7 +299,8 @@ class ReservationController extends AdminReservationController
 			$reservationYear = HTMLHelper::_('date', $formData['reservation_date'], 'Y');
 			$reservationsModel = Factory::getApplication()->bootComponent('com_dnbooking')->getMVCFactory()->createModel('Reservations', 'Administrator');
 			$items = $reservationsModel->getItems();
-			$items = ArrayHelper::pivot($items, 'reservation_token');
+            $items = ArrayHelper::pivot($items, 'reservation_token');
+
 			$params = ComponentHelper::getParams('com_dnbooking');
 			$prefix =$params->get('prefix');
 			$rid = $prefix . '-' . $reservationYear . '-' . $items[$formData['reservation_token']]->id;

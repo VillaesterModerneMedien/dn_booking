@@ -50,6 +50,36 @@ class ReservationsModel extends ListModel
 
 
 	/**
+	 * Method to get an array of data items.
+	 *
+	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getItems()
+	{
+		// Get a storage key.
+		$store = $this->getStoreId();
+
+
+		// Try to load the data from internal storage.
+		if (isset($this->cache[$store])) {
+			return $this->cache[$store];
+		}
+
+		try {
+
+			// Load the list items and add the items to the internal cache.
+			$this->cache[$store] = $this->_getList($this->_getListQuery(), $this->getStart(), $this->getState('list.limit'));
+		} catch (\RuntimeException $e) {
+			$this->setError($e->getMessage());
+			return false;
+		}
+
+		return $this->cache[$store];
+	}
+
+	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
 	 * @param   string  $type    The table type to instantiate
@@ -82,7 +112,7 @@ class ReservationsModel extends ListModel
 		$query->order($this->_db->quoteName($listOrder) . ' ' . $this->_db->escape($listDirn));
 
 		// Process pagination.
-		$result = parent::_getList($query, $limitstart, $limit);
+		$result = parent::_getList($query, $limitstart, 0);
 		return $result;
 	}
 
