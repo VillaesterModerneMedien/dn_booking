@@ -8,7 +8,6 @@ export function filterSpecial(blockedRooms) {
 
     let result = [];
 
-    console.log("blockedrooms", blockedRooms);
     roomSets.forEach(set => {
         if (blockedRooms.some(room => set.partRooms.includes(room))) {
             result.push(set.fullRoom);
