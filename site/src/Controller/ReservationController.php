@@ -184,18 +184,21 @@ class ReservationController extends AdminReservationController
                     if ($reservation['room_id'] == $room['id'] && $reservation['reservation_date'] == $date)
                     {
                         $blockedRooms['rooms'][] = $room['id'];
+                        $blockedRooms['roomsReserved'][] = $room['id'];
                         break;
                     }
                 }
                 if ($room['personsmax'] < $personscount)
                 {
                     $blockedRooms['rooms'][] = $room['id'];
+                    $blockedRooms['roomsPersons'][] = $room['id'];
                 }
             }
         }
         else{
             foreach ($rooms as $room) {
                 $blockedRooms['rooms'][] = $room['id'];
+                $blockedRooms['roomsClosed'][] = $room['id'];
             }
         }
         if (empty($blockedRooms['rooms'])) {

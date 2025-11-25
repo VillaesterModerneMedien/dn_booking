@@ -28,17 +28,6 @@ let maxSteps = 1;
 
 let roomID = 'null';
 
-/*
- * Updates the room status based on the selected date and number of visitors.
- * @param {string} date - The selected date.
- * @param {number} visitors - The number of visitors.
- */
-function setMinPackage(packageField){
-    const minPackage = 5;
-    packageField.setAttribute('min', minPackage);
-    packageField.value = minPackage;
-}
-
 function updateRoomStatus(date, visitors){
     let xhr = new XMLHttpRequest();
 
@@ -54,7 +43,7 @@ function updateRoomStatus(date, visitors){
             let blocked = JSON.parse(this.responseText);
             let rooms = document.querySelectorAll('.roomList .room');
                 if(blocked.rooms !== undefined) {
-                    let blockedRooms = blocked.rooms;
+                    let blockedRooms = blocked.roomsReserved;
                     blocked.rooms = blocked.rooms.concat(filterSpecial(blockedRooms)); //Spezialfilter für geteilte Räume->siehe externe JS-Datei
                 }
                 else{

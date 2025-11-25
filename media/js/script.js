@@ -1,39 +1,6 @@
 (function (exports) {
     'use strict';
 
-    function filterSpecial(blockedRooms) {
-        let roomSets = [
-            {
-                fullRoom: 13,    
-                partRooms: [7, 14]
-            }
-        ];
-
-        let result = [];
-
-        console.log("blockedrooms", blockedRooms);
-        roomSets.forEach(set => {
-            if (blockedRooms.some(room => set.partRooms.includes(room))) {
-                result.push(set.fullRoom);
-            }
-            if (blockedRooms.includes(set.fullRoom)) {
-                result = result.concat(set.partRooms);
-            }
-        });
-        return result;
-    }
-
-    function doubleDeko(roomID){
-        let checkedItem = document.querySelector('.deko.checked');
-        if(checkedItem){
-            let input = checkedItem.querySelector('input[type="number"]');
-            if(roomID === '13'){
-                input.value=2;
-            }
-        }
-
-    }
-
     function createSingleCheck(extra){
         const input = extra.querySelector('input[type="number"]');
         const label = extra.querySelector('label');
@@ -122,6 +89,38 @@
             createOptionsCheck(extra, extraOptions);
             ulOptionsCheck.appendChild(extra);
         });
+    }
+
+    function filterSpecial(blockedRooms) {
+        let roomSets = [
+            {
+                fullRoom: 13,    
+                partRooms: [7, 14]
+            }
+        ];
+
+        let result = [];
+
+        roomSets.forEach(set => {
+            if (blockedRooms.some(room => set.partRooms.includes(room))) {
+                result.push(set.fullRoom);
+            }
+            if (blockedRooms.includes(set.fullRoom)) {
+                result = result.concat(set.partRooms);
+            }
+        });
+        return result;
+    }
+
+    function doubleDeko(roomID){
+        let checkedItem = document.querySelector('.deko.checked');
+        if(checkedItem){
+            let input = checkedItem.querySelector('input[type="number"]');
+            if(roomID === '13'){
+                input.value=2;
+            }
+        }
+
     }
 
     function checkTimeslot(dateInput)  {
@@ -238,12 +237,6 @@
 
     let roomID = 'null';
 
-    /*
-     * Updates the room status based on the selected date and number of visitors.
-     * @param {string} date - The selected date.
-     * @param {number} visitors - The number of visitors.
-     */
-
     function updateRoomStatus(date, visitors){
         let xhr = new XMLHttpRequest();
 
@@ -259,7 +252,7 @@
                 let blocked = JSON.parse(this.responseText);
                 let rooms = document.querySelectorAll('.roomList .room');
                     if(blocked.rooms !== undefined) {
-                        let blockedRooms = blocked.rooms;
+                        let blockedRooms = blocked.roomsReserved;
                         blocked.rooms = blocked.rooms.concat(filterSpecial(blockedRooms)); //Spezialfilter für geteilte Räume->siehe externe JS-Datei
                     }
                     rooms.forEach(function(room) {
@@ -518,7 +511,7 @@
             }
         }
 
-        if(roomsValid == true && inputsValid != false){
+        if (roomsValid === true && inputsValid !== false){
             return true;
         }
         return false;
