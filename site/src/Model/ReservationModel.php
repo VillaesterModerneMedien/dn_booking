@@ -108,17 +108,24 @@ class ReservationModel extends AdminReservationModel
 	 *
 	 * @since   1.0.0
 	 */
-	public function getReservations(): array
-	{
-		$query = $this->db->getQuery(true);
+    public function getReservations(): array
+    {
+        $query = $this->db->getQuery(true);
 
-		$query->select('*')
-			->from($this->db->quoteName('#__dnbooking_reservations'));
+        $query->select('*')
+            ->from($this->db->quoteName('#__dnbooking_reservations'))
+            ->where(
+                $this->db->quoteName('published')
+                . ' IN ('
+                . $this->db->quote(1) . ','
+                . $this->db->quote(3) . ','
+                . $this->db->quote(4) . ')'
+            );
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		return $this->db->loadAssocList();
-	}
+        return $this->db->loadAssocList();
+    }
 
 	public function getOpeningHours($date): array
 	{
