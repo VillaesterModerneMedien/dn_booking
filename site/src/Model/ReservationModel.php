@@ -113,7 +113,14 @@ class ReservationModel extends AdminReservationModel
 		$query = $this->db->getQuery(true);
 
 		$query->select('*')
-			->from($this->db->quoteName('#__dnbooking_reservations'));
+			->from($this->db->quoteName('#__dnbooking_reservations'))
+			->where(
+				$this->db->quoteName('published')
+				. ' IN ('
+				. $this->db->quote(1) . ','
+				. $this->db->quote(3) . ','
+				. $this->db->quote(4) . ')'
+			);
 
 		$this->db->setQuery($query);
 
